@@ -18,6 +18,11 @@ def create_app():
     # creating our database object! This allows us to use our ORM
     db.init_app(app)
 
+    ma.init_app(app)
+
+    from commands import db_commands
+    app.register_blueprint(db_commands)
+
     # import the controllers and activate the blueprints
     from controllers import registerable_controllers
 

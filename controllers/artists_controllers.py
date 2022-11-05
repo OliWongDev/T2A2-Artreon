@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from main import db
 from models.artists import Artist
+from schemas.artist_schema import artist_schema
 
 artists = Blueprint('artists', __name__, url_prefix="/artist")
 
@@ -10,4 +11,6 @@ artists = Blueprint('artists', __name__, url_prefix="/artist")
 
 @artists.route("/", methods=["GET"])
 def artist_info():
-    return "Welcome to the Artist's Bio!"
+    artist_list = Artist.query.all()
+    result = artist_schema.dump(artist_list)
+    return jsonify(result)

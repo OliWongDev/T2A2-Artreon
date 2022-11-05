@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-# creating our database object! This allows us to use our ORM
+from flask_marshmallow import Marshmallow
 
 db = SQLAlchemy()
+ma = Marshmallow()
 
 def create_app():
     # using a list comprehension and multiple assignment 

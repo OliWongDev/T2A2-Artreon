@@ -3,13 +3,13 @@ from flask import Blueprint
 # from main import Bcrypt
 from models.artists import Artist
 from models.artwork_comments import ArtworkComment
-from models.artworks import Artwork
+# from models.artworks import Artwork
 from models.comments import Comment
-from models.emails import Email
+# from models.emails import Email
 from models.q_and_as import QAndA
-from models.qanda_comments import QandAComment
+# from models.qanda_comments import QandAComment
 from models.questions import Question
-from models.stored_questions import StoredQuestion
+# from models.stored_questions import StoredQuestion
 from models.users import User
 from models.walkthrough_comments import WalkthroughComment
 from models.walkthroughs import Walkthrough
@@ -120,6 +120,22 @@ def seed_db():
     )
 
     db.session.add(artwork1, artwork2, artwork3, artwork4)
+
+    # 3 x Artwork Comments
+    artwork_comment1 = ArtworkComment(
+        artwork_id = 2, 
+        comment_id = 3,
+    )
+
+    artwork_comment2 = ArtworkComment(
+        artwork_id = 4,
+        comment_id = 5,
+    )
+
+    artwork_comment3 = ArtworkComment(
+        artwork_id = 2,
+        comment_id = 4
+    )
 
     # 5 x comments to map
     comment1 = Comment(
@@ -396,8 +412,10 @@ def seed_db():
     )
 
     db.session.add(email1, email2, email3, email4)
+    db.session.commit()
 
     print('Tables are seeded')
+
 # Seed Drop Command
 @db_commands.cli.command("drop")
 def drop_db():

@@ -5,4 +5,4 @@ class ArtworkCommentSchema(ma.Schema):
         fields = ("id", "artwork_id", "comment_id")
 
 artwork_comment_schema = ArtworkCommentSchema()
-artwork_comment_schema = ArtworkCommentSchema(many=True)
+artwork_comments_schema = ArtworkCommentSchema(many=True)

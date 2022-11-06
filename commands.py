@@ -3,13 +3,13 @@ from flask import Blueprint
 # from main import Bcrypt
 from models.artists import Artist
 from models.artwork_comments import ArtworkComment
-# from models.artworks import Artwork
+from models.artworks import Artwork
 from models.comments import Comment
-# from models.emails import Email
+from models.emails import Email
 from models.q_and_as import QAndA
-# from models.qanda_comments import QandAComment
+from models.qanda_comments import QandAComment
 from models.questions import Question
-# from models.stored_questions import StoredQuestion
+from models.stored_questions import StoredQuestion
 from models.users import User
 from models.walkthrough_comments import WalkthroughComment
 from models.walkthroughs import Walkthrough

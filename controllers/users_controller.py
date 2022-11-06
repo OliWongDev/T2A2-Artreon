@@ -17,7 +17,7 @@ def get_all_users():
 #127.0.0.1:5000/users/<int:id>
 # This returns a single user
 
-@users.route("/", methods=["GET"])
+@users.route("/<int:id>", methods=["GET"])
 def get_single_user():
     user = User.query.filter_by(id=id).first()
     result = user_schema.dump(user)

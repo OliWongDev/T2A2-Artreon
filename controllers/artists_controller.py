@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from flask_sqlalchemy import SQLAlchemy as sa
 from main import db
 from models.artists import Artist
 from schemas.artist_schema import artist_schema

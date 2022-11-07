@@ -10,8 +10,10 @@ stored_questions = Blueprint("stored_questions", __name__, url_prefix="/stored_q
 
 @stored_questions.route("/", methods=["GET"])
 def get_all_stored_questions():
+
     stored_questions_list = StoredQuestion.query.all()
     result = stored_questions_schema.dump(stored_questions_list)
+
     return jsonify(result)
 
 # 127.0.0.1:5000/stored_questions/<int:id>
@@ -19,6 +21,24 @@ def get_all_stored_questions():
 
 @stored_questions.route("/<int:id>", methods = ["GET"])
 def get_single_stored_question(id):
+
     stored_question = StoredQuestion.query.filter_by(id=id).first()
     result = stored_question_schema.dump(stored_question)
+
     return jsonify(result)
+
+# 127.0.0.1:5000/stored_questions/
+# This adds a stored question
+
+@stored_questions.route("/", methods=["POST"])
+def add_stored_question():
+    stored_question_fields = stored_question_schema.load(request.json)
+
+    new_stored_question = StoredQuestion()
+    new_stored_question.question_id = stored_question_fields["question_id"]
+    new_stored_question.q_and_a_id = stored_question_fields["q_and_a_id"]
+
+    db.session.add(new_stored_question)
+    db.session.commit()
+
+    return jsonify(stored_question_schema.dump(new_stored_question))

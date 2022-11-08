@@ -6,5 +6,5 @@ class StoredQuestion(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
     q_and_a_id = db.Column(db.Integer, db.ForeignKey("q_and_as.id"), nullable=False)
 
-    question = db.relationship("Question", back_populates="stored_questions")
-    q_and_a = db.relationship("QAndA", back_populates="stored_questions")
+    questions = db.relationship("Question", back_populates="stored_questions")
+    q_and_as = db.relationship("QAndA", back_populates="stored_questions")

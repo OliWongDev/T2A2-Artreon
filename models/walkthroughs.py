@@ -8,6 +8,6 @@ class Walkthrough(db.Model):
     artist_id = db.Column(db.Integer(), db.ForeignKey("artists.id"))
     artwork_id = db.Column(db.Integer(), db.ForeignKey("artworks.id"), nullable=False)
 
-    artist = db.relationship("Artist", back_populates="walkthroughs")
-    artwork = db.relationship("Artwork", back_populates="walkthroughs")
-    walkthrough_comment = db.relationship("WalkthroughComment", back_populates="walkthroughs")
+    artists = db.relationship("Artist", back_populates="walkthroughs")
+    artworks = db.relationship("Artwork", back_populates="walkthroughs")
+    walkthrough_comments = db.relationship("WalkthroughComment", back_populates="walkthroughs")

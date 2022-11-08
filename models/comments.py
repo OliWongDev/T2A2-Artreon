@@ -7,7 +7,7 @@ class Comment(db.Model):
     date = db.Column(db.Date(), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
 
-    user = db.relationship("User", back_populates="comments")
-    artwork_comment = db.relationship("ArtworkComment", back_populates="comments")
-    q_and_a_comment = db.relationship("QAndAComment", back_populates="comments")
-    walkthrough_comment = db.relationship("WalkthroughComment", back_populates="comments")
+    users = db.relationship("User", back_populates="comments")
+    artwork_comments = db.relationship("ArtworkComment", back_populates="comments")
+    q_and_a_comments = db.relationship("QAndAComment", back_populates="comments")
+    walkthrough_comments = db.relationship("WalkthroughComment", back_populates="comments")

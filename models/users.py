@@ -11,5 +11,5 @@ class User(db.Model):
     has_subscription = db.Column(db.Boolean(), nullable=False)
     password = db.Column(db.String())
 
-    comment = db.relationship("Comment", back_populates="users")
-    question = db.relationship("Question", back_populates="users")
+    comments = db.relationship("Comment", back_populates="users")
+    questions = db.relationship("Question", back_populates="users")

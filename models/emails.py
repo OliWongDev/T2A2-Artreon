@@ -8,4 +8,4 @@ class Email(db.Model):
     send_date = db.Column(db.Date(), nullable=False)
     artist_id = db.Column(db.Integer(), db.ForeignKey("artists.id"), nullable=False)
 
-    artist = db.relationship("Artist", back_populates="emails")
+    artists = db.relationship("Artist", back_populates="emails")

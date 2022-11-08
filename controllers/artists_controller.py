@@ -7,17 +7,19 @@ artists = Blueprint('artists', __name__, url_prefix="/artists")
 
 
 # 127.0.0.1:5000/artists
-# This returns all artists/the sole artist's bio
+# This returns the first artist's information AKA the sole creator/admin of the API.
 
 @artists.route("/", methods=["GET"])
 def artist_info():
-    artist_list = db.select(Artist).order_by(Artist.id.desc())
-    result = db.session.scalars(artist_list)
-    return ArtistSchema().dump(result)
+    artist_list = db.select(Artist).order_by(Artist.id.asc())
+    result = db.session.scalar(artist_list)
+    return ArtistSchema().dump(result), 200
+
+# 127.0.0.1:5000/artists
 
 # 127.0.0.1:5000/artists
 # This is an add method for creating a new artist.
-# For the purpose of this exercise, this API reflects one artist's Artreon content with the associated users to that artist.
+# For the purpose of this exercise, this API reflects one artist's Artreon content with the associated users to that artist. It is unlikely this route would be needed.
 
 @artists.route("/", methods=["POST"])
 def add_artist():

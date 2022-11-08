@@ -15,8 +15,8 @@ def artist_info():
     result = artist_schema.dump(artist_list)
     return jsonify(result)
 
-# 127.0.0.1:5000/artist/<int:id>
-# This returns the artist's bio via integer, in the event that there are more added. 
+# 127.0.0.1:5000/artist
+# This is an add method for creating a new artist.
 # For the purpose of this exercise, this API reflects one artist's Artreon content with the associated users to that artist.
 
 @artists.route("/", methods=["POST"])

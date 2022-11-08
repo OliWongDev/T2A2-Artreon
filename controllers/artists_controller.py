@@ -22,7 +22,10 @@ def artist_info():
 @artists.route("/", methods=["POST"])
 def add_artist():
     artist_fields = artist_schema.load(request.json)
-
+    # 1. Take the artist_schema because it is us templating it through Marshmallow to prepare for the process of updating the artist's details.
+    # 2. Start with the request.json --> We are requesting the JSON object in the DB (artist's details) and parsing it into a Javascript object.
+    # 3. Load --> We are deserializing this javascript object so that it can be changed within the route function. It's 
+    # Notice with the below lines, I'm able to access the items in a list that started from our schema template to set their updated values.
     new_artist = Artist()
     new_artist.artreon_alias = artist_fields["artreon_alias"]
     new_artist.password = artist_fields["password"]
@@ -32,6 +35,8 @@ def add_artist():
 
     db.session.add(new_artist)
     db.session.commit()
-
+    # 1. Reversing the process, our python object 'new_artist' has some updated values. Let's send it back.
+    # 2. Dump serializes the new_artist object back to a Javascript object.
+    # 3. Jsonify serializes all the arguments in the brackets to JSON. Can't go from 1 to 3.
     return jsonify(artist_schema.dump(new_artist))
 

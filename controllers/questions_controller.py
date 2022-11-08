@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.questions import Question
-from schemas.question_schema import question_schema, questions_schema
+from schemas.question_schema import QuestionSchema
 
 questions = Blueprint("questions", __name__, url_prefix="/questions")
 
@@ -10,18 +10,18 @@ questions = Blueprint("questions", __name__, url_prefix="/questions")
 
 @questions.route("/", methods=["GET"])
 def get_all_questions():
-    questions_list = Question.query.all()
-    result = questions_schema.dump(questions_list)
-    return jsonify(result)
+    questions_list = db.select(Question).order_by(Question.id.asc())
+    result = db.session.scalars(questions_list)
+    return QuestionSchema(many=True).dump(result)
 
 # 127.0.0.1:5000/questions/<int:id>
 # This returns a single question
 
 @questions.route("/<int:id>", methods = ["GET"])
 def get_single_question(id):
-    question = Question.query.filter_by(id=id).first()
-    result = question_schema.dump(question)
-    return jsonify(result)
+    question = db.select(Question).filter_by(id=id)
+    result = db.session.scalar(question)
+    return QuestionSchema().dump(result)
 
 # 127.0.0.1:5000/questions
 # This allows the user to post/add a question to the database

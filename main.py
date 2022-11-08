@@ -1,10 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
 ma = Marshmallow()
-
+bcrypt = Bcrypt()
 def create_app():
     # using a list comprehension and multiple assignment 
     # to grab the environment variables we need

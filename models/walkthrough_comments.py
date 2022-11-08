@@ -7,4 +7,3 @@ class WalkthroughComment(db.Model):
     comment_id = db.Column(db.Integer(), db.ForeignKey("comments.id"), nullable=False)
 
     walkthroughs = db.relationship("Walkthrough", back_populates="walkthrough_comments")
-    comments = db.relationship("Comment", back_populates="walkthrough_comments")

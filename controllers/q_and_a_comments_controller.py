@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.q_and_a_comments import QAndAComment
-from schemas.q_and_a_comment_schema import q_and_a_comment_schema, q_and_a_comments_schema
+from schemas.q_and_a_comment_schema import QAndACommentSchema
 
 q_and_a_comments = Blueprint("q_and_a_comments", __name__, url_prefix="/q_and_a_comments")
 
@@ -10,18 +10,18 @@ q_and_a_comments = Blueprint("q_and_a_comments", __name__, url_prefix="/q_and_a_
 
 @q_and_a_comments.route("/", methods = ["GET"])
 def get_all_q_and_as():
-    q_and_a__comments_list = QAndAComment.query.all()
-    result = q_and_a_comments_schema.dump(q_and_a__comments_list)
-    return jsonify(result)
+    q_and_a__comments_list = db.select(QAndAComment).order_by(QAndAComment.id.asc())
+    result = db.session.scalars(q_and_a__comments_list)
+    return QAndACommentSchema(many=True).dump(result)
 
 # 127.0.0.1:5000/q_and_a_comments/<int:id>
 # This returns a single Q&A comment
 
 @q_and_a_comments.route("/<int:id>", methods = ["GET"])
 def get_single_q_and_a_comment(id):
-    q_and_a_comment = QAndAComment.query.filter_by(id=id).first()
-    result = q_and_a_comment_schema.dump(q_and_a_comment)
-    return jsonify(result)
+    q_and_a_comment = db.select(QAndAComment).filter_by(id=id)
+    result = db.session.scalar(q_and_a_comment)
+    return QAndACommentSchema().dump(result)
 
 # 127.0.0.1:5000/q_and_a_comments/
 #### This allows a paid user to add a comment to a Q&A
@@ -54,6 +54,7 @@ def update_q_and_a_comment(id):
 
 # 127.0.0.1:5000/q_and_a_comments/<int:id>
 #### This allows a paid user to delete a Q&A comment
+#### We want an error here telling the user that they need to delete the original comment
 
 @q_and_a_comments.route("/<int:id>", methods=["DELETE"])
 def delete_q_and_a_comment(id):

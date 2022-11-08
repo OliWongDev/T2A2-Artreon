@@ -7,4 +7,3 @@ class ArtworkComment(db.Model):
     comment_id = db.Column(db.Integer(), db.ForeignKey("comments.id"), nullable=False)
 
     artworks = db.relationship("Artwork", back_populates="artwork_comments")
-    comments = db.relationship("Comment", back_populates="artwork_comments")

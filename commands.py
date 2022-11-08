@@ -1,6 +1,6 @@
 from main import db
 from flask import Blueprint
-# from main import Bcrypt
+from main import bcrypt
 from models.artists import Artist
 from models.artwork_comments import ArtworkComment
 from models.artworks import Artwork
@@ -28,7 +28,7 @@ def seed_db():
     # 1 x Artist
     artist = Artist(
         artreon_alias = "Graphic God",
-        password = "artist_password",
+        password = bcrypt.generate_password_hash("artist_password").decode("utf-8"),
         email = "graphicgod@artreon.com",
         is_admin = True,
         artist_bio = "Hi there! I'm Graphic God and welcome to my Artreon where you can see my wonderful artworks. If you want to learn how I do it all become a paid user and join the art revolution!"
@@ -44,7 +44,7 @@ def seed_db():
         join_date = datetime.date.today(),
         email = "free2view@gmail.com",
         has_subscription = False,
-        password = "freeloader"
+        password = bcrypt.generate_password_hash("freeloader").decode("utf-8")
     )
 
     freeuser2 = User(
@@ -54,7 +54,7 @@ def seed_db():
         join_date = datetime.date.today(),
         email = "artmuncher@gmail.com",
         has_subscription = False,
-        password = "artshouldbefree"
+        password = bcrypt.generate_password_hash("artshouldbefree").decode("utf-8")
     )
 
     db.session.add(freeuser1)
@@ -69,7 +69,7 @@ def seed_db():
         join_date = datetime.date.today(),
         email = "learningellie@gmail.com",
         has_subscription = True,
-        password = "lovelearning123"
+        password = bcrypt.generate_password_hash("lovelearning123").decode("utf-8")
     )
 
     paiduser2 = User(
@@ -79,7 +79,7 @@ def seed_db():
         join_date = datetime.date.today(),
         email = "lucasbanks@gmail.com",
         has_subscription = True,
-        password = "iknowwhoheis"
+        password = bcrypt.generate_password_hash("iknowwhoheis").decode("utf-8")
     )
 
     paiduser3 = User(
@@ -89,7 +89,7 @@ def seed_db():
         join_date = datetime.date.today(),
         email = "fionas@gmail.com",
         has_subscription = True,
-        password = "gospel"
+        password = bcrypt.generate_password_hash("gospel").decode("utf-8")
     )
 
     db.session.add(paiduser1)
@@ -131,57 +131,84 @@ def seed_db():
     db.session.add(artwork3)
     db.session.add(artwork4)
 
-    # 5 x comments to map
+    # 9 x comments to map
     comment1 = Comment(
-        description = "Wow, this is a fresh twist!",
+        description = "Artwork Comment 1",
         date = datetime.datetime.today(),
         user_id = 4
         )
     
     comment2 = Comment(
-        description = "Oooo I'd like to purchase this one, would look good on my wall.",
+        description = "Artwork Comment 2",
         date = datetime.datetime.today(),
         user_id = 3
         )
 
     comment3 = Comment(
-        description = "Da Vinci could do better, but you're pretty good",
+        description = "Artwork Comment 3",
         date = datetime.datetime.today(),
         user_id = 5
         )
 
     comment4 = Comment(
-        description = "It's confusing, but it makes sense at the same time",
+        description = "Q&A Comment 1",
         date = datetime.datetime.today(),
         user_id = 4
         )
 
     comment5 = Comment(
-        description = "You make art objective.",
+        description = "Q&A Comment 2",
         date = datetime.datetime.today(),
         user_id = 5
         )
+    
+    comment6 = Comment(
+        description = "Q&A Comment 3",
+        date = datetime.datetime.today(),
+        user_id = 5
+    )
 
+    comment7 = Comment(
+        description = "Walkthrough Comment 1",
+        date = datetime.datetime.today(),
+        user_id = 3
+    )
+
+    comment8 = Comment(
+        description = "Walkthrough Comment 1",
+        date = datetime.datetime.today(),
+        user_id = 3
+    )
+
+    comment9 = Comment(
+        description = "Walkthrough Comment 2",
+        date = datetime.datetime.today(),
+        user_id = 4
+    )
     db.session.add(comment1)
     db.session.add(comment2)
     db.session.add(comment3)
     db.session.add(comment4)
     db.session.add(comment5)
+    db.session.add(comment6)
+    db.session.add(comment7)
+    db.session.add(comment8)
+    db.session.add(comment9)
 
 # 3 x Artwork Comments
     artwork_comment1 = ArtworkComment(
         artwork_id = 2, 
-        comment_id = 3,
+        comment_id = 1,
     )
 
     artwork_comment2 = ArtworkComment(
         artwork_id = 4,
-        comment_id = 5,
+        comment_id = 2,
     )
 
     artwork_comment3 = ArtworkComment(
         artwork_id = 2,
-        comment_id = 4
+        comment_id = 3
     )
 
     db.session.add(artwork_comment1)
@@ -239,17 +266,17 @@ def seed_db():
     # 3 x Q&A comments to map
     q_and_a_comment1 = QAndAComment(
         q_and_a_id = 2,
-        comment_id = 5
+        comment_id = 4
     )
 
     q_and_a_comment2 = QAndAComment(
         q_and_a_id= 1,
-        comment_id = 1
+        comment_id = 5
     )
 
     q_and_a_comment3 = QAndAComment(
         q_and_a_id = 3,
-        comment_id = 4
+        comment_id = 6
     )
 
     db.session.add(q_and_a_comment1)
@@ -286,17 +313,17 @@ def seed_db():
     # 3 x Walkthrough comments to map
     walkthrough_comment1 = WalkthroughComment(
         walkthrough_id = 1,
-        comment_id = 1
+        comment_id = 7
     )
 
     walkthrough_comment2 = WalkthroughComment(
         walkthrough_id = 2,
-        comment_id = 2
+        comment_id = 8
     )
 
     walkthrough_comment3 = WalkthroughComment(
         walkthrough_id = 3,
-        comment_id = 3,
+        comment_id = 9,
     )
 
     db.session.add(walkthrough_comment1)

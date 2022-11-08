@@ -67,14 +67,14 @@ def update_comment(id):
 @comments.route("/<int:id>", methods=["DELETE"])
 def delete_comment(id):
 
-    comment = Comment.query.filter_by(id=id).first()
-    if not comment:
-        return abort(400, description="Comment requested for deletion does not exist.")
-    
-    db.session.delete(comment)
-    db.session.commit()
-
-    return jsonify(comment_schema.dump(comment))
+    comment_delete_statement = db.select(Comment).filter_by(id=id)
+    comment = db.session.scalar(comment_delete_statement)
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        return {'message': f"Comment '{comment.description}' was deleted successfully"}
+    else:  
+        return {'error': f"The comment with an id '{id}' was not found and therefore cannot be deleted."}
 
 
     

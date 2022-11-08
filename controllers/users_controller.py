@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
-from main import db
+from main import db, bcrypt
 from models.users import User
-from schemas.user_schema import user_schema, users_schema
+from schemas.user_schema import UserSchema
 
 users = Blueprint("users", __name__, url_prefix="/users")
 
@@ -10,74 +10,74 @@ users = Blueprint("users", __name__, url_prefix="/users")
 
 @users.route("/", methods=["GET"])
 def get_all_users():
-    users_list = User.query.all()
-    result = users_schema.dump(users_list)
-    return jsonify(result)
+    users_list = db.select(User).order_by(User.id.asc())
+    result = db.session.scalars(users_list)
+    return UserSchema(many=True).dump(result)
 
 #127.0.0.1:5000/users/<int:id>
 # This returns a single user
 
 @users.route("/<int:id>", methods=["GET"])
-def get_single_user():
-    user = User.query.filter_by(id=id).first()
-    result = user_schema.dump(user)
-    return jsonify(result)
+def get_single_user(id):
+    user = db.select(User).filter_by(id=id)
+    result = db.session.scalar(user)
+    return UserSchema().dump(result)
 
 # 127.0.0.1:5000/users
 # This adds a user
 
 @users.route("/", methods=["POST"])
 def add_user():
-    user_fields = user_schema.load(request.json)
+    user_fields = UserSchema().load(request.json)
 
-    new_user = User()
-    new_user.user_alias = user_fields["user_alias"]
-    new_user.first_name = user_fields["first_name"]
-    new_user.last_name = user_fields["last_name"]
-    new_user.join_date = user_fields["join_date"]
-    new_user.email = user_fields["email"]
-    new_user.has_subscription = user_fields["has_subscription"]
-    new_user.password = user_fields["password"]
-
+    new_user = User(
+    user_alias = user_fields["user_alias"],
+    first_name = user_fields["first_name"],
+    last_name = user_fields["last_name"],
+    join_date = user_fields["join_date"],
+    email = user_fields["email"],
+    has_subscription = user_fields["has_subscription"],
+    password = bcrypt.generate_password_hash(user_fields["password"]).decode("utf-8"),
+    )
+    
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify(user_schema.dump(new_user))
+    return jsonify(UserSchema().dump(new_user))
 
 # 127.0.0.1:5000/users/<int:id>
 # This updates a user's details
-
+# JWT REQUIRED
 @users.route("/<int:id>", methods=["PUT"])
 def update_user(id):
 
-    user_fields = user_schema.load(request.json)
+    user_data = db.select(User).filter_by(id=id)
+    user = db.session.scalar(user_data)
+    if user:
+        user.user_alias = request.json.get('user_alias') or user.user_alias
+        user.first_name = request.json.get('first_name') or user.first_name
+        user.last_name = request.json.get('last_name') or user.last_name
+        user.join_date = request.json.get('join_date') or user.join_date
+        user.email = request.json.get('email') or user.email
+        user.has_subscription = request.json.get('has_subscription')
+        user.password = request.json.get('password') or user.password
+        return UserSchema().dump(user)
+    else:
+        return abort(404, description="The user does not exist")
 
-    user = User().query.filter_by(id=id).first()
-    if not user:
-        return abort(401, description="The user does not exist")
-    user.user_alias = user_fields["user_alias"]
-    user.first_name = user_fields["first_name"]
-    user.last_name = user_fields["last_name"]
-    user.join_date = user_fields["join_date"]
-    user.email = user_fields["email"]
-    user.has_subscription = user_fields["has_subscription"]
-    user.password = user_fields["password"]
-
-    db.session.commit()
-
-    return jsonify(user_schema.dump(user))
 
 # 127.0.0.1:5000/users/<int:id>
 # This deletes a user from the database
-
+# JWT TOKEN REQUIRED
 @users.route("/<int:id>", methods=["DELETE"])
 def delete_user(id):
 
-    user = User().query.filter_by(id=id).first()
-    if not user:
-        abort(401, description="The user to delete does not exist")
-    
-    db.session.delete(user)
-    db.session.commit()
+    user_select = db.select(User).filter_by(id=id)
+    user = db.session.scalar(user_select)
 
-    return jsonify(user_schema.dump(user))
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {'message': f"The user '{user.user_alias}' was deleted successfully"}
+    else:
+        return {'error': f"The user with the id {id} was not found to be deleted."}

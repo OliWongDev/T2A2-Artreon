@@ -7,4 +7,3 @@ class QAndAComment(db.Model):
     comment_id = db.Column(db.Integer, db.ForeignKey("comments.id"), nullable=False)
 
     q_and_as = db.relationship("QAndA", back_populates="q_and_a_comments")
-    comments = db.relationship("Comment", back_populates="q_and_a_comments")

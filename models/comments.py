@@ -8,6 +8,6 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
 
     users = db.relationship("User", back_populates="comments")
-    artwork_comments = db.relationship("ArtworkComment", back_populates="comments")
-    q_and_a_comments = db.relationship("QAndAComment", back_populates="comments")
-    walkthrough_comments = db.relationship("WalkthroughComment", back_populates="comments")
+    artwork_comments = db.relationship("ArtworkComment", backref="parent", cascade='all, delete')
+    q_and_a_comments = db.relationship("QAndAComment", backref="parent", cascade='all, delete')
+    walkthrough_comments = db.relationship("WalkthroughComment", backref="parent", cascade='all, delete')

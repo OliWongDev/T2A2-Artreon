@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.q_and_as import QAndA
-from schemas.q_and_a_schema import q_and_a_schema, q_and_as_schema
+from schemas.q_and_a_schema import QAndASchema
 
 q_and_as = Blueprint("q_and_as", __name__, url_prefix="/q_and_as")
 
@@ -10,18 +10,18 @@ q_and_as = Blueprint("q_and_as", __name__, url_prefix="/q_and_as")
 
 @q_and_as.route("/", methods = ["GET"])
 def get_all_q_and_as():
-    q_and_a_list = QAndA.query.all()
-    result = q_and_as_schema.dump(q_and_a_list)
-    return jsonify(result)
+    q_and_a_list = db.select(QAndA).order_by(QAndA.id.asc())
+    result = db.session.scalars(q_and_a_list)
+    return QAndASchema(many=True).dump(result)
 
 # 127.0.0.1:5000/q_and_as/<int:id>
 # This returns a single Q&A
 
 @q_and_as.route("/<int:id>", methods=["GET"])
 def get_single_q_and_a(id):
-    q_and_a = QAndA.query.filter_by(id=id).first()
-    result = q_and_a_schema.dump(q_and_a)
-    return jsonify(result)
+    q_and_a = db.select(QAndA).filter_by(id=id)
+    result = db.session.scalar(q_and_a)
+    return QAndASchema().dump(result)
 
 # 127.0.0.1:5000/
 #### This allows the artist to add a Q&A

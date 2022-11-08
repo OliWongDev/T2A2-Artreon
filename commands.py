@@ -7,7 +7,7 @@ from models.artworks import Artwork
 from models.comments import Comment
 from models.emails import Email
 from models.q_and_as import QAndA
-from models.qanda_comments import QandAComment
+from models.q_and_a_comments import QandAComment
 from models.questions import Question
 from models.stored_questions import StoredQuestion
 from models.users import User

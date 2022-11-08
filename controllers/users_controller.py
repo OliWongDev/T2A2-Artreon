@@ -47,7 +47,7 @@ def add_user():
 # 127.0.0.1:5000/users/<int:id>
 # This updates a user's details
 
-@users.route("/<int:id", methods=["PUT"])
+@users.route("/<int:id>", methods=["PUT"])
 def update_user(id):
 
     user_fields = user_schema.load(request.json)
@@ -70,7 +70,7 @@ def update_user(id):
 # 127.0.0.1:5000/users/<int:id>
 # This deletes a user from the database
 
-@users.route(id)
+@users.route("/<int:id>", methods=["DELETE"])
 def delete_user(id):
 
     user = User().query.filter_by(id=id).first()

@@ -4,7 +4,7 @@ from controllers.artworks_controller import artworks
 from controllers.comments_controller import comments
 from controllers.emails_controller import emails
 from controllers.q_and_as_controller import q_and_as
-from controllers.qanda_comments_controller import q_and_a_comments
+from controllers.q_and_a_comments_controller import q_and_a_comments
 from controllers.questions_controller import questions
 from controllers.stored_questions_controller import stored_questions
 from controllers.users_controller import users

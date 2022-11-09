@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.walkthroughs import Walkthrough
-from schemas.walkthrough_schema import WalkthroughSchema
+from models.walkthroughs import Walkthrough, WalkthroughSchema
 from controllers.auth_controller import authorize_artist, authorize_paid_user, authorize_general_artist
 from flask_jwt_extended import jwt_required
 
@@ -11,9 +10,9 @@ walkthroughs = Blueprint("walkthroughs", __name__, url_prefix="/walkthroughs")
 # This returns the walkthroughs
 
 @walkthroughs.route("/", methods=["GET"])
-@jwt_required()
+#jwt_required()
 def get_all_walkthroughs():
-    authorize_general_artist() or authorize_paid_user()
+    # authorize_general_artist() or authorize_paid_user()
     walkthroughs_list = db.select(Walkthrough).order_by(Walkthrough.id.asc())
     result = db.session.scalars(walkthroughs_list)
     return WalkthroughSchema(many=True).dump(result)
@@ -47,7 +46,7 @@ def add_walkthrough():
     db.session.add(new_walkthrough)
     db.session.commit()
 
-    return jsonify(WalkthroughSchema().dump(new_walkthrough))
+    return jsonify(WalkthroughSchema().dump(new_walkthrough)), 201
 
 # 127.0.0.1:5000/walkthroughs/<int:id>
 # This deletes a walkthrough in the database

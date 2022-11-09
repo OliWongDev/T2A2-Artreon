@@ -11,6 +11,7 @@ artworks = Blueprint('artworks', __name__, url_prefix="/artworks")
 # This returns the artworks
 
 @artworks.route("/", methods = ["GET"])
+# @jwt_required()
 def get_all_artworks():
      artworks_list = db.select(Artwork).order_by(Artwork.id.asc())
      result = db.session.scalars(artworks_list)
@@ -46,14 +47,16 @@ def add_artwork():
      db.session.add(new_artwork)
      db.session.commit()
 
-     return jsonify(ArtworkSchema().dump(new_artwork))
+     return jsonify(ArtworkSchema().dump(new_artwork)), 201
 
 
 # 127.0.0.1:5000/artworks/<int:id>
 #### This allows the artist to DELETE an artwork
 # JWT required
 @artworks.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_artwork(id):
+     authorize_general_artist()
 
      artwork_delete_statement = db.select(Artwork).filter_by(id=id)
      artwork = db.session.scalar(artwork_delete_statement)

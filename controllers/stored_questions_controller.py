@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from main import db
-from models.stored_questions import StoredQuestion
-from schemas.stored_question_schema import StoredQuestionSchema
+from models.stored_questions import StoredQuestion, StoredQuestionSchema
 from controllers.auth_controller import authorize_artist
 from flask_jwt_extended import jwt_required
 stored_questions = Blueprint("stored_questions", __name__, url_prefix="/stored_questions")
@@ -43,4 +42,4 @@ def add_stored_question():
     db.session.add(new_stored_question)
     db.session.commit()
 
-    return jsonify(StoredQuestionSchema.dump(new_stored_question))
+    return jsonify(StoredQuestionSchema.dump(new_stored_question)), 201

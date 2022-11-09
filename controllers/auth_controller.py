@@ -1,10 +1,8 @@
 from flask import Blueprint, request, abort
 from main import db, bcrypt
 from datetime import timedelta
-from models.users import User
-from schemas.user_schema import UserSchema
-from models.artists import Artist
-from schemas.artist_schema import ArtistSchema
+from models.users import User, UserSchema
+from models.artists import Artist, ArtistSchema
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import create_access_token, get_jwt_identity
 

@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from main import db
-from models.emails import Email
-from schemas.email_schema import EmailSchema
+from models.emails import Email, EmailSchema
 from controllers.auth_controller import authorize_artist
 from flask_jwt_extended import jwt_required
 
@@ -11,6 +10,7 @@ emails = Blueprint("emails", __name__, url_prefix="/emails")
 # This returns the emails
 
 @emails.route("/", methods = ["GET"])
+#jwt_required()
 def get_all_emails():
     emails_list = db.select(Email).order_by(Email.id.asc())
     result = db.session.scalars(emails_list)
@@ -20,6 +20,7 @@ def get_all_emails():
 # This returns a single email
 
 @emails.route("/<int:id>", methods=["GET"])
+@jwt_required()
 def get_single_email(id):
     email = db.select(Email).filter_by(id=id)
     result = db.session.scalar(email)
@@ -43,4 +44,4 @@ def add_email():
     db.session.add(new_email)
     db.session.commit()
 
-    return jsonify(EmailSchema().dump(new_email))
+    return jsonify(EmailSchema().dump(new_email)), 201

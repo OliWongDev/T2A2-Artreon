@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.q_and_a_comments import QAndAComment
-from schemas.q_and_a_comment_schema import QAndACommentSchema
+from models.q_and_a_comments import QAndAComment, QAndACommentSchema
 from flask_jwt_extended import jwt_required
 from controllers.auth_controller import authorize_paid_user
 
@@ -44,7 +43,7 @@ def add_q_and_a_comment():
     db.session.add(new_q_and_a_comment)
     db.session.commit()
 
-    return jsonify(QAndACommentSchema().dump(new_q_and_a_comment))
+    return jsonify(QAndACommentSchema().dump(new_q_and_a_comment)), 201
 
 # 127.0.0.1:5000/q_and_a_comments/<int:id>
 #### This allows a paid user to update a comment to a Q&A
@@ -57,7 +56,9 @@ def update_q_and_a_comment(id):
     q_and_a_comment_data = db.select(QAndAComment).filter_by(id=id)
     q_and_a_comment = db.session.scalar(q_and_a_comment_data)
     if q_and_a_comment:
-        db.session.commit(q_and_a_comment)
+        db.session.delete(q_and_a_comment)
+        db.session.commit()
+        return {'message': f"Q&A comment '{q_and_a_comment.id}' was deleted successfully"}
     else:
         return abort(401, description="Q&A comment requested to be updated does not exist")
 

@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from main import db, bcrypt
-from models.artists import Artist
-from schemas.artist_schema import ArtistSchema
+from models.artists import Artist, ArtistSchema
 from controllers.auth_controller import authorize_artist
 from flask_jwt_extended import jwt_required, get_jwt_identity
 

@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.questions import Question
-from schemas.question_schema import QuestionSchema
+from models.questions import Question, QuestionSchema
 from controllers.auth_controller import authorize_paid_user, authorize_general_artist
 from flask_jwt_extended import jwt_required
 
@@ -40,14 +39,14 @@ def add_question():
 
     new_question = Question(
         question_content = question_fields["question_content"],
-        question_content = question_fields["date"],
+        question_date = question_fields["date"],
         user_id = question_fields["user_id"]
     )
 
     db.session.add(new_question)
     db.session.commit()
 
-    return jsonify(QuestionSchema().dump(new_question))
+    return jsonify(QuestionSchema().dump(new_question)), 201
 
 # 127.0.0.1:5000/questions/<int:id>
 # This allows the user to update a question they have made

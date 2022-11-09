@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db, bcrypt
-from models.users import User
-from schemas.user_schema import UserSchema
+from models.users import User, UserSchema
 from flask_jwt_extended import jwt_required
 from controllers.auth_controller import authorize_user
 users = Blueprint("users", __name__, url_prefix="/users")
@@ -46,7 +45,7 @@ def add_user():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify(UserSchema().dump(new_user))
+    return jsonify(UserSchema().dump(new_user)), 201
 
 # 127.0.0.1:5000/users/<int:id>
 # This updates a user's details
@@ -54,7 +53,7 @@ def add_user():
 @users.route("/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_user(id):
-    authorize_user
+    authorize_user()
     user_data = db.select(User).filter_by(id=id)
     user = db.session.scalar(user_data)
     if user:

@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.artwork_comments import ArtworkComment
-from schemas.artwork_comment_schema import ArtworkCommentSchema
+from models.artwork_comments import ArtworkComment, ArtworkCommentSchema
 from flask_jwt_extended import jwt_required
 from controllers.auth_controller import authorize_paid_user, authorize_general_artist
 
@@ -68,7 +67,7 @@ def update_artwork_comment(id):
 
     db.session.commit()
 
-    return jsonify(ArtworkCommentSchema().dump(artwork_comment))
+    return jsonify(ArtworkCommentSchema().dump(artwork_comment)), 201
 
 
 # 127.0.0.1:5000/artwork_comments/<int:id>

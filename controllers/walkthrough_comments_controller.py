@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.walkthrough_comments import WalkthroughComment
-from schemas.walkthrough_comment_schema import WalkthroughCommentSchema
+from models.walkthrough_comments import WalkthroughComment, WalkthroughCommentSchema
 from controllers.auth_controller import authorize_paid_user, authorize_general_artist
 from flask_jwt_extended import jwt_required
 
@@ -44,7 +43,7 @@ def add_walkthrough_comment():
     db.session.add(new_walkthrough_comment)
     db.session.commit()
 
-    return jsonify(WalkthroughCommentSchema().dump(new_walkthrough_comment))
+    return jsonify(WalkthroughCommentSchema().dump(new_walkthrough_comment)), 201
 
 # 127.0.0.1:5000/walkthrough_comments/<int:id>
 # This updates a walkthrough comment
@@ -77,9 +76,4 @@ def delete_walkthrough_comment(id):
         db.session.commit()
         return {'message': f"Walkthrough comment with an id'{walkthrough_comment.id}' deleted successfully."}
     else:
-        return {'error': f"Walkthrough comment with an id '{walkthrough_comment.id} was not found"}, 404
-    
-    db.session.delete(walkthrough_comment)
-    db.session.commit()
-    
-    return jsonify(walkthrough_comment_schema.dump(walkthrough_comment))
+        return {'error': f"Walkthrough comment with the id requested was not found"}, 404

@@ -1,15 +1,22 @@
-from main import db
+from main import db, ma
+from marshmallow import fields
 
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    user_alias = db.Column(db.String(), nullable=False)
-    first_name = db.Column(db.String(), nullable=False)
-    last_name = db.Column(db.String(), nullable=False)
-    join_date = db.Column(db.Date(), nullable=False)
-    email = db.Column(db.String(), nullable=False)
-    has_subscription = db.Column(db.Boolean(), nullable=False)
+    user_alias = db.Column(db.String())
+    first_name = db.Column(db.String())
+    last_name = db.Column(db.String())
+    join_date = db.Column(db.Date())
+    email = db.Column(db.String())
+    has_subscription = db.Column(db.Boolean())
     password = db.Column(db.String())
 
-    comments = db.relationship("Comment", back_populates="users")
-    questions = db.relationship("Question", back_populates="users")
+    comments = db.relationship("Comment", back_populates="users", cascade="all, delete")
+    questions = db.relationship("Question", back_populates="users", cascade="all, delete")
+
+
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "user_alias","first_name", "last_name", "join_date", "email", "has_subscription", "password")
+        ordered = True

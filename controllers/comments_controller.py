@@ -1,8 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.comments import Comment
-from models.users import User
-from schemas.comment_schema import CommentSchema
+from models.comments import Comment, CommentSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from controllers.auth_controller import authorize_paid_user
 
@@ -47,7 +45,7 @@ def add_comment():
     db.session.add(new_comment)
     db.session.commit()
 
-    return jsonify(CommentSchema().dump(new_comment))
+    return jsonify(CommentSchema().dump(new_comment)), 201
 
 # 127.0.0.1:5000/comments/<int:id>
 #### This allows a paid user to update their comment
@@ -63,7 +61,7 @@ def update_comment(id):
         comment.description = request.json.get('description')
         comment.date = request.json.get('date')
         db.session.commit()
-        return CommentSchema.dump(comment)
+        return CommentSchema().dump(comment)
     else:
         return abort(400, description="Comment requested to be updated does not exist")
 

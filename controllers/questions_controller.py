@@ -36,18 +36,18 @@ def get_single_question(id):
 @jwt_required()
 def add_question():
     authorize_paid_user()
-    question_fields = question_schema.load(request.json)
+    question_fields = QuestionSchema().load(request.json)
 
-    new_question = Question()
-    new_question.question_content = question_fields["question_content"]
-    new_question.is_answered = question_fields["is_answered"]
-    new_question.date = question_fields["date"]
-    new_question.user_id = question_fields["user_id"]
+    new_question = Question(
+        question_content = question_fields["question_content"],
+        question_content = question_fields["date"],
+        user_id = question_fields["user_id"]
+    )
 
     db.session.add(new_question)
     db.session.commit()
 
-    return jsonify(question_fields.dump(new_question))
+    return jsonify(QuestionSchema().dump(new_question))
 
 # 127.0.0.1:5000/questions/<int:id>
 # This allows the user to update a question they have made
@@ -56,19 +56,18 @@ questions.route("/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_question(id):
     authorize_paid_user()
-    question_fields = question_schema.load(request.json)
-    
-    question = Question().query.filter_by(id=id).first()
-    if not question:
+    question_fields = db.select(QuestionSchema).filter_by(id=id)
+    question = db.session.scalar(question_fields)
+
+    if question:
+        question.question_content = request.json.get("question_content")
+        question.is_answered = request.json.get("is_answered")
+        question.date = request.json.get("date")
+        question.user_id = request.json.get("user_id")
+        db.session.commit()
+        return QuestionSchema().dump(question)
+    else:
         return abort(401, description="The question to be updated does not exist")
-    question.question_content = question_fields["question_content"]
-    question.is_answered = question_fields["is_answered"]
-    question.date = question_fields["date"]
-    question.user_id = question_fields["user_id"]
-
-    db.session.commit()
-
-    return jsonify(question_fields.dump(question))
 
 # 127.0.0.1:5000/questions/<int:id>
 # This allows the user to delete a question they have made
@@ -77,11 +76,13 @@ questions.route("/<int:id>", methods=["DELETE"])
 @jwt_required
 def delete_question(id):
     authorize_paid_user
-    question = Question().query.filter_by(id=id).first()
-    if not question:
+    question_delete_statement = db.select(QuestionSchema).filter_by(id=id)
+    question = db.session.scalar(question_delete_statement)
+    if question:
+        db.session.delete(question)
+        db.session.commit()
+        return {'message': f"Question '{question.question_content}' was deleted successfully"}
+    else:
         abort(401, description="The question to be deleted does not exist.")
     
-    db.session.delete(question)
-    db.session.commit()
-
-    return jsonify(question_schema.dump(question))
+ 

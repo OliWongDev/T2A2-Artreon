@@ -34,16 +34,17 @@ def get_single_walkthrough_comment(id):
 @jwt_required()
 def add_walkthrough_comment():
     authorize_paid_user()
-    walkthrough_comment_fields = walkthrough_comment_schema.dump(request.json)
+    walkthrough_comment_fields = WalkthroughCommentSchema().dump(request.json)
 
-    new_walkthrough_comment = WalkthroughComment()
-    new_walkthrough_comment.walkthrough_id = walkthrough_comment_fields["walkthrough_id"]
-    new_walkthrough_comment.comment_id = walkthrough_comment_fields["comment_id"]
+    new_walkthrough_comment = WalkthroughComment(
+        walkthrough_id = walkthrough_comment_fields["walkthrough_id"],
+        comment_id = walkthrough_comment_fields["comment_id"]
+    )
 
     db.session.add(new_walkthrough_comment)
     db.session.commit()
 
-    return jsonify(walkthrough_comment_schema.dump(new_walkthrough_comment))
+    return jsonify(WalkthroughCommentSchema().dump(new_walkthrough_comment))
 
 # 127.0.0.1:5000/walkthrough_comments/<int:id>
 # This updates a walkthrough comment
@@ -52,17 +53,15 @@ def add_walkthrough_comment():
 @jwt_required()
 def update_walkthrough_comment(id):
     authorize_paid_user()
-    walkthrough_comment_fields = walkthrough_comment_schema.dump(request.json)
-    
-    walkthrough_comment = WalkthroughComment().query.filter_by(id=id).first()
-    if not walkthrough_comment:
+    walkthrough_comment_data = db.select(WalkthroughCommentSchema).filter_by(id=id)
+    walkthrough_comment = db.session.scalar(walkthrough_comment_data)
+    if walkthrough_comment:
+        walkthrough_comment.walkthrough_id = walkthrough_comment_data["walkthrough_id"],
+        walkthrough_comment.comment_id = walkthrough_comment_data["comment_id"]
+        db.session.commit()
+        return WalkthroughCommentSchema().dump(walkthrough_comment_data)
+    else:
         return abort(401, description="The walkthrough comment to be updated does not exist")
-    walkthrough_comment.walkthrough_id = walkthrough_comment_fields["walkthrough_id"]
-    walkthrough_comment.comment_id = walkthrough_comment_fields["comment_id"]
-
-    db.session.commit()
-
-    return jsonify(walkthrough_comment_schema.dump(walkthrough_comment))
 
 # 127.0.0.1:5000/walkthrough_comments/<int:id>
 #### We want an error here telling the user that their comment needs to be deleted through the comments section
@@ -71,9 +70,14 @@ def update_walkthrough_comment(id):
 @jwt_required()
 def delete_walkthrough_comment(id):
     authorize_paid_user()
-    walkthrough_comment = WalkthroughComment().query.filter_by(id=id).first()
-    if not walkthrough_comment:
-        return abort(401, description="The walkthrough comment to be deleted does not exist")
+    walkthrough_comment_delete_statement = db.select(WalkthroughComment).filter_by(id=id)
+    walkthrough_comment = db.session.scalar(walkthrough_comment_delete_statement)
+    if walkthrough_comment:
+        db.session.delete(walkthrough_comment)
+        db.session.commit()
+        return {'message': f"Walkthrough comment with an id'{walkthrough_comment.id}' deleted successfully."}
+    else:
+        return {'error': f"Walkthrough comment with an id '{walkthrough_comment.id} was not found"}, 404
     
     db.session.delete(walkthrough_comment)
     db.session.commit()

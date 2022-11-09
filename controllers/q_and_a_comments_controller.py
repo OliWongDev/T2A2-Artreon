@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.q_and_a_comments import QAndAComment
 from schemas.q_and_a_comment_schema import QAndACommentSchema
+from flask_jwt_extended import jwt_required
 
 q_and_a_comments = Blueprint("q_and_a_comments", __name__, url_prefix="/q_and_a_comments")
 
@@ -9,6 +10,7 @@ q_and_a_comments = Blueprint("q_and_a_comments", __name__, url_prefix="/q_and_a_
 # This returns the Q&A comments
 
 @q_and_a_comments.route("/", methods = ["GET"])
+@jwt_required()
 def get_all_q_and_as():
     q_and_a__comments_list = db.select(QAndAComment).order_by(QAndAComment.id.asc())
     result = db.session.scalars(q_and_a__comments_list)
@@ -18,6 +20,7 @@ def get_all_q_and_as():
 # This returns a single Q&A comment
 
 @q_and_a_comments.route("/<int:id>", methods = ["GET"])
+@jwt_required()
 def get_single_q_and_a_comment(id):
     q_and_a_comment = db.select(QAndAComment).filter_by(id=id)
     result = db.session.scalar(q_and_a_comment)
@@ -27,6 +30,7 @@ def get_single_q_and_a_comment(id):
 #### This allows a paid user to add a comment to a Q&A
 
 @q_and_a_comments.route("/", methods=["POST"])
+@jwt_required()
 def add_q_and_a_comment():
 
     q_and_a_comment_fields = q_and_a_comment_schema.load(request.json)
@@ -44,6 +48,7 @@ def add_q_and_a_comment():
 #### This allows a paid user to update a comment to a Q&A
 
 @q_and_a_comments.route("/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_q_and_a_comment(id):
 
     q_and_a_comment_fields = q_and_a_comment_schema.load(request.json)
@@ -57,6 +62,7 @@ def update_q_and_a_comment(id):
 #### We want an error here telling the user that they need to delete the original comment
 
 @q_and_a_comments.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_q_and_a_comment(id):
     
     q_and_a_comment = QAndAComment().query.filter_by(id=id).first()

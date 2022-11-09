@@ -26,7 +26,7 @@ def create_db():
 def seed_db():
     
     # 1 x Artist
-    artist = Artist(
+    admin_artist = Artist(
         artreon_alias = "Graphic God",
         password = bcrypt.generate_password_hash("artist_password").decode("utf-8"),
         email = "graphicgod@artreon.com",
@@ -34,7 +34,18 @@ def seed_db():
         artist_bio = "Hi there! I'm Graphic God and welcome to my Artreon where you can see my wonderful artworks. If you want to learn how I do it all become a paid user and join the art revolution!"
     )
 
-    db.session.add(artist)
+    db.session.add(admin_artist)
+
+    # 1 x Non-Admin Artist
+    non_admin_artist = Artist(
+        artreon_alias = "Collaber",
+        password = bcrypt.generate_password_hash("collab").decode("utf-8"),
+        email = "collaber@gmail.com",
+        is_admin = False,
+        artist_bio = "I just post art every now and then."
+    )
+
+    db.session.add(non_admin_artist)
 
     # 2 x Free User
     freeuser1 = User(

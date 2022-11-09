@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.questions import Question
 from schemas.question_schema import QuestionSchema
+from controllers.auth_controller import authorize_paid_user, authorize_general_artist
+from flask_jwt_extended import jwt_required
 
 questions = Blueprint("questions", __name__, url_prefix="/questions")
 
@@ -9,7 +11,9 @@ questions = Blueprint("questions", __name__, url_prefix="/questions")
 # This returns the questions
 
 @questions.route("/", methods=["GET"])
+@jwt_required()
 def get_all_questions():
+    authorize_general_artist() or authorize_paid_user()
     questions_list = db.select(Question).order_by(Question.id.asc())
     result = db.session.scalars(questions_list)
     return QuestionSchema(many=True).dump(result)
@@ -18,7 +22,9 @@ def get_all_questions():
 # This returns a single question
 
 @questions.route("/<int:id>", methods = ["GET"])
+@jwt_required()
 def get_single_question(id):
+    authorize_general_artist() or authorize_paid_user
     question = db.select(Question).filter_by(id=id)
     result = db.session.scalar(question)
     return QuestionSchema().dump(result)
@@ -27,7 +33,9 @@ def get_single_question(id):
 # This allows the user to post/add a question to the database
 
 @questions.route("/", methods=["POST"])
+@jwt_required()
 def add_question():
+    authorize_paid_user()
     question_fields = question_schema.load(request.json)
 
     new_question = Question()
@@ -45,8 +53,9 @@ def add_question():
 # This allows the user to update a question they have made
 
 questions.route("/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_question(id):
-
+    authorize_paid_user()
     question_fields = question_schema.load(request.json)
     
     question = Question().query.filter_by(id=id).first()
@@ -65,8 +74,9 @@ def update_question(id):
 # This allows the user to delete a question they have made
 
 questions.route("/<int:id>", methods=["DELETE"])
+@jwt_required
 def delete_question(id):
-
+    authorize_paid_user
     question = Question().query.filter_by(id=id).first()
     if not question:
         abort(401, description="The question to be deleted does not exist.")

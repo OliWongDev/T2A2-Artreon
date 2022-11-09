@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.artworks import Artwork
 from schemas.artwork_schema import ArtworkSchema
+from flask_jwt_extended import jwt_required
+from controllers.auth_controller import authorize_general_artist
 
 artworks = Blueprint('artworks', __name__, url_prefix="/artworks")
 
@@ -29,8 +31,9 @@ def get_single_artwork(id):
 #### This allows the artist to CREATE and post an artwork
 # Get JWT IDENTITY ADD
 @artworks.route("/", methods=["POST"])
+@jwt_required()
 def add_artwork():
-
+     authorize_general_artist()
      artwork_fields = ArtworkSchema().load(request.json)
 
      new_artwork = Artwork(

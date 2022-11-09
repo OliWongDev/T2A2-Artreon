@@ -2,13 +2,15 @@ from flask import Blueprint, jsonify, request, abort
 from main import db, bcrypt
 from models.users import User
 from schemas.user_schema import UserSchema
-
+from flask_jwt_extended import jwt_required
+from controllers.auth_controller import authorize_user
 users = Blueprint("users", __name__, url_prefix="/users")
 
 # 127.0.0.1:5000/users
 # This returns the users
 
 @users.route("/", methods=["GET"])
+@jwt_required()
 def get_all_users():
     users_list = db.select(User).order_by(User.id.asc())
     result = db.session.scalars(users_list)
@@ -18,6 +20,7 @@ def get_all_users():
 # This returns a single user
 
 @users.route("/<int:id>", methods=["GET"])
+@jwt_required()
 def get_single_user(id):
     user = db.select(User).filter_by(id=id)
     result = db.session.scalar(user)
@@ -49,8 +52,9 @@ def add_user():
 # This updates a user's details
 # JWT REQUIRED
 @users.route("/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_user(id):
-
+    authorize_user
     user_data = db.select(User).filter_by(id=id)
     user = db.session.scalar(user_data)
     if user:
@@ -70,8 +74,9 @@ def update_user(id):
 # This deletes a user from the database
 # JWT TOKEN REQUIRED
 @users.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_user(id):
-
+    authorize_user()
     user_select = db.select(User).filter_by(id=id)
     user = db.session.scalar(user_select)
 

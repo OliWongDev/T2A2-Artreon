@@ -2,10 +2,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 db = SQLAlchemy()
 ma = Marshmallow()
 bcrypt = Bcrypt()
+jwt = JWTManager()
+
 def create_app():
     # using a list comprehension and multiple assignment 
     # to grab the environment variables we need
@@ -21,13 +24,17 @@ def create_app():
 
     ma.init_app(app)
 
+    bcrypt.init_app(app)
+
+    jwt.init_app(app)
+
     from commands import db_commands
     app.register_blueprint(db_commands)
-
     # import the controllers and activate the blueprints
     from controllers import registerable_controllers
 
     for controller in registerable_controllers:
         app.register_blueprint(controller)
+
 
     return app

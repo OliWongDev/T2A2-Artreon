@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from main import db
 from models.emails import Email
 from schemas.email_schema import EmailSchema
+from controllers.auth_controller import authorize_artist
+from flask_jwt_extended import jwt_required
 
 emails = Blueprint("emails", __name__, url_prefix="/emails")
 
@@ -27,8 +29,9 @@ def get_single_email(id):
 #### This allows the artist to add an email
 
 @emails.route("/", methods=["POST"])
+@jwt_required()
 def add_email():
-
+    authorize_artist()
     email_fields = EmailSchema().load(request.json)
 
     new_email = Email(

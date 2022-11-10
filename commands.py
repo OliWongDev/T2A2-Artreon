@@ -176,28 +176,28 @@ def seed_db():
             artwork_name = "Triumph",
             description = "A grizzly feline racecar driver wins their final race. Tile mosaic.",
             date = datetime.date.today(),
-            artist_id = admin_artist
+            artist_id = admin_artist.id
         ),
 
         Artwork(
             artwork_name = "The First Spray",
             description = "A young graffiti artist makes their first tag underneath a moving train. Drawn with fine line.",
             date = datetime.date.today(),
-            artist_id = admin_artist
+            artist_id = admin_artist.id
         ),
 
         Artwork(
             artwork_name = "White Depression",
             description = "A subtle look at a depressed mind. Painted with oil.",
             date = datetime.date.today(),
-            artist_id = admin_artist
+            artist_id = admin_artist.id
         ),
 
         Artwork(
             artwork_name = "French Burgers",
             description = "A burger with a snaily twist. Stippled.",
             date = datetime.date.today(),
-            artist_id = admin_artist
+            artist_id = admin_artist.id
         ),
     ]
     db.session.add_all(artworks)
@@ -209,63 +209,63 @@ def seed_db():
             question_content = "Would you start again with a pencil or a brush?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
 
         Question(
             question_content = "What is one thing you can't leave the house without?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[1]
+            user_id = paid_users[1].id
         ),
 
         Question(
             question_content = "Why aren't you doing graffiti anymore? I used to love the urban murals.",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[1]
+            user_id = paid_users[1].id
         ),
 
         Question(
             question_content = "Would you start again with a pencil or a brush?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[2]
+            user_id = paid_users[2].id
         ),
 
         Question(
             question_content = "Who are you listening to at the moment?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[1]
+            user_id = paid_users[1].id
         ),
 
         Question(
             question_content = "Do you do collabs?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[2]
+            user_id = paid_users[2].id
         ),
 
         Question(
             question_content = "Do you do customs?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
 
         Question(
             question_content = "How do you break out of an art slump?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
 
         Question(
             question_content = "How do you respond to haters?",
             is_answered = True,
             date = datetime.date.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         )
     ]
     db.session.add_all(questions)
@@ -285,7 +285,7 @@ def seed_db():
                             
                             """,
             date = datetime.date.today(),
-            artist = admin_artist
+            artist_id = admin_artist.id
         ),
 
         QAndA(
@@ -300,7 +300,7 @@ def seed_db():
                             
                             """,
             date = datetime.date.today(),
-            artist = admin_artist
+            artist_id = admin_artist.id
                             
         ),
 
@@ -316,7 +316,7 @@ def seed_db():
                             
                             """,
             date = datetime.date.today(),
-            artist = admin_artist
+            artist_id = admin_artist.id
         )
     ]
     db.session.add_all(q_and_as)
@@ -328,22 +328,22 @@ def seed_db():
         Walkthrough(
             description = "A video tutorial of my 'White Depression' piece. Bring your canvases!",
             date = datetime.date.today(),
-            artist = admin_artist,
-            artwork = artworks[2]
+            artist_id = admin_artist.id,
+            artwork_id = artworks[2].id
         ),
 
         Walkthrough(
             description = "A video tutorial for 'French Burgers'. After watching this, stippling will become 2nd nature",
             date = datetime.date.today(),
-            artist = admin_artist,
-            artwork = artworks[3]
+            artist_id = admin_artist.id,
+            artwork_id = artworks[3].id
         ),
 
         Walkthrough(
             description = "Here's the video for 'Triumph'! A lot going on here so take it slow :)",
             date = datetime.date.today(),
-            artist = admin_artist,
-            artwork = artworks[0]
+            artist_id = admin_artist.id,
+            artwork_id = artworks[0].id
         ),
     ]
 
@@ -355,55 +355,55 @@ def seed_db():
         Comment(
             description = "Artwork Comment 1",
             date = datetime.datetime.today(),
-            user = paid_users[1]
+            user_id = paid_users[1].id
         ),
         
         Comment(
             description = "Artwork Comment 2",
             date = datetime.datetime.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
 
         Comment(
             description = "Artwork Comment 3",
             date = datetime.datetime.today(),
-            user = paid_users[2]
+            user_id = paid_users[2].id
         ),
 
         Comment(
             description = "Q&A Comment 1",
             date = datetime.datetime.today(),
-            user = paid_users[1]
+            user_id = paid_users[1].id
         ),
 
         Comment(
             description = "Q&A Comment 2",
             date = datetime.datetime.today(),
-            user = paid_users[1]
+            user_id = paid_users[1].id
         ),
         
         Comment(
             description = "Q&A Comment 3",
             date = datetime.datetime.today(),
-            user = paid_users[2]
+            user_id = paid_users[2].id
         ),
 
         Comment(
             description = "Walkthrough Comment 1",
             date = datetime.datetime.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
 
         Comment(
             description = "Walkthrough Comment 1",
             date = datetime.datetime.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
 
         Comment(
             description = "Walkthrough Comment 2",
             date = datetime.datetime.today(),
-            user = paid_users[0]
+            user_id = paid_users[0].id
         ),
     ]
 
@@ -414,18 +414,18 @@ def seed_db():
 
     stored_questions = [
         StoredQuestion(
-            question = questions[4],
-            q_and_a = q_and_as[0]
+            question_id = questions[4].id,
+            q_and_a_id = q_and_as[0].id
         ),
 
         StoredQuestion(
-            question = questions[5],
-            q_and_a  = q_and_as[1]
+            question_id = questions[5].id,
+            q_and_a_id  = q_and_as[1].id
         ),
 
         StoredQuestion(
-            question = questions[8],
-            q_and_a = q_and_as[2]
+            question_id = questions[8].id,
+            q_and_a_id = q_and_as[2].id
         )
     ]
     db.session.add_all(stored_questions)
@@ -434,18 +434,18 @@ def seed_db():
     # 3 x Artwork Comments
     artwork_comments = [
         ArtworkComment(
-            artwork = artworks[1],
-            comment = comments[0]
+            artwork_id = artworks[1].id,
+            comment_id = comments[0].id
         ),
 
         ArtworkComment(
-            artwork = artworks[3],
-            comment = comments[1]
+            artwork_id = artworks[3].id,
+            comment_id = comments[1].id
         ),
 
         ArtworkComment(
-            artwork = artworks[2],
-            comment = comments[2]
+            artwork_id = artworks[2].id,
+            comment_id = comments[2].id
         )
     ]
     db.session.add_all(artwork_comments)
@@ -457,18 +457,18 @@ def seed_db():
 
     walkthrough_comments = [
         WalkthroughComment(
-            walkthrough = walkthroughs[0],
-            comment = comments[6]
+            walkthrough_id = walkthroughs[0].id,
+            comment_id   = comments[6].id
         ),
 
     WalkthroughComment(
-            walkthrough = walkthroughs[1],
-            comment = comments[7]
+            walkthrough_id = walkthroughs[1].id,
+            comment_id = comments[7].id
         ),
 
     WalkthroughComment(
-            walkthrough = walkthroughs[2],
-            comment = comments[8]
+            walkthrough_id = walkthroughs[2].id,
+            comment_id = comments[8].id
         )
     ] 
     db.session.add_all(walkthrough_comments)
@@ -479,18 +479,18 @@ def seed_db():
     # 3 x Q&A comments to map
     q_and_a_comments = [
         QAndAComment(
-            q_and_a = q_and_as[0],
-            comment = comments[3]
+            q_and_a_id = q_and_as[0].id,
+            comment_id = comments[3].id
         ),
 
         QAndAComment(
-            q_and_a = q_and_as[1],
-            comment = comments[4]
+            q_and_a_id = q_and_as[1].id,
+            comment_id = comments[4].id
         ),
 
         QAndAComment(
-            q_and_a = q_and_as[2],
-            comment = comments[6]
+            q_and_a_id = q_and_as[2].id,
+            comment_id = comments[6].id
         )
     ]
 

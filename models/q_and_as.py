@@ -1,4 +1,5 @@
-from main import db
+from main import db, ma
+from marshmallow import fields
 
 class QAndA(db.Model):
     __tablename__ = "q_and_as"
@@ -11,4 +12,10 @@ class QAndA(db.Model):
     artists = db.relationship("Artist", back_populates="q_and_as")
     q_and_a_comments = db.relationship("QAndAComment", back_populates="q_and_as", cascade="all, delete")
     stored_questions = db.relationship("StoredQuestion", back_populates="q_and_as")
+
+
+class QAndASchema(ma.Schema):
+    class Meta:
+        fields = ("id", "q_and_a_content", "date", "artist_id")
+        ordered = True
 

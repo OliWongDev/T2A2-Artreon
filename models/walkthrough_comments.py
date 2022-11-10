@@ -1,4 +1,5 @@
-from main import db
+from main import db, ma
+from marshmallow import fields
 
 class WalkthroughComment(db.Model):
     __tablename__ = "walkthrough_comments"
@@ -9,3 +10,8 @@ class WalkthroughComment(db.Model):
 
     walkthroughs = db.relationship("Walkthrough", back_populates="walkthrough_comments")
     comments = db.relationship("Comment", back_populates="walkthrough_comments", cascade="all, delete")
+
+class WalkthroughCommentSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "walkthrough_id", "comment_id")
+        ordered = True

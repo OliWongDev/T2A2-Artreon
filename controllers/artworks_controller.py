@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
-from models.artworks import Artwork
-from schemas.artwork_schema import ArtworkSchema
+from models.artworks import Artwork, ArtworkSchema
 from flask_jwt_extended import jwt_required
 from controllers.auth_controller import authorize_general_artist
 

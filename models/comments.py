@@ -1,4 +1,5 @@
-from main import db
+from main import db, ma
+from marshmallow import fields
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -11,3 +12,8 @@ class Comment(db.Model):
     artwork_comments = db.relationship("ArtworkComment", back_populates="comments")
     q_and_a_comments = db.relationship("QAndAComment", back_populates="comments")
     walkthrough_comments = db.relationship("WalkthroughComment", back_populates="comments")
+
+class CommentSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "description", "date", "user_id")
+        ordered = True

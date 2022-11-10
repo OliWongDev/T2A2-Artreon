@@ -1,4 +1,5 @@
-from main import db
+from main import db, ma
+from marshmallow import fields
 
 class Email(db.Model):
     __tablename__ = "emails"
@@ -9,3 +10,8 @@ class Email(db.Model):
     artist_id = db.Column(db.Integer(), db.ForeignKey("artists.id"))
 
     artists = db.relationship("Artist", back_populates="emails")
+
+class EmailSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "email_title", "email_content", "send_date", "artist_id")
+        ordered = True

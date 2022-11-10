@@ -294,65 +294,67 @@ def seed_db():
     print("(8) 3 x Walkthroughs seeded!")
 
     # 3 x Artwork Comments
-    artwork_comments_seed_local = [
-        ArtworkComment(
+    artwork_comments_seed_local_1 = ArtworkComment(
             artwork = artworks_seed_local[0]
-        ),
-
-        ArtworkComment(
+        )
+    
+    artwork_comments_seed_local_2 = ArtworkComment(
             artwork = artworks_seed_local[1]
-        ),
+    )
 
-        ArtworkComment(
+    artwork_comments_seed_local_3 = ArtworkComment(
             artwork = artworks_seed_local[2]
-        ),
+        )
 
-        ArtworkComment(
-            artwork = artworks_seed_local[3]
-        ),
-    ]
+    artwork_comments_seed_local_4 = ArtworkComment(
+        artwork = artworks_seed_local[3]
+    )
 
-    db.session.add_all(artwork_comments_seed_local)
+    db.session.add(artwork_comments_seed_local_1)
+    db.session.add(artwork_comments_seed_local_2)
+    db.session.add(artwork_comments_seed_local_3)
+    db.session.add(artwork_comments_seed_local_4)
     db.session.commit()
     print("(9) 3 x Artwork Comments seeded")
 
     # 3 x Walkthrough comments to map
 
-    walkthrough_comments_seed_local = [
-        WalkthroughComment(
+    walkthrough_comments_seed_local_1 = WalkthroughComment(
             walkthrough = walkthroughs_seed_local[0]
-        ),
+        )
 
-        WalkthroughComment(
+    walkthrough_comments_seed_local_2 = WalkthroughComment(
             walkthrough = walkthroughs_seed_local[1]
-        ),
+        )
 
-        WalkthroughComment(
+    walkthrough_comments_seed_local_3 = WalkthroughComment(
             walkthrough = walkthroughs_seed_local[2]
         )
-    ] 
-    db.session.add_all(walkthrough_comments_seed_local)
+
+    db.session.add(walkthrough_comments_seed_local_1)
+    db.session.add(walkthrough_comments_seed_local_2)
+    db.session.add(walkthrough_comments_seed_local_3)
     db.session.commit()
     print("(10) 3 x Walkthrough Comments seeded!")
 
 
     # 3 x Q&A comments to map
 
-    q_and_a_comments_seed_local = [
-        QAndAComment(
+    q_and_a_comments_seed_local_1 = QAndAComment(
             q_and_a = q_and_as_seed_local[0]
-        ),
+        )
 
-        QAndAComment(
+    q_and_a_comments_seed_local_2 = QAndAComment(
             q_and_a = q_and_as_seed_local[1]
-        ),
+        )
 
-        QAndAComment(
+    q_and_a_comments_seed_local_3 = QAndAComment(
             q_and_a = q_and_as_seed_local[2]
         )
-    ]
-
-    db.session.add_all(q_and_a_comments_seed_local)
+    
+    db.session.add(q_and_a_comments_seed_local_1)
+    db.session.add(q_and_a_comments_seed_local_2)
+    db.session.add(q_and_a_comments_seed_local_3)
     db.session.commit()
     print("(11) 3 x Q&A Comments seeded")
 
@@ -362,70 +364,70 @@ def seed_db():
             description = "Artwork Comment 1",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[1],
-            artwork_comment = artwork_comments_seed_local[0]
+            artwork_comment = artwork_comments_seed_local_1
         ),
         
         Comment(
             description = "Artwork Comment 2",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[0],
-            artwork_comment = artwork_comments_seed_local[1]
+            artwork_comment = artwork_comments_seed_local_2
         ),
 
         Comment(
             description = "Artwork Comment 3",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[2],
-            artwork_comment = artwork_comments_seed_local[2]
+            artwork_comment = artwork_comments_seed_local_3
         ),
 
         Comment(
             description = "Artwork Comment 4",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[1],
-            artwork_comment = artwork_comments_seed_local[3]
+            artwork_comment = artwork_comments_seed_local_4
         ),
 
         Comment(
             description = "Q&A Comment 1",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[1],
-            q_and_a_comment = q_and_a_comments_seed_local[0]
+            q_and_a_comment = q_and_a_comments_seed_local_1
         ),
         
         Comment(
             description = "Q&A Comment 2",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[2],
-            q_and_a_comment = q_and_a_comments_seed_local[1]
+            q_and_a_comment = q_and_a_comments_seed_local_2
         ),
 
         Comment(
             description = "Q&A Comment 3",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[0],
-            q_and_a_comment = q_and_a_comments_seed_local[2]
+            q_and_a_comment = q_and_a_comments_seed_local_3
         ),
 
         Comment(
             description = "Walkthrough Comment 1",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[0],
-            walkthrough_comment = walkthrough_comments_seed_local[0]
+            walkthrough_comment = walkthrough_comments_seed_local_1
         ),
 
         Comment(
             description = "Walkthrough Comment 2",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[0],
-            walkthrough_comment = walkthrough_comments_seed_local[1]
+            walkthrough_comment = walkthrough_comments_seed_local_2
         ),
 
         Comment(
             description = "Walkthrough Comment 3",
             date = datetime.datetime.today(),
             user = paid_users_seed_local[2],
-            walkthrough_comment = walkthrough_comments_seed_local[2]
+            walkthrough_comment = walkthrough_comments_seed_local_3
         )
     ]
 

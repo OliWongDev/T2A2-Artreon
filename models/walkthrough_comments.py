@@ -12,7 +12,7 @@ class WalkthroughComment(db.Model):
     comments = db.relationship("Comment", back_populates="walkthrough_comment", cascade="all, delete")
 
 class WalkthroughCommentSchema(ma.Schema):
-    walkthroughs = fields.List(fields.Nested("WalkthroughSchema"))
+    walkthrough = fields.List(fields.Nested("WalkthroughSchema"))
     comments = fields.List(fields.Nested("CommentSchema"))
     class Meta:
         fields = ("id", "walkthrough_id", "walkthrough", "comments")

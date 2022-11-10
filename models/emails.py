@@ -7,11 +7,12 @@ class Email(db.Model):
     email_title = db.Column(db.String())
     email_content = db.Column(db.String())
     send_date = db.Column(db.Date())
-    artist_id = db.Column(db.Integer(), db.ForeignKey("artists.id"))
+    artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"))
 
-    artists = db.relationship("Artist", back_populates="emails")
+    artist = db.relationship("Artist", back_populates="emails")
 
 class EmailSchema(ma.Schema):
+    artists = fields.Nested("EmailSchema")
     class Meta:
-        fields = ("id", "email_title", "email_content", "send_date", "artist_id")
+        fields = ("id", "email_title", "email_content", "send_date", "artist")
         ordered = True

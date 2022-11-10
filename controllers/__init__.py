@@ -6,8 +6,6 @@ from controllers.comments_controller import comments
 from controllers.emails_controller import emails
 from controllers.q_and_as_controller import q_and_as
 from controllers.q_and_a_comments_controller import q_and_a_comments
-from controllers.questions_controller import questions
-from controllers.stored_questions_controller import stored_questions
 from controllers.users_controller import users
 from controllers.walkthrough_comments_controller import walkthrough_comments
 from controllers.walkthroughs_controller import walkthroughs
@@ -21,8 +19,6 @@ registerable_controllers = [
     emails,
     q_and_as,
     q_and_a_comments,
-    questions,
-    stored_questions,
     users,
     walkthrough_comments,
     walkthroughs

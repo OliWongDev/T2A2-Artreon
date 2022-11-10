@@ -8,8 +8,6 @@ from models.comments import Comment
 from models.emails import Email
 from models.q_and_as import QAndA
 from models.q_and_a_comments import QAndAComment
-from models.questions import Question
-from models.stored_questions import StoredQuestion
 from models.users import User
 from models.walkthrough_comments import WalkthroughComment
 from models.walkthroughs import Walkthrough
@@ -26,15 +24,20 @@ def create_db():
 def seed_db():
     
     # 1 x Artist
-    admin_artist = Artist(
+    admin_artist_seed = Artist(
         artreon_alias = "Graphic God",
         password = bcrypt.generate_password_hash("artist_password").decode("utf-8"),
         email = "graphicgod@artreon.com",
         is_admin = True,
-        artist_bio = "Hi there! I'm Graphic God and welcome to my Artreon where you can see my wonderful artworks. If you want to learn how I do it all become a paid user and join the art revolution!"
+        artist_bio = "Hi there! I'm Graphic God and welcome to my Artreon where you can see my wonderful artworks. If you want to learn how I do it all become a paid user and join the art revolution!",
+        artworks = artworks_seed,
+        emails = emails_seed,
+        q_and_as = q_and_as_seed,
+        walkthroughs = walkthroughs_seed
+
     )
 
-    db.session.add(admin_artist)
+    db.session.add(admin_artist_seed)
     db.session.commit()
 
     # 1 x Non-Admin Artist
@@ -43,14 +46,14 @@ def seed_db():
         password = bcrypt.generate_password_hash("collab").decode("utf-8"),
         email = "collaber@gmail.com",
         is_admin = False,
-        artist_bio = "I just post art every now and then."
+        artist_bio = "I just post art every now and then.",
     )
 
     db.session.add(non_admin_artist)
     db.session.commit()
 
     # 2 x Free User
-    free_users = [
+    free_users_seed = [
         User(
             user_alias = "Free2View",
             first_name = "Alex",
@@ -72,12 +75,12 @@ def seed_db():
         )
     ]
 
-    db.session.add_all(free_users)
+    db.session.add_all(free_users_seed)
     db.session.commit()
 
     # 3 x Paid User
 
-    paid_users = [
+    paid_users_seed = [
         User(
             user_alias = "Art Begunner",
             first_name = "Ellie",
@@ -108,12 +111,12 @@ def seed_db():
             password = bcrypt.generate_password_hash("gospel").decode("utf-8")
         ),
     ]
-    db.session.add_all(paid_users)
+    db.session.add_all(paid_users_seed)
     db.session.commit()
 
     # 4 x Emails
 
-    emails = [
+    emails_seed = [
         Email(
             email_title = "Big things coming soon!",
             email_content =     """ Just wanted to get a quick message out to the users of my Artreon that big things are coming soon and I've got a whole slew of collabed pieces almost ready to present for you all.
@@ -122,7 +125,7 @@ def seed_db():
                                     Graphic God
                                 """,
             send_date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed
         ),
 
         Email(
@@ -133,7 +136,7 @@ def seed_db():
                                     Graphic God
                                 """,
             send_date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed
         ),
 
         Email(
@@ -146,7 +149,7 @@ def seed_db():
                                     Graphic God
                                 """,
             send_date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed
         ),
 
         Email(
@@ -162,122 +165,53 @@ def seed_db():
                                     Graphic God
                                 """,
             send_date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed
         )
     ]
-    db.session.add_all(emails)
+    db.session.add_all(emails_seed)
     db.session.commit()
     
 
     # 4 x Artworks
 
-    artworks = [
+    artworks_seed = [
         Artwork(
             artwork_name = "Triumph",
-            description = "Description 1",
+            description = "A grizzly feline racecar driver wins their final race. Tile mosaic.",
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            artwork_comments = artwork_comments_seed[0]
         ),
 
         Artwork(
             artwork_name = "The First Spray",
-            description = "Description 2",
+            description = "A young graffiti artist makes their first tag underneath a moving train. Drawn with fine line.",
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            artwork_comments = artwork_comments_seed[1]
         ),
 
         Artwork(
             artwork_name = "White Depression",
-            description = "Description 3",
+            description = "A subtle look at a depressed mind. Painted with oil.",
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            artwork_comments = artwork_comments_seed[2]
         ),
 
         Artwork(
             artwork_name = "French Burgers",
-            description = "Description 4",
+            description = "A subtle look at a depressed mind. Painted with oil.",
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            artwork_comments = artwork_comments_seed[3]
         ),
     ]
-    db.session.add_all(artworks)
-    db.session.commit()
-
-    # "A grizzly feline racecar driver wins their final race. Tile mosaic."
-    # "A young graffiti artist makes their first tag underneath a moving train. Drawn with fine line."
-    # "A burger with a snaily twist. Stippled."
-    # "A subtle look at a depressed mind. Painted with oil."
-
-    # 9 x Questions
-    questions = [
-        Question(
-            question_content = "Would you start again with a pencil or a brush?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[0].id
-        ),
-
-        Question(
-            question_content = "What is one thing you can't leave the house without?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[1].id
-        ),
-
-        Question(
-            question_content = "Why aren't you doing graffiti anymore? I used to love the urban murals.",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[1].id
-        ),
-
-        Question(
-            question_content = "Would you start again with a pencil or a brush?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[2].id
-        ),
-
-        Question(
-            question_content = "Who are you listening to at the moment?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[1].id
-        ),
-
-        Question(
-            question_content = "Do you do collabs?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[2].id
-        ),
-
-        Question(
-            question_content = "Do you do customs?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[0].id
-        ),
-
-        Question(
-            question_content = "How do you break out of an art slump?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[0].id
-        ),
-
-        Question(
-            question_content = "How do you respond to haters?",
-            is_answered = True,
-            date = datetime.date.today(),
-            user_id = paid_users[0].id
-        )
-    ]
-    db.session.add_all(questions)
+    db.session.add_all(artworks_seed)
     db.session.commit()
 
     # 3 x Q&As
-    q_and_as = [
+    q_and_as_seed = [
         QAndA(
             q_and_a_content =   """ Q1: What is your favourite piece?
                                     A1: I really enjoyed working on the White Depression piece, I think it explains deeply what the gift of art has done for me :)
@@ -290,7 +224,8 @@ def seed_db():
                             
                             """,
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            q_and_a_comment = q_and_a_comments_seed[3],
         ),
 
         QAndA(
@@ -305,7 +240,8 @@ def seed_db():
                             
                             """,
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            q_and_a_comment = q_and_a_comments_seed[4],
                             
         ),
 
@@ -321,182 +257,183 @@ def seed_db():
                             
                             """,
             date = datetime.date.today(),
-            artist_id = admin_artist.id
+            artist = admin_artist_seed,
+            q_and_a_comment = q_and_a_comments_seed[5],
         )
     ]
-    db.session.add_all(q_and_as)
+    db.session.add_all(q_and_as_seed)
     db.session.commit()
 
     # 3 x Walkthroughs
     
-    walkthroughs = [
+    walkthroughs_seed = [
         Walkthrough(
             description = "A video tutorial of my 'White Depression' piece. Bring your canvases!",
             date = datetime.date.today(),
-            artist_id = admin_artist.id,
-            artwork_id = artworks[2].id
+            artist = admin_artist_seed,
+            artwork = artworks_seed[2],
+            walkthrough_comments = walkthrough_comments_seed[0]
         ),
 
         Walkthrough(
             description = "A video tutorial for 'French Burgers'. After watching this, stippling will become 2nd nature",
             date = datetime.date.today(),
-            artist_id = admin_artist.id,
-            artwork_id = artworks[3].id
+            artist = admin_artist_seed,
+            artwork = artworks_seed[3],
+            walkthrough_comments = walkthrough_comments_seed[1]
         ),
 
         Walkthrough(
             description = "Here's the video for 'Triumph'! A lot going on here so take it slow :)",
             date = datetime.date.today(),
-            artist_id = admin_artist.id,
-            artwork_id = artworks[0].id
+            artist = admin_artist_seed,
+            artwork = artworks_seed[0],
+            walkthrough_comments = walkthrough_comments_seed[2]
         ),
     ]
 
-    db.session.add_all(walkthroughs)
+    db.session.add_all(walkthroughs_seed)
     db.session.commit()
 
-    # 9 x comments to map
-    comments = [
+    # 10 x comments to map
+    comments_seed = [
         Comment(
             description = "Artwork Comment 1",
             date = datetime.datetime.today(),
-            user_id = paid_users[1].id
+            user = paid_users_seed[1],
+            artwork_comment = artwork_comments_seed[0]
         ),
         
         Comment(
             description = "Artwork Comment 2",
             date = datetime.datetime.today(),
-            user_id = paid_users[0].id
+            user = paid_users_seed[0],
+            artwork_comment = artwork_comments_seed[1]
         ),
 
         Comment(
             description = "Artwork Comment 3",
             date = datetime.datetime.today(),
-            user_id = paid_users[2].id
+            user = paid_users_seed[2],
+            artwork_comment = artwork_comments_seed[2]
+        ),
+
+        Comment(
+            description = "Artwork Comment 4",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[1],
+            artwork_comment = artwork_comments_seed[3]
         ),
 
         Comment(
             description = "Q&A Comment 1",
             date = datetime.datetime.today(),
-            user_id = paid_users[1].id
-        ),
-
-        Comment(
-            description = "Q&A Comment 2",
-            date = datetime.datetime.today(),
-            user_id = paid_users[1].id
+            user = paid_users_seed[1],
+            q_and_a_comment = q_and_a_comments_seed[0]
         ),
         
         Comment(
+            description = "Q&A Comment 2",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[2],
+            q_and_a_comment = q_and_a_comments_seed[1]
+        ),
+
+        Comment(
             description = "Q&A Comment 3",
             date = datetime.datetime.today(),
-            user_id = paid_users[2].id
+            user = paid_users_seed[0],
+            q_and_a_comment = q_and_a_comments_seed[2]
         ),
 
         Comment(
             description = "Walkthrough Comment 1",
             date = datetime.datetime.today(),
-            user_id = paid_users[0].id
-        ),
-
-        Comment(
-            description = "Walkthrough Comment 1",
-            date = datetime.datetime.today(),
-            user_id = paid_users[0].id
+            user = paid_users_seed[0],
+            walkthrough_comment = walkthrough_comments_seed[0]
         ),
 
         Comment(
             description = "Walkthrough Comment 2",
             date = datetime.datetime.today(),
-            user_id = paid_users[0].id
+            user = paid_users_seed[0],
+            walkthrough_comment = walkthrough_comments_seed[1]
         ),
+
+        Comment(
+            description = "Walkthrough Comment 3",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[2],
+            walkthrough_comment = walkthrough_comments_seed[2]
+        )
     ]
 
-    db.session.add_all(comments)
+    db.session.add_all(comments_seed)
     db.session.commit()
 
-    # 3 x Stored Questions
-
-    stored_questions = [
-        StoredQuestion(
-            question_id = questions[4].id,
-            q_and_a_id = q_and_as[0].id
-        ),
-
-        StoredQuestion(
-            question_id = questions[5].id,
-            q_and_a_id  = q_and_as[1].id
-        ),
-
-        StoredQuestion(
-            question_id = questions[8].id,
-            q_and_a_id = q_and_as[2].id
-        )
-    ]
-    db.session.add_all(stored_questions)
-
     # 3 x Artwork Comments
-    artwork_comments = [
+    artwork_comments_seed = [
         ArtworkComment(
-            artwork_id = artworks[1].id,
-            comment_id = comments[0].id
+            artwork = artworks_seed[1],
+            comment = comments_seed[0]
         ),
 
         ArtworkComment(
-            artwork_id = artworks[3].id,
-            comment_id = comments[1].id
+            artwork = artworks_seed[3],
+            comment = comments_seed[1]
         ),
 
         ArtworkComment(
-            artwork_id = artworks[2].id,
-            comment_id = comments[2].id
+            artwork = artworks_seed[2],
+            comment = comments_seed[2]
         )
     ]
-    db.session.add_all(artwork_comments)
+    db.session.add_all(artwork_comments_seed)
     db.session.commit()
 
     # 3 x Walkthrough comments to map
 
-    walkthrough_comments = [
+    walkthrough_comments_seed = [
         WalkthroughComment(
-            walkthrough_id = walkthroughs[0].id,
-            comment_id   = comments[6].id
+            walkthrough = walkthroughs_seed[0],
+            comment   = comments_seed[6]
         ),
 
     WalkthroughComment(
-            walkthrough_id = walkthroughs[1].id,
-            comment_id = comments[7].id
+            walkthrough = walkthroughs_seed[1],
+            comment = comments_seed[7]
         ),
 
     WalkthroughComment(
-            walkthrough_id = walkthroughs[2].id,
-            comment_id = comments[8].id
+            walkthrough = walkthroughs_seed[2],
+            comment = comments_seed[8]
         )
     ] 
-    db.session.add_all(walkthrough_comments)
+    db.session.add_all(walkthrough_comments_seed)
     db.session.commit()
 
 
 
     # 3 x Q&A comments to map
-    q_and_a_comments = [
+
+    q_and_a_comments_seed = [
         QAndAComment(
-            q_and_a_id = q_and_as[0].id,
-            comment_id = comments[3].id
+            q_and_a = q_and_as_seed[0],
+            comment = comments_seed[3]
         ),
 
         QAndAComment(
-            q_and_a_id = q_and_as[1].id,
-            comment_id = comments[4].id
+            q_and_a = q_and_as_seed[1],
+            comment = comments_seed[4]
         ),
 
         QAndAComment(
-            q_and_a_id = q_and_as[2].id,
-            comment_id = comments[5].id
+            q_and_a = q_and_as_seed[2],
+            comment = comments_seed[5]
         )
     ]
 
-    db.session.add_all(q_and_a_comments)
+    db.session.add_all(q_and_a_comments_seed)
     db.session.commit()
 
     print('Tables are seeded')

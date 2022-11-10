@@ -13,10 +13,10 @@ class User(db.Model):
     password = db.Column(db.String())
 
     comments = db.relationship("Comment", back_populates="users", cascade="all, delete")
-    questions = db.relationship("Question", back_populates="users", cascade="all, delete")
 
 
 class UserSchema(ma.Schema):
+    comments = fields.Nested("CommentSchema")
     class Meta:
-        fields = ("id", "user_alias","first_name", "last_name", "join_date", "email", "has_subscription", "password")
+        fields = ("id", "user_alias","first_name", "last_name", "join_date", "email", "has_subscription", "password", "comments")
         ordered = True

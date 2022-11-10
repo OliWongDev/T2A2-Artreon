@@ -11,7 +11,7 @@ comments = Blueprint("comments", __name__, url_prefix="/comments")
 # This returns the comments
 
 @comments.route("/", methods = ["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_comments():
     comments_list = db.select(Comment).order_by(Comment.id.asc())
     result = db.session.scalars(comments_list)

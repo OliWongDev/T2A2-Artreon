@@ -10,16 +10,16 @@ class Artist(db.Model):
     is_admin = db.Column(db.Boolean())
     artist_bio = db.Column(db.String())
 
-    artworks = db.relationship("Artwork", back_populates="artists", cascade="all, delete")
-    emails = db.relationship("Email", back_populates="artists")
-    q_and_as = db.relationship("QAndA", back_populates="artists", cascade="all, delete")
-    walkthroughs = db.relationship("Walkthrough", back_populates="artists", cascade="all, delete")
+    artworks = db.relationship("Artwork", back_populates="artist", cascade="all, delete")
+    emails = db.relationship("Email", back_populates="artist")
+    q_and_as = db.relationship("QAndA", back_populates="artist", cascade="all, delete")
+    walkthroughs = db.relationship("Walkthrough", back_populates="artist", cascade="all, delete")
 
 class ArtistSchema(ma.Schema):
-    artworks = fields.Nested('ArtworkSchema')
-    emails = fields.Nested('EmailSchema')
-    q_and_as = fields.Nested('QAndASchema')
-    walkthroughs = fields.Nested('WalkthroughSchema')
+    artworks = fields.List(fields.Nested('ArtworkSchema'))
+    emails = fields.List(fields.Nested('EmailSchema'))
+    q_and_as = fields.List(fields.Nested('QAndASchema'))
+    walkthroughs = fields.List(fields.Nested('WalkthroughSchema'))
     class Meta:
         fields = ("id", "artreon_alias", "password", "email", "is_admin", "artist_bio", "artworks", "emails", "q_and_as", "walkthroughs")
         ordered = True

@@ -10,13 +10,13 @@ class QAndA(db.Model):
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
 
     artist = db.relationship("Artist", back_populates="q_and_as")
-    q_and_a_comments = db.relationship("QAndAComment", back_populates="q_and_as", cascade="all, delete")
+    q_and_a_comments = db.relationship("QAndAComment", back_populates="q_and_a", cascade="all, delete")
 
 
 class QAndASchema(ma.Schema):
     artist = fields.Nested("ArtistSchema")
     q_and_a_comment = fields.Nested("QAndACommentSchema")
     class Meta:
-        fields = ("id", "q_and_a_content", "date", "artist_id", "artist", "q_and_a_comment")
+        fields = ("id", "q_and_a_content", "date", "artist", "q_and_a_comments")
         ordered = True
 

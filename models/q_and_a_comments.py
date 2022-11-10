@@ -9,12 +9,12 @@ class QAndAComment(db.Model):
     comment_id = db.Column(db.Integer, db.ForeignKey("comments.id"))
 
     q_and_a = db.relationship("QAndA", back_populates="q_and_a_comments")
-    comments = db.relationship("Comment", back_populates="q_and_a_comments", cascade="all, delete")
+    comments = db.relationship("Comment", back_populates="q_and_a_comment", cascade="all, delete")
 
 class QAndACommentSchema(ma.Schema):
     q_and_a = fields.Nested("QAndASchema")
-    comments = fields.Nested("CommentSchema")
+    comments = fields.List(fields.Nested("CommentSchema"))
     class Meta:
-        fields = ("id", "q_and_a_id", "comment_id", "q_and_a", "comments")
+        fields = ("id","q_and_a", "comments")
         ordered = True
 

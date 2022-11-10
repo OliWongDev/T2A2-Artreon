@@ -9,11 +9,11 @@ class WalkthroughComment(db.Model):
     comment_id = db.Column(db.Integer, db.ForeignKey("comments.id"))
 
     walkthrough = db.relationship("Walkthrough", back_populates="walkthrough_comments")
-    comments = db.relationship("Comment", back_populates="walkthrough_comments", cascade="all, delete")
+    comments = db.relationship("Comment", back_populates="walkthrough_comment", cascade="all, delete")
 
 class WalkthroughCommentSchema(ma.Schema):
-    walkthroughs = fields.Nested("WalkthroughSchema")
-    comments = fields.Nested("CommentSchema")
+    walkthroughs = fields.List(fields.Nested("WalkthroughSchema"))
+    comments = fields.List(fields.Nested("CommentSchema"))
     class Meta:
-        fields = ("id", "walkthrough_id", "comment_id", "walkthrough", "comments")
+        fields = ("id", "walkthrough_id", "walkthrough", "comments")
         ordered = True

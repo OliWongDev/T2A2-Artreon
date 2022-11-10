@@ -15,8 +15,8 @@ class Comment(db.Model):
 
 class CommentSchema(ma.Schema):
     user = fields.Nested("UserSchema")
-    artwork_comment = fields.Nested("ArtworkCommentSchema")
-    q_and_a_comment = fields.Nested("QAndACommentSchema")
+    artwork_comment = fields.Nested("ArtworkCommentSchema"),
+    q_and_a_comment = fields.Nested("QAndACommentSchema"),
     walkthrough_comment = fields.Nested("WalkthroughCommentSchema")
     class Meta:
         fields = ("id", "description", "date", "user", "artwork_comment", "q_and_a_comment", "walkthrough_comment")

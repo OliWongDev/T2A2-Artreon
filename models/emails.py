@@ -12,7 +12,7 @@ class Email(db.Model):
     artist = db.relationship("Artist", back_populates="emails")
 
 class EmailSchema(ma.Schema):
-    artists = fields.Nested("EmailSchema")
+    artists = fields.List(fields.Nested("EmailSchema"))
     class Meta:
         fields = ("id", "email_title", "email_content", "send_date", "artist")
         ordered = True

@@ -9,11 +9,11 @@ class ArtworkComment(db.Model):
     comment_id = db.Column(db.Integer, db.ForeignKey("comments.id"))
 
     artwork = db.relationship("Artwork", back_populates="artwork_comments")
-    comments = db.relationship("Comment", back_populates="artwork_comments", cascade="all, delete")
+    comments = db.relationship("Comment", back_populates="artwork_comment", cascade="all, delete")
 
 class ArtworkCommentSchema(ma.Schema):
     artwork = fields.Nested("ArtworkSchema")
-    comments = fields.Nested("CommentSchema")
+    comments = fields.List(fields.Nested("CommentSchema"))
     class Meta:
         fields = ("id", "artwork", "comments")
         ordered = True

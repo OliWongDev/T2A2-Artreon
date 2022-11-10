@@ -174,34 +174,39 @@ def seed_db():
     artworks = [
         Artwork(
             artwork_name = "Triumph",
-            description = "A grizzly feline racecar driver wins their final race. Tile mosaic.",
+            description = "Description 1",
             date = datetime.date.today(),
             artist_id = admin_artist.id
         ),
 
         Artwork(
             artwork_name = "The First Spray",
-            description = "A young graffiti artist makes their first tag underneath a moving train. Drawn with fine line.",
+            description = "Description 2",
             date = datetime.date.today(),
             artist_id = admin_artist.id
         ),
 
         Artwork(
             artwork_name = "White Depression",
-            description = "A subtle look at a depressed mind. Painted with oil.",
+            description = "Description 3",
             date = datetime.date.today(),
             artist_id = admin_artist.id
         ),
 
         Artwork(
             artwork_name = "French Burgers",
-            description = "A burger with a snaily twist. Stippled.",
+            description = "Description 4",
             date = datetime.date.today(),
             artist_id = admin_artist.id
         ),
     ]
     db.session.add_all(artworks)
     db.session.commit()
+
+    # "A grizzly feline racecar driver wins their final race. Tile mosaic."
+    # "A young graffiti artist makes their first tag underneath a moving train. Drawn with fine line."
+    # "A burger with a snaily twist. Stippled."
+    # "A subtle look at a depressed mind. Painted with oil."
 
     # 9 x Questions
     questions = [
@@ -429,7 +434,6 @@ def seed_db():
         )
     ]
     db.session.add_all(stored_questions)
-    db.session.commit()
 
     # 3 x Artwork Comments
     artwork_comments = [
@@ -450,8 +454,6 @@ def seed_db():
     ]
     db.session.add_all(artwork_comments)
     db.session.commit()
-
-
 
     # 3 x Walkthrough comments to map
 
@@ -490,7 +492,7 @@ def seed_db():
 
         QAndAComment(
             q_and_a_id = q_and_as[2].id,
-            comment_id = comments[6].id
+            comment_id = comments[5].id
         )
     ]
 

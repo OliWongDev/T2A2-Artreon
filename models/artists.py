@@ -16,10 +16,10 @@ class Artist(db.Model):
     walkthroughs = db.relationship("Walkthrough", back_populates="artist", cascade="all, delete")
 
 class ArtistSchema(ma.Schema):
-    artworks = fields.List(fields.Nested('ArtworkSchema'))
-    emails = fields.List(fields.Nested('EmailSchema'))
-    q_and_as = fields.List(fields.Nested('QAndASchema'))
-    walkthroughs = fields.List(fields.Nested('WalkthroughSchema'))
+    artworks = fields.List(fields.Nested('ArtworkSchema', only=["id", "artwork_name"]))
+    emails = fields.List(fields.Nested('EmailSchema', only=["id", "email_title"]))
+    q_and_as = fields.List(fields.Nested('QAndASchema', only=["id", "date"]))
+    walkthroughs = fields.List(fields.Nested('WalkthroughSchema', only=["id", "description"]))
     class Meta:
         fields = ("id", "artreon_alias", "password", "email", "is_admin", "artist_bio", "artworks", "emails", "q_and_as", "walkthroughs")
         ordered = True

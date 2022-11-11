@@ -14,8 +14,8 @@ class ArtworkComment(db.Model):
     artwork = db.relationship("Artwork", back_populates="artwork_comments")
 
 class ArtworkCommentSchema(ma.Schema):
-    artwork = fields.Nested("ArtworkSchema")
-    comments = fields.List(fields.Nested("CommentSchema"))
+    user = fields.Nested("UserSchema", only=["id", "user_alias"])
+    artwork = fields.Nested("ArtworkSchema", only=["id", "artwork_name"])
     class Meta:
-        fields = ("id", "artwork", "comments")
+        fields = ("id", "description", "date", "user", "artwork")
         ordered = True

@@ -14,8 +14,8 @@ class QAndA(db.Model):
 
 
 class QAndASchema(ma.Schema):
-    artist = fields.Nested("ArtistSchema")
-    q_and_a_comments = fields.Nested("QAndACommentSchema")
+    artist = fields.Nested("ArtistSchema", only=["id", "artreon_alias"])
+    q_and_a_comments = fields.List(fields.Nested("QAndACommentSchema", only=["id", "description", "user.user_alias"]))
     class Meta:
         fields = ("id", "q_and_a_content", "date", "artist", "q_and_a_comments")
         ordered = True

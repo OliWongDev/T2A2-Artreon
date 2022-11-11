@@ -12,12 +12,10 @@ class Artwork(db.Model):
 
     artist = db.relationship("Artist", back_populates="artworks")
     artwork_comments = db.relationship("ArtworkComment", back_populates="artwork", cascade="all, delete")
-    walkthrough = db.relationship("Walkthrough", back_populates="artwork", cascade="all, delete")
 
 class ArtworkSchema(ma.Schema):
-    artist = fields.Nested('ArtistSchema', exclude=["password"])
-    artwork_comments = fields.List(fields.Nested('ArtworkCommentSchema', exclude=["artwork_id"]))
-    walkthrough = fields.Nested("WalkthroughSchema")
+    artist = fields.Nested('ArtistSchema', only=["id", "artreon_alias"])
+    artwork_comments = fields.List(fields.Nested('ArtworkCommentSchema', only=["id", "description", "user.user_alias"]))
     class Meta:
-        fields = ("id", "artwork_name", "description", "date", "artist", "artwork_comments", "walkthrough")
+        fields = ("id", "artwork_name", "description", "date", "artist", "artwork_comments")
         ordered = True

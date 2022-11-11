@@ -9,11 +9,11 @@ users = Blueprint("users", __name__, url_prefix="/users")
 # This returns the users
 
 @users.route("/", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_users():
     users_list = db.select(User).order_by(User.id.asc())
     result = db.session.scalars(users_list)
-    return UserSchema(many=True).dump(result)
+    return UserSchema(many=True, exclude=["password"]).dump(result)
 
 #127.0.0.1:5000/users/<int:id>
 # This returns a single user

@@ -10,7 +10,7 @@ walkthrough_comments = Blueprint("walkthrough_comments", __name__, url_prefix="/
 # This returns the walkthrough comments
 
 @walkthrough_comments.route("/", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_walkthrough_comments():
     walkthrough_comments_list = db.select(WalkthroughComment).order_by(WalkthroughComment.id.asc())
     result = db.session.scalars(walkthrough_comments_list)
@@ -20,7 +20,7 @@ def get_all_walkthrough_comments():
 # This returns a single walkthrough comment
 
 @walkthrough_comments.route("/<int:id>", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_single_walkthrough_comment(id):
     walkthrough_comment = db.select(WalkthroughComment).filter_by(id=id)
     result = db.session.scalar(walkthrough_comment)

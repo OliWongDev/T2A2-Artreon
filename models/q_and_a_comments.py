@@ -14,9 +14,9 @@ class QAndAComment(db.Model):
     q_and_a = db.relationship("QAndA", back_populates="q_and_a_comments")
     
 class QAndACommentSchema(ma.Schema):
-    user = fields.Nested("UserSchema")
-    q_and_a = fields.Nested("QAndASchema")
+    user = fields.Nested("UserSchema", only=["id", "user_alias"])
+    q_and_a = fields.Nested("QAndASchema", only=["id"])
     class Meta:
-        fields = ("id", "user" "q_and_a")
+        fields = ("id", "description", "date", "user", "q_and_a")
         ordered = True
 

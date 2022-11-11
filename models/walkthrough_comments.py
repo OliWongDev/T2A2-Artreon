@@ -14,8 +14,8 @@ class WalkthroughComment(db.Model):
     walkthrough = db.relationship("Walkthrough", back_populates="walkthrough_comments")
 
 class WalkthroughCommentSchema(ma.Schema):
-    user = fields.Nested("UserSchema")
-    walkthrough = fields.Nested("WalkthroughSchema")
+    user = fields.Nested("UserSchema", only=["id", "user_alias"])
+    walkthrough = fields.Nested("WalkthroughSchema", only=["id", "description"])
     class Meta:
         fields = ("id", "description", "date", "user", "walkthrough")
         ordered = True

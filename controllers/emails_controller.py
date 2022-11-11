@@ -20,7 +20,7 @@ def get_all_emails():
 # This returns a single email
 
 @emails.route("/<int:id>", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_single_email(id):
     email = db.select(Email).filter_by(id=id)
     result = db.session.scalar(email)

@@ -14,7 +14,7 @@ artists = Blueprint('artists', __name__, url_prefix="/artists")
 def artist_info():
     artist_list = db.select(Artist).order_by(Artist.id.asc())
     result = db.session.scalar(artist_list)
-    return ArtistSchema().dump(result), 200
+    return ArtistSchema(exclude=["password"]).dump(result), 200
 
 
 # 127.0.0.1:5000/artists

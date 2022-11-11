@@ -78,7 +78,7 @@ def seed_db():
 
     db.session.add_all(free_users_seed)
     db.session.commit()
-    print("(3) 2 x free users seeded!")
+    print("(3) 2 x Free users seeded!")
 
     # 3 x Paid User
 
@@ -272,24 +272,21 @@ def seed_db():
     
     walkthroughs_seed = [
         Walkthrough(
-            description = "A video tutorial of my 'White Depression' piece. Bring your canvases!",
+            description = "Walkthrough Video 1",
             date = datetime.date.today(),
-            artwork_id = 3,
-            artist = admin_artist_seed
+            artist = admin_artist_seed,
         ),
 
         Walkthrough(
-            description = "A video tutorial for 'French Burgers'. After watching this, stippling will become 2nd nature",
+            description = "Walkthrough Video 2",
             date = datetime.date.today(),
-            artwork_id = 4,
-            artist = admin_artist_seed
+            artist = admin_artist_seed,
         ),
 
         Walkthrough(
-            description = "Here's the video for 'Triumph'! A lot going on here so take it slow :)",
+            description = "Walkthrough Video 3",
             date = datetime.date.today(),
-            artwork_id = 1,
-            artist = admin_artist_seed
+            artist = admin_artist_seed,
         ),
     ]
 

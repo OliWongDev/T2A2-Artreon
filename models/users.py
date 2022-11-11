@@ -18,9 +18,9 @@ class User(db.Model):
 
 
 class UserSchema(ma.Schema):
-    artwork_comments = fields.Nested("ArtworkCommentSchema")
-    q_and_a_comments = fields.Nested("QAndACommentSchema")
-    walkthrough_comments = fields.Nested("WalkthroughCommentSchema")
+    artwork_comments = fields.List(fields.Nested("ArtworkCommentSchema", only=["id", "description", "artwork.id", "artwork.artwork_name"]))
+    q_and_a_comments = fields.List(fields.Nested("QAndACommentSchema", only=["id", "description", "q_and_a.id"]))
+    walkthrough_comments = fields.List(fields.Nested("WalkthroughCommentSchema", only=["id", "description"]))
     class Meta:
         fields = ("id", "user_alias","first_name", "last_name", "join_date", "email", "has_subscription", "password", "artwork_comments", "q_and_a_comments", "walkthrough_comments")
         ordered = True

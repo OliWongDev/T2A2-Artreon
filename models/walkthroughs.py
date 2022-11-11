@@ -17,7 +17,7 @@ class Walkthrough(db.Model):
 class WalkthroughSchema(ma.Schema):
     artist = fields.Nested("ArtistSchema")
     artwork = fields.Nested("ArtworkSchema")
-    walkthrough_comments = fields.List(fields.Nested("WalkthroughCommentSchema"))
+    walkthrough_comments = fields.Nested("WalkthroughCommentSchema")
     class Meta:
         fields = ("id", "description", "date", "artist", "artwork", "walkthrough_comments")
         ordered = True

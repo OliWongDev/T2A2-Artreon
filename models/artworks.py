@@ -17,7 +17,7 @@ class Artwork(db.Model):
 class ArtworkSchema(ma.Schema):
     artist = fields.Nested('ArtistSchema', exclude=["password"])
     artwork_comments = fields.List(fields.Nested('ArtworkCommentSchema', exclude=["artwork_id"]))
-    walkthrough = fields.Nested("WalkthroughSchema", exclude=["artwork_id", "artist_id"])
+    walkthrough = fields.Nested("WalkthroughSchema")
     class Meta:
         fields = ("id", "artwork_name", "description", "date", "artist", "artwork_comments", "walkthrough")
         ordered = True

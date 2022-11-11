@@ -4,7 +4,6 @@ from main import bcrypt
 from models.artists import Artist
 from models.artwork_comments import ArtworkComment
 from models.artworks import Artwork
-from models.comments import Comment
 from models.emails import Email
 from models.q_and_as import QAndA
 from models.q_and_a_comments import QAndAComment
@@ -54,6 +53,7 @@ def seed_db():
     print("(2) Non-Admin Artist seeded!")
 
     # 2 x Free User
+
     free_users_seed = [
         User(
             user_alias = "Free2View",
@@ -113,6 +113,7 @@ def seed_db():
             password = bcrypt.generate_password_hash("gospel").decode("utf-8")
         ),
     ]
+    
     db.session.add_all(paid_users_seed)
     db.session.commit()
     print("(4) 3 x Paid Users seeded")
@@ -171,6 +172,7 @@ def seed_db():
             artist = admin_artist_seed
         )
     ]
+    
     db.session.add_all(emails_seed)
     db.session.commit()
     print("(5) 4 x Emails seeded!")
@@ -207,6 +209,7 @@ def seed_db():
             artist = admin_artist_seed,
         ),
     ]
+    
     db.session.add_all(artworks_seed)
     db.session.commit()
     print("(6) 4 x Artworks seeded!")
@@ -260,6 +263,7 @@ def seed_db():
             
         )
     ]
+    
     db.session.add_all(q_and_as_seed)
     db.session.commit()
     print("(7) 3 x Q&As seeded!")
@@ -270,22 +274,22 @@ def seed_db():
         Walkthrough(
             description = "A video tutorial of my 'White Depression' piece. Bring your canvases!",
             date = datetime.date.today(),
-            artist = admin_artist_seed,
-            artwork = artworks_seed[2],
+            artwork_id = 3,
+            artist = admin_artist_seed
         ),
 
         Walkthrough(
             description = "A video tutorial for 'French Burgers'. After watching this, stippling will become 2nd nature",
             date = datetime.date.today(),
-            artist = admin_artist_seed,
-            artwork = artworks_seed[3],
+            artwork_id = 4,
+            artist = admin_artist_seed
         ),
 
         Walkthrough(
             description = "Here's the video for 'Triumph'! A lot going on here so take it slow :)",
             date = datetime.date.today(),
-            artist = admin_artist_seed,
-            artwork = artworks_seed[0],
+            artwork_id = 1,
+            artist = admin_artist_seed
         ),
     ]
 
@@ -293,145 +297,99 @@ def seed_db():
     db.session.commit()
     print("(8) 3 x Walkthroughs seeded!")
 
-    # 10 x comments to map
-    comments_seed = [
-        Comment(
+
+    # 4 x Artwork Comments
+    artwork_comments_seed = [
+        ArtworkComment(
             description = "Artwork Comment 1",
             date = datetime.datetime.today(),
             user = paid_users_seed[1],
-        ),
-        
-        Comment(
-            description = "Artwork Comment 2",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[0],
-        ),
-
-        Comment(
-            description = "Artwork Comment 3",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[2],
-        ),
-
-        Comment(
-            description = "Artwork Comment 4",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[1],
-        ),
-
-        Comment(
-            description = "Q&A Comment 1",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[1],
-        ),
-        
-        Comment(
-            description = "Q&A Comment 2",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[2],
-        ),
-
-        Comment(
-            description = "Q&A Comment 3",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[0],
-        ),
-
-        Comment(
-            description = "Walkthrough Comment 1",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[0],
-        ),
-
-        Comment(
-            description = "Walkthrough Comment 2",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[0],
-        ),
-
-        Comment(
-            description = "Walkthrough Comment 3",
-            date = datetime.datetime.today(),
-            user = paid_users_seed[2],
-        )
-    ]
-
-    db.session.add_all(comments_seed)
-    db.session.commit()
-    print("(9) 10 x Comments seeded")
-
-    # 3 x Artwork Comments
-    artwork_comments_seed = [
-        ArtworkComment(
-            artwork = artworks_seed[1],
-            comment_id = 1
+            artwork = artworks_seed[1]
         ),
     
         ArtworkComment(
-            artwork = artworks_seed[1],
-            comment_id = 2
+            description = "Artwork Comment 2",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[0],
+            artwork = artworks_seed[1]
         ),
 
         ArtworkComment(
-            artwork = artworks_seed[2],
-            comment_id = 3
+            description = "Artwork Comment 3",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[2],
+            artwork = artworks_seed[2]
         ),
 
         ArtworkComment(
-            artwork = artworks_seed[3],
-            comment_id = 4
+            description = "Artwork Comment 4",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[1],
+            artwork = artworks_seed[3]
         )
     ]
+    
     db.session.add_all(artwork_comments_seed)
     db.session.commit()
-    print("(10) 3 x Artwork Comments (join table) seeded")
+    print("(9) 4 x Artwork Comments (join table) seeded!")
 
     # 3 x Walkthrough comments to map
 
     walkthrough_comments_seed = [
         WalkthroughComment(
+            description = "Walkthrough Comment 1",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[0],
             walkthrough = walkthroughs_seed[0],
-            comment_id = 5
         ),
 
         WalkthroughComment(
+            description = "Walkthrough Comment 2",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[0],
             walkthrough = walkthroughs_seed[1],
-            comment_id = 6
         ),
 
         WalkthroughComment(
+            description = "Walkthrough Comment 3",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[2],
             walkthrough = walkthroughs_seed[2],
-            comment_id = 7
         )
     ]
 
     db.session.add_all(walkthrough_comments_seed)
     db.session.commit()
-    print("(11) 3 x Walkthrough Comments (join table) seeded!")
-
+    print("(10) 3 x Walkthrough Comments (join table) seeded!")
 
     # 3 x Q&A comments to map
 
     q_and_a_comments_seed = [
         QAndAComment(
+            description = "Q&A Comment 1",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[1],
             q_and_a = q_and_as_seed[0],
-            comment_id = 8
         ),
 
         QAndAComment(
+            description = "Q&A Comment 2",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[2],
             q_and_a = q_and_as_seed[1],
-            comment_id = 9
         ),
 
         QAndAComment(
+            description = "Q&A Comment 3",
+            date = datetime.datetime.today(),
+            user = paid_users_seed[0],
             q_and_a = q_and_as_seed[2],
-            comment_id = 10
         )
     ]
 
     db.session.add_all(q_and_a_comments_seed)
     db.session.commit()
-    print("(12) 3 x Q&A Comments (join table) seeded")
+    print("(11) 3 x Q&A Comments (join table) seeded!")
 
     
     

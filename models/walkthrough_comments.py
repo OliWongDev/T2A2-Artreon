@@ -4,16 +4,18 @@ from marshmallow import fields
 class WalkthroughComment(db.Model):
     __tablename__ = "walkthrough_comments"
     id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(), nullable=False)
+    date = db.Column(db.Date())
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     walkthrough_id = db.Column(db.Integer, db.ForeignKey("walkthroughs.id"), nullable=False)
-    comment_id = db.Column(db.Integer, db.ForeignKey("comments.id"), nullable=False)
 
+    user = db.relationship("User", back_populates="walkthrough_comments")
     walkthrough = db.relationship("Walkthrough", back_populates="walkthrough_comments")
-    comments = db.relationship("Comment", back_populates="walkthrough_comment", cascade="all, delete")
 
 class WalkthroughCommentSchema(ma.Schema):
-    walkthrough = fields.List(fields.Nested("WalkthroughSchema"))
-    comments = fields.List(fields.Nested("CommentSchema"))
+    user = fields.Nested("UserSchema")
+    walkthrough = fields.Nested("WalkthroughSchema")
     class Meta:
-        fields = ("id", "walkthrough_id", "walkthrough", "comments")
+        fields = ("id", "description", "date", "user", "walkthrough")
         ordered = True

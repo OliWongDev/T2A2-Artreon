@@ -4,8 +4,8 @@ from marshmallow import fields
 class QAndA(db.Model):
     __tablename__ = "q_and_as"
     id = db.Column(db.Integer, primary_key=True)
-    q_and_a_content = db.Column(db.String())
-    date = db.Column(db.Date())
+    q_and_a_content = db.Column(db.String(), nullable=False, unique=True)
+    date = db.Column(db.Date(), nullable=False)
 
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'), nullable=False)
 
@@ -15,7 +15,7 @@ class QAndA(db.Model):
 
 class QAndASchema(ma.Schema):
     artist = fields.Nested("ArtistSchema")
-    q_and_a_comment = fields.Nested("QAndACommentSchema")
+    q_and_a_comments = fields.Nested("QAndACommentSchema")
     class Meta:
         fields = ("id", "q_and_a_content", "date", "artist", "q_and_a_comments")
         ordered = True

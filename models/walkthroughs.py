@@ -15,8 +15,8 @@ class Walkthrough(db.Model):
     walkthrough_comments = db.relationship("WalkthroughComment", back_populates="walkthrough", cascade="all, delete")
 
 class WalkthroughSchema(ma.Schema):
-    artist = fields.Nested("ArtistSchema", only=["id"])
-    artwork = fields.Nested("ArtworkSchema", only=["id"])
+    artist = fields.Nested("ArtistSchema", only=["artreon_alias"])
+    artwork = fields.Nested("ArtworkSchema", only=["id", "artwork_name"])
     walkthrough_comments = fields.List(fields.Nested("WalkthroughCommentSchema", only=["id", "description", "user.user_alias"]))
     class Meta:
         fields = ("id", "description", "date", "artist", "artwork", "walkthrough_comments")

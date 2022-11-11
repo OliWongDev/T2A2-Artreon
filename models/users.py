@@ -4,13 +4,13 @@ from marshmallow import fields
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    user_alias = db.Column(db.String())
-    first_name = db.Column(db.String())
-    last_name = db.Column(db.String())
+    user_alias = db.Column(db.String(), nullable=False, unique=True)
+    first_name = db.Column(db.String(), nullable=False)
+    last_name = db.Column(db.String(), nullable=False)
     join_date = db.Column(db.Date())
-    email = db.Column(db.String())
-    has_subscription = db.Column(db.Boolean())
-    password = db.Column(db.String())
+    email = db.Column(db.String(), nullable=False, unique=True)
+    has_subscription = db.Column(db.Boolean(), nullable=False, default=False)
+    password = db.Column(db.String(), nullable=False)
 
     comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
 

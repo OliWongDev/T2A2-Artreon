@@ -4,10 +4,10 @@ from marshmallow import fields
 class Artist(db.Model):
     __tablename__ = "artists"
     id = db.Column(db.Integer, primary_key=True)
-    artreon_alias = db.Column(db.String())
-    password = db.Column(db.String())
-    email = db.Column(db.String())
-    is_admin = db.Column(db.Boolean())
+    artreon_alias = db.Column(db.String(), nullable=False, unique=True)
+    password = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False, unique=True)
+    is_admin = db.Column(db.Boolean(), nullable=False, default=False)
     artist_bio = db.Column(db.String())
 
     artworks = db.relationship("Artwork", back_populates="artist", cascade="all, delete")

@@ -5,10 +5,10 @@ class Walkthrough(db.Model):
     __tablename__ = "walkthroughs"
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String())
-    date = db.Column(db.Date())
+    date = db.Column(db.Date(), nullable=False)
 
-    artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"))
-    artwork_id = db.Column(db.Integer, db.ForeignKey("artworks.id"))
+    artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    artwork_id = db.Column(db.Integer, db.ForeignKey("artworks.id"), nullable=False)
 
     artist = db.relationship("Artist", back_populates="walkthroughs")
     artwork = db.relationship("Artwork", back_populates="walkthrough")

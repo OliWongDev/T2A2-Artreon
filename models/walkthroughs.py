@@ -8,13 +8,16 @@ class Walkthrough(db.Model):
     date = db.Column(db.Date(), nullable=False)
 
     artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"), nullable=False)
+    artwork_id = db.Column(db.Integer, db.ForeignKey("artworks.id"), nullable=False)
 
     artist = db.relationship("Artist", back_populates="walkthroughs")
+    artwork = db.relationship("Artwork", back_populates="walkthrough")
     walkthrough_comments = db.relationship("WalkthroughComment", back_populates="walkthrough", cascade="all, delete")
 
 class WalkthroughSchema(ma.Schema):
     artist = fields.Nested("ArtistSchema", only=["id"])
+    artwork = fields.Nested("ArtworkSchema", only=["id"])
     walkthrough_comments = fields.List(fields.Nested("WalkthroughCommentSchema", only=["id", "description", "user.user_alias"]))
     class Meta:
-        fields = ("id", "description", "date", "artist", "walkthrough_comments")
+        fields = ("id", "description", "date", "artist", "artwork", "walkthrough_comments")
         ordered = True

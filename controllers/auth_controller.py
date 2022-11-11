@@ -59,6 +59,14 @@ def authorize_user():
     user_statement = db.Select(User).filter_by(id=user_id)
     return user_statement
 
+def authorize_precise_user(id):
+    user_id = get_jwt_identity()
+    user_statement = db.Select(User).filter_by(id=user_id)
+    user = db.session.scalar(user_statement)
+    if user.id !=id:
+        abort(401)
+
+
 @auth.route('/artist_login', methods=['POST'])
 def auth_artist_login():
     artist_statement = db.select(Artist).filter_by(email=request.json['email'])
@@ -79,7 +87,15 @@ def authorize_artist():
     if not artist.is_admin:
         return abort(401), False
 
+
 def authorize_general_artist():
     artist_id = get_jwt_identity()
     artist_statement = db.select(Artist).filter_by(id=artist_id)
     return artist_statement
+
+def authorize_precise_artist(id):
+    artist_id = get_jwt_identity()
+    artist_statement = db.Select(Artist).filter_by(id=artist_id)
+    artist = db.session.scalar(artist_statement)
+    if artist.id != id:
+        abort(401)

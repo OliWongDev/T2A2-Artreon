@@ -10,7 +10,6 @@ from models.q_and_a_comments import QAndAComment
 from models.users import User
 from models.walkthrough_comments import WalkthroughComment
 from models.walkthroughs import Walkthrough
-from flask_seeder import Seeder
 
 import datetime
 
@@ -204,7 +203,7 @@ def seed_db():
 
         Artwork(
             artwork_name = "French Burgers",
-            description = "A subtle look at a depressed mind. Painted with oil.",
+            description = "A burger with a snaily twist. Stippled.",
             date = datetime.date.today(),
             artist = admin_artist_seed,
         ),
@@ -272,21 +271,24 @@ def seed_db():
     
     walkthroughs_seed = [
         Walkthrough(
-            description = "Walkthrough Video 1",
+            description = "A walkthrough of my 'White Depression' piece. Bring your canvases!",
             date = datetime.date.today(),
             artist = admin_artist_seed,
+            artwork = artworks_seed[2]
         ),
 
         Walkthrough(
-            description = "Walkthrough Video 2",
+            description = "A video tutorial for 'French Burgers'. After watching this, stippling will become 2nd nature",
             date = datetime.date.today(),
             artist = admin_artist_seed,
+            artwork = artworks_seed[3]
         ),
 
         Walkthrough(
-            description = "Walkthrough Video 3",
+            description = "Here's the video for 'Triumph'! A lot going on here so take it slow :)",
             date = datetime.date.today(),
             artist = admin_artist_seed,
+            artwork = artworks_seed[0]
         ),
     ]
 

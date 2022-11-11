@@ -295,7 +295,7 @@ def seed_db():
 
     # 3 x Artwork Comments
     artwork_comments_seed_local_1 = ArtworkComment(
-            artwork = artworks_seed_local[0]
+            artwork = artworks_seed_local[1]
         )
     
     artwork_comments_seed_local_2 = ArtworkComment(
@@ -307,7 +307,7 @@ def seed_db():
         )
 
     artwork_comments_seed_local_4 = ArtworkComment(
-        artwork = artworks_seed_local[3]
+            artwork = artworks_seed_local[3]
     )
 
     db.session.add(artwork_comments_seed_local_1)

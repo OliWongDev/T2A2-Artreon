@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db, bcrypt
 from models.artists import Artist, ArtistSchema
-from controllers.auth_controller import authorize_artist, authorize_user, authorize_admin_artist, authorize_paid_user
+from controllers.auth_controller import authorize_artist, authorize_user, authorize_paid_user
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
@@ -13,12 +13,10 @@ artists = Blueprint('artists', __name__, url_prefix="/artists")
 # This returns all Artists on the Graphic God Artreon.
 
 @artists.route("/", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_artists():
     artist_list = db.select(Artist).order_by(Artist.id.asc())
     result = db.session.scalars(artist_list)
-    # user_id = get_jwt_identity()
-    # authorize_user(user_id)
     return ArtistSchema(many=True, exclude=["password"]).dump(result)
 
 
@@ -41,6 +39,7 @@ def get_artist_by_alias(artreon_alias):
     result = db.session.scalar(artist)
     return ArtistSchema(exclude=["password"]).dump(result), 200
 
+
 @artists.route("/<string:artreon_alias>", methods=["PUT", "PATCH"])
 def update_artist_details(artreon_alias):
     artist_data = db.select(Artist).filter_by(artreon_alias=artreon_alias)
@@ -53,6 +52,7 @@ def update_artist_details(artreon_alias):
         return ArtistSchema().dump(artist)
     else:
         return abort(404, description="The artist does not exist")
+
 
 @artists.route("/<string:artreon_alias>", methods=["DELETE"])
 def delete_artist_account(artreon_alias):

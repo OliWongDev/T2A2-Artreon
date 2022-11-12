@@ -6,7 +6,7 @@ from models.artists import Artist
 from models.artwork_comments import ArtworkComment, ArtworkCommentSchema
 from models.users import User, UserSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from controllers.auth_controller import authorize_precise_artist, authorize_paid_user, authorize_admin_artist
+from controllers.auth_controller import authorize_precise_artist, authorize_paid_user, authorize_artist
 
 artworks = Blueprint('artworks', __name__, url_prefix="/artworks")
 
@@ -16,7 +16,7 @@ artworks = Blueprint('artworks', __name__, url_prefix="/artworks")
 @artworks.route("/", methods = ["GET"])
 @jwt_required()
 def get_all_artworks():
-     authorize_admin_artist()
+     authorize_artist()
      artworks_list = db.select(Artwork).order_by(Artwork.id.asc())
      result = db.session.scalars(artworks_list)
      return ArtworkSchema(many=True).dump(result), 200
@@ -25,27 +25,28 @@ def get_all_artworks():
 # This returns a single artwork 
 
 @artworks.route("/<int:id>", methods=["GET"])
+@jwt_required()
 def get_single_artwork(id):
     artwork = db.select(Artwork).filter_by(id=id)
-    # if not artwork:
-    #     return abort
     result = db.session.scalar(artwork)
-    return ArtworkSchema().dump(result), 200
+    if not result:
+          return abort(404)
+    else:
+          return ArtworkSchema().dump(result), 200
 
 #127.0.0.1:5000/artworks
 #### This allows the artist to CREATE and post an artwork
 # Get JWT IDENTITY ADD
 @artworks.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_artwork():
-     # make correct, fixing for Kamran.
-     # authorize_general_artist()
+     authorize_artist()
      artwork_fields = ArtworkSchema().load(request.json)
 
      new_artwork = Artwork(
           artwork_name = artwork_fields["artwork_name"],
           description = artwork_fields["description"],
-          date = artwork_fields["date"],
+          date = date.today(),
           artist_id = get_jwt_identity()
      )
 
@@ -57,16 +58,13 @@ def create_artwork():
 
 # 127.0.0.1:5000/artworks/<int:id>
 #### This allows the artist to DELETE an artwork
-# JWT required
 @artworks.route("/<int:id>", methods=["DELETE"])
-# @jwt_required()
+@jwt_required()
 def delete_artwork(id):
-
      artwork_delete_statement = db.select(Artwork).filter_by(id=id)
      artwork = db.session.scalar(artwork_delete_statement)
-
-     # authorize_precise_artist(artwork.artist_id)
-
+     authorize_precise_artist(artwork.artist_id)
+     
      if artwork:
           db.session.delete(artwork)
           db.session.commit()
@@ -81,6 +79,7 @@ def delete_artwork(id):
 def patch_artwork(id):
      artwork_statement = db.select(Artwork).filter_by(id=id)
      artwork = db.session.scalar(artwork_statement)
+     print(type(artwork_statement))
      authorize_precise_artist(artwork.artist_id)
      if artwork:
           artwork.description = request.json.get('description') or artwork.description

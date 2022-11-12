@@ -38,19 +38,6 @@ def seed_db():
     db.session.commit()
     print("(1) Admin/Main Artist seeded!")
 
-    # 1 x Non-Admin Artist
-    non_admin_artist = Artist(
-        artreon_alias = "Collaber",
-        password = bcrypt.generate_password_hash("collab").decode("utf-8"),
-        email = "collaber@gmail.com",
-        is_admin = False,
-        artist_bio = "I just post art every now and then.",
-    )
-
-    db.session.add(non_admin_artist)
-    db.session.commit()
-    print("(2) Non-Admin Artist seeded!")
-
     # 2 x Free User
 
     free_users_seed = [
@@ -77,7 +64,7 @@ def seed_db():
 
     db.session.add_all(free_users_seed)
     db.session.commit()
-    print("(3) 2 x Free users seeded!")
+    print("(2) 2 x Free users seeded!")
 
     # 3 x Paid User
 
@@ -115,7 +102,7 @@ def seed_db():
     
     db.session.add_all(paid_users_seed)
     db.session.commit()
-    print("(4) 3 x Paid Users seeded")
+    print("(3) 3 x Paid Users seeded")
 
     # 4 x Emails
 
@@ -174,7 +161,7 @@ def seed_db():
     
     db.session.add_all(emails_seed)
     db.session.commit()
-    print("(5) 4 x Emails seeded!")
+    print("(4) 4 x Emails seeded!")
     
 
     # 4 x Artworks
@@ -211,7 +198,7 @@ def seed_db():
     
     db.session.add_all(artworks_seed)
     db.session.commit()
-    print("(6) 4 x Artworks seeded!")
+    print("(5) 4 x Artworks seeded!")
 
     # 3 x Q&As
     q_and_as_seed = [
@@ -265,7 +252,7 @@ def seed_db():
     
     db.session.add_all(q_and_as_seed)
     db.session.commit()
-    print("(7) 3 x Q&As seeded!")
+    print("(6) 3 x Q&As seeded!")
 
     # 3 x Walkthroughs
     
@@ -294,7 +281,7 @@ def seed_db():
 
     db.session.add_all(walkthroughs_seed)
     db.session.commit()
-    print("(8) 3 x Walkthroughs seeded!")
+    print("(7) 3 x Walkthroughs seeded!")
 
 
     # 4 x Artwork Comments
@@ -330,7 +317,7 @@ def seed_db():
     
     db.session.add_all(artwork_comments_seed)
     db.session.commit()
-    print("(9) 4 x Artwork Comments (join table) seeded!")
+    print("(8) 4 x Artwork Comments (join table) seeded!")
 
     # 3 x Walkthrough comments to map
 
@@ -359,7 +346,7 @@ def seed_db():
 
     db.session.add_all(walkthrough_comments_seed)
     db.session.commit()
-    print("(10) 3 x Walkthrough Comments (join table) seeded!")
+    print("(9) 3 x Walkthrough Comments (join table) seeded!")
 
     # 3 x Q&A comments to map
 
@@ -388,10 +375,8 @@ def seed_db():
 
     db.session.add_all(q_and_a_comments_seed)
     db.session.commit()
-    print("(11) 3 x Q&A Comments (join table) seeded!")
+    print("(10) 3 x Q&A Comments (join table) seeded!")
 
-    
-    
 
 # Seed Drop Command
 @db_commands.cli.command("drop")

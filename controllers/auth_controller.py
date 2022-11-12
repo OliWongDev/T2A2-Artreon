@@ -61,7 +61,7 @@ def auth_login():
         token = create_access_token(identity=str(user.id), expires_delta=timedelta(hours=12))
         return {'email': user.email, 'token': token}
     else:
-        return {'error': 'The email or password was invalid'}, 401
+        return {'error': 'The email or password was invalid'}, 404
 
 # DO NOT TOUCH
 def authorize_paid_user():
@@ -99,7 +99,7 @@ def auth_artist_login():
         token = create_access_token(identity=str(artist.id), expires_delta=timedelta(hours=12))
         return {'email': artist.email, 'token': token}
     else:
-        return {'error': 'The email or password was invalid'}, 401
+        return {'error': 'The email or password was invalid'}, 404
 
 
 def authorize_artist():
@@ -111,13 +111,6 @@ def authorize_artist():
     else:
         return True
 
-
-def authorize_admin_artist():
-    artist_id = get_jwt_identity()
-    artist_statement = db.select(Artist).filter_by(id=artist_id)
-    artist = db.session.scalar(artist_statement)
-    if not artist.is_admin:
-        return abort(401), False
 
 # DO NOT TOUCH
 def authorize_precise_artist(id):

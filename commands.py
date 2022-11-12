@@ -27,7 +27,7 @@ def seed_db():
     # 1 x Artist
     
     admin_artist_seed = Artist(
-        artreon_alias = "Graphic God",
+        artreon_alias = "GraphicGod",
         password = bcrypt.generate_password_hash("artist_password").decode("utf-8"),
         email = "graphicgod@artreon.com",
         is_admin = True,
@@ -103,7 +103,7 @@ def seed_db():
         ),
 
         User(
-            user_alias = "Graphic God Disciple",
+            user_alias = "GraphicGodDisciple",
             first_name = "Fiona",
             last_name = "Singh",
             join_date = datetime.date.today(),
@@ -367,7 +367,7 @@ def seed_db():
         QAndAComment(
             description = "Q&A Comment 1",
             date = datetime.datetime.today(),
-            user = paid_users_seed[1],
+            user = paid_users_seed[2],
             q_and_a = q_and_as_seed[0],
         ),
 
@@ -375,13 +375,13 @@ def seed_db():
             description = "Q&A Comment 2",
             date = datetime.datetime.today(),
             user = paid_users_seed[2],
-            q_and_a = q_and_as_seed[1],
+            q_and_a = q_and_as_seed[0],
         ),
 
         QAndAComment(
             description = "Q&A Comment 3",
             date = datetime.datetime.today(),
-            user = paid_users_seed[0],
+            user = paid_users_seed[2],
             q_and_a = q_and_as_seed[2],
         )
     ]

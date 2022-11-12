@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.walkthroughs import Walkthrough, WalkthroughSchema
-from controllers.auth_controller import authorize_artist, authorize_paid_user, authorize_general_artist
+from controllers.auth_controller import authorize_artist, authorize_paid_user
 from flask_jwt_extended import jwt_required
 
 walkthroughs = Blueprint("walkthroughs", __name__, url_prefix="/walkthroughs")
@@ -21,9 +21,9 @@ def get_all_walkthroughs():
 # This returns a single walkthrough
 
 @walkthroughs.route("/<int:id>", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_single_walkthrough(id):
-    authorize_general_artist() or authorize_paid_user()
+    # authorize_general_artist() or authorize_paid_user()
     walkthrough = db.select(Walkthrough).filter_by(id=id)
     result = db.session.scalar(walkthrough)
     return WalkthroughSchema().dump(result)
@@ -31,28 +31,26 @@ def get_single_walkthrough(id):
 # 127.0.0.1:5000/walkthroughs
 # This adds a walkthrough to the database
 
-@walkthroughs.route("/", methods=["POST"])
-@jwt_required()
-def add_walkthrough():
-    authorize_artist()
-    walkthrough_fields = WalkthroughSchema().dump(request.json)
-    new_walkthrough = Walkthrough(
-        description = walkthrough_fields["description"],
-        date = walkthrough_fields["date"],
-        artist_id = walkthrough_fields["artist_id"],
-        artwork_id = walkthrough_fields["artwork_id"]
-    )
+# @walkthroughs.route("/", methods=["POST"])
+# # jwt_required()
+# def add_walkthrough():
+#     # authorize_artist()
+#     q_and_a_fields = QAndASchema().load(request.json)
+#     new_q_and_a = QAndA(
+#         q_and_a_content = q_and_a_fields["q_and_a_content"],
+#         date = datetime.date.today(),
+#         artist_id = 1
+#     )
+#     db.session.add(new_q_and_a)
+#     db.session.commit()
 
-    db.session.add(new_walkthrough)
-    db.session.commit()
-
-    return jsonify(WalkthroughSchema().dump(new_walkthrough)), 201
+#     return QAndASchema().dump(new_q_and_a), 201
 
 # 127.0.0.1:5000/walkthroughs/<int:id>
 # This deletes a walkthrough in the database
 
 @walkthroughs.route("/<int:id>", methods=["DELETE"])
-@jwt_required()
+# @jwt_required()
 def delete_walkthrough(id):
     authorize_artist()
     walkthrough_delete_statement = db.select(Walkthrough).filter_by(id=id)

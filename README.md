@@ -60,7 +60,7 @@ Communities
 
 #### 127.0.0.1:5000/auth/register-artist
 
-*Register Artist*
+**Register Artist**
 
 - METHODS = POST
 - INPUTS = artreon_alias(str), password(str), email(str), artist_bio(str)
@@ -71,7 +71,7 @@ Communities
 
 #### 127.0.0.1:5000/auth/register-user
 
-##### Register User
+**Register User**
 
 - METHODS = POST
 - INPUTS = user_alias, first_name, last_name, email, has_subscription, password
@@ -82,7 +82,7 @@ Communities
 
 #### 127.0.0.1:5000/auth/login-user
 
-##### Login User
+**Login User**
 
 - METHODS = POST
 - INPUTS = email, password
@@ -93,7 +93,8 @@ Communities
 
 #### 127.0.0.1:5000/auth/login-artist
 
-##### Login Artist
+**Login Artist**
+
 - METHODS = POST
 - INPUTS = email, password
 - OUTPUT = email, bearer token (200)
@@ -105,16 +106,19 @@ Communities
     
 #### 127.0.0.1:5000/users
 
-##### Get all users
+**Get all users**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = All users seeded in the database and any created consequentially (200)
 - AUTHENTICATION = n/a
 - AUTHORIZATION = n/a
 - ERROR HANDLING = n/a
+
 #### 127.0.0.1:5000/users/<int:id>
 
-##### Get single user
+**Get single user**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = Single user seeded in the database or any created consequentially (200)
@@ -124,7 +128,8 @@ Communities
 
 #### 127.0.0.1:5000/users/<string:user_alias>
 
-##### Get user by alias
+**Get user by alias**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = Single user seeded in the database or any created consequentially (200)
@@ -132,7 +137,7 @@ Communities
 - AUTHORIZATION = n/a
 - ERROR HANDLING = user_alias not in database (404, not found)
 
-##### Update user details
+**Update user details**
 
 - METHODS = PUT/PATCH
 - INPUTS = user_alias, first_name, last_name, email, has_subscription, password
@@ -141,7 +146,7 @@ Communities
 - AUTHORIZATION = YES, must be same user
 - ERROR HANDLING = user alias not found in database (404, not found), inauthenticated (401)
 
-##### Delete user
+**Delete user**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -152,7 +157,8 @@ Communities
 
 #### 127.0.0.1:5000/users/<string:user_alias>/comments
 
-##### Get all user comments by alias
+**Get all user comments by alias**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = All comments made by a specific user (200)
@@ -164,7 +170,8 @@ Communities
     
 #### 127.0.0.1:5000/
 
-##### Get all artists
+**Get all artists**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = All artists on database (200)
@@ -174,7 +181,8 @@ Communities
 
 #### 127.0.0.1:5000/artists/<int:id>
 
-##### Get single artist
+**Get single artist**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = Single artist on the database (200)
@@ -184,7 +192,8 @@ Communities
 
 #### 127.0.0.1:5000/artists/<string:artreon_alias>
 
-##### Get admin artist (artreon_alias = GraphicGod) or single artist
+**Get admin artist (artreon_alias = GraphicGod) or single artist**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = Single artist on database (200)
@@ -192,7 +201,7 @@ Communities
 - AUTHORIZATION = n/a
 - ERROR HANDLING = artist alias not found in database (404), inauthenticated (401)
 
-##### Update artist details
+**Update artist details**
 
 - METHODS = PUT/PATCH
 - INPUTS = artreon_alias(string), password, email, artist_bio
@@ -201,7 +210,7 @@ Communities
 - AUTHORIZATION = YES, must be same artist
 - ERROR HANDLING = artist not same artist (401), artist not found (404), inauthenticated (401)
 
-##### Delete artist 
+**Delete artist**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -212,7 +221,7 @@ Communities
 
 #### 127.0.0.1:5000/artists/<string:artreon_alias>/artworks
 
-##### Get artworks made by artist
+**Get artworks made by artist**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -223,7 +232,7 @@ Communities
 
 #### 127.0.0.1:5000/artists/<string:artreon_alias>/qandas
 
-##### Get Q&As made by artist
+**Get Q&As made by artist**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -234,7 +243,8 @@ Communities
 
 #### 127.0.0.1:5000/artists/<string:artreon_alias>/walkthroughs
 
-##### Get walkthroughs made by artist
+**Get walkthroughs made by artist**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = All walkthroughs made by the artist (200)
@@ -244,7 +254,8 @@ Communities
 
 #### 127.0.0.1:5000/artists/<string:artreon_alias>/emails
 
-##### Get emails sent by artist
+**Get emails sent by artist**
+
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = All emails sent by the artist (200)
@@ -256,7 +267,7 @@ Communities
 
 #### 127.0.0.1:5000/artworks
 
-##### Get all artworks
+**Get all artworks**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -265,7 +276,7 @@ Communities
 - AUTHORIZATION = n/a
 - ERROR HANDLING = inauthenticated (401)
 
-##### Create an artwork
+**Create an artwork**
 
 - METHODS = POST
 - INPUTS = artwork_name(string), description(string)
@@ -276,7 +287,7 @@ Communities
 
 #### 127.0.0.1:5000/artworks/<int:id>
 
-##### Get one artwork
+**Get one artwork**
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = Retrieves a specific artwork in the database (200)
@@ -284,7 +295,7 @@ Communities
 - AUTHORIZATION = n/a
 - ERROR HANDLING = Unauthorized (401), Not found (404)
 
-##### Update an artwork
+**Update an artwork**
 
 - METHODS = PUT/PATCH
 - INPUTS = artwork_name(string), description(string)
@@ -293,7 +304,7 @@ Communities
 - AUTHORIZATION = YES, must be same artist
 - ERROR HANDLING = Unauthorized (401), Not found (404)
 
-##### Delete an artwork
+**Delete an artwork**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -304,7 +315,7 @@ Communities
 
 #### 127.0.0.1:5000/artworks/<int:id>/comments
 
-##### Create a comment on an artwork
+**Create a comment on an artwork**
 
 - METHODS = POST
 - INPUTS = description(string)
@@ -315,7 +326,7 @@ Communities
 
 #### 127.0.0.1:5000/artworks/<int:id>/comments/<int:artwork_comment_id>
 
-##### Update own comment on an artwork
+**Update own comment on an artwork**
 
 - METHODS = PUT/PATCH
 - INPUTS = description(string)
@@ -324,7 +335,7 @@ Communities
 - AUTHORIZATION = YES, must be paid user
 - ERROR HANDLING = Unauthorized (401), artwork/comment not found (404)
 
-##### Delete own comment
+**Delete own comment**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -337,7 +348,7 @@ Communities
 
 #### 127.0.0.1:5000/qandas
 
-##### Get all Q&As
+**Get all Q&As**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -346,7 +357,7 @@ Communities
 - AUTHORIZATION = YES, must be paid user
 - ERROR HANDLING = Unauthorized(401)
 
-##### Post Q&A
+**Post Q&A**
 
 - METHODS = POST
 - INPUTS = q_and_a_content(string)
@@ -357,7 +368,7 @@ Communities
 
 #### 127.0.0.1:5000/qandas/<int:id>
 
-##### Get single Q&A
+**Get single Q&A**
 - METHODS = GET 
 - INPUTS = n/a
 - OUTPUT = Retrieved Q&A (200)
@@ -365,7 +376,7 @@ Communities
 - AUTHORIZATION = YES, must be paid user
 - ERROR HANDLING = Unauthorized(401), Q&A not found(404)
 
-##### Delete Q&A
+**Delete Q&A**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -374,7 +385,7 @@ Communities
 - AUTHORIZATION = YES, must be same artist
 - ERROR HANDLING = Unauthorized(401), Q&A not found(404)
 
-##### Update Q&A
+**Update Q&A**
 
 - METHODS = PUT/PATCH
 - INPUTS = q_and_a_content (string)
@@ -385,7 +396,8 @@ Communities
 
 #### 127.0.0.1:5000/qandas/<int:id>/comments
 
-##### Create comment on Q&A
+**Create comment on Q&A**
+
 - METHODS = POST
 - INPUTS = description (string)
 - OUTPUT = Returned new Q&A comment (201)
@@ -395,7 +407,7 @@ Communities
 
 #### 127.0.0.1:5000/qandas/<int:id>/comments/<int:q_and_a_comment_id>
 
-##### Update comment on Q&A
+**Update comment on Q&A**
 
 - METHODS = PUT/PATCH
 - INPUTS = description (string)
@@ -404,7 +416,7 @@ Communities
 - AUTHORIZATION = YES, must be same user
 - ERROR HANDLING = Unauthorized (401), Q&A/comment not found (404)
 
-##### Delete comment on Q&A
+**Delete comment on Q&A**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -417,7 +429,7 @@ Communities
 
 #### 127.0.0.1:5000/walkthroughs
 
-##### Get all walkthroughs
+**Get all walkthroughs**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -426,7 +438,7 @@ Communities
 - AUTHORIZATION = YES
 - ERROR HANDLING = Unauthorized (401)
 
-##### Create walkthrough
+**Create walkthrough**
 
 - METHODS = POST
 - INPUTS = description(string), artwork_id(foreign key)
@@ -437,7 +449,7 @@ Communities
 
 #### 127.0.0.1:5000/walkthroughs/<int:id>
 
-##### Get single walkthrough
+**Get single walkthrough**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -446,7 +458,7 @@ Communities
 - AUTHORIZATION = YES, must be paid user
 - ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
 
-##### Delete walkthrough
+**Delete walkthrough**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -455,7 +467,7 @@ Communities
 - AUTHORIZATION = YES, must be same artist
 - ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
 
-##### Update walkthrough
+**Update walkthrough**
 
 - METHODS = PUT/PATCH
 - INPUTS = description(string)
@@ -466,7 +478,7 @@ Communities
 
 #### 127.0.0.1:5000/walkthroughs/<int:id>/comments
 
-##### Get all walkthrough comments on a walkthrough
+**Get all walkthrough comments on a walkthrough**
 - METHODS = GET
 - INPUTS = n/a
 - OUTPUT = Retrieves all comments on a walkthrough (200)
@@ -474,7 +486,7 @@ Communities
 - AUTHORIZATION = YES, must be paid user
 - ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
 
-##### Create a walkthrough comment
+**Create a walkthrough comment**
 
 - METHODS = POST
 - INPUTS = description(string)
@@ -485,7 +497,7 @@ Communities
 
 #### 127.0.0.1:5000/walkthroughs/<int:id>/comments/<int:walkthrough_comment_id>
 
-##### Update a walkthrough comment
+**Update a walkthrough comment**
 
 - METHODS = PUT/PATCH
 - INPUTS = description(string)
@@ -494,7 +506,7 @@ Communities
 - AUTHORIZATION = YES, must be paid user
 - ERROR HANDLING = Unauthorized (401), walkthrough/comment not found (404)
 
-##### Delete a walkthrough comment
+**Delete a walkthrough comment**
 
 - METHODS = DELETE
 - INPUTS = n/a
@@ -505,7 +517,7 @@ Communities
 
 #### 127.0.0.1:5000/walkthroughs/check/<int:artwork_id>
 
-##### Check artwork has a walkthrough linked to it
+**Check artwork has a walkthrough linked to it**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -518,7 +530,7 @@ Communities
 
 #### 127.0.0.1:5000/emails
 
-##### Get all emails
+**Get all emails**
 
 - METHODS = GET
 - INPUTS = n/a
@@ -527,7 +539,7 @@ Communities
 - AUTHORIZATION = n/a
 - ERROR HANDLING = inauthenticated (401)
 
-##### Create an email
+**Create an email**
 
 - METHODS = POST
 - INPUTS = Email title (string), email content (string)
@@ -538,7 +550,7 @@ Communities
 
 #### 127.0.0.1:5000/emails/<int:id>
 
-##### Get single email
+**Get single email**
 
 - METHODS = GET
 - INPUTS = n/a

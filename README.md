@@ -58,7 +58,7 @@ Communities
 
 ### Authentication/Authorization (/auth)
 
-#### 127.0.0.1:5000/auth/register-artist
+#### **127.0.0.1:5000/auth/register-artist**
 
 **Register Artist**
 

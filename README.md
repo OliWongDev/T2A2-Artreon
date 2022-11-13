@@ -57,115 +57,499 @@ Communities
 ## Endpoints
 
 ### Authentication/Authorization (/auth)
-#### Register Artist
 
-    #### Register User
+#### 127.0.0.1:5000/auth/register-artist
 
-    #### Login User
+*Register Artist*
 
-    #### Login Artist
+- METHODS = POST
+- INPUTS = artreon_alias(str), password(str), email(str), artist_bio(str)
+- OUTPUT = artist (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be artist
+- ERROR HANDLING = same email(409, Integrity Error), unauthorized(401)
 
-    ### Users (/users)
+#### 127.0.0.1:5000/auth/register-user
 
-    #### Get all users
+##### Register User
 
-    #### Get single user
+- METHODS = POST
+- INPUTS = user_alias, first_name, last_name, email, has_subscription, password
+- OUTPUT = user (201)
+- AUTHENTICATION = NO
+- AUTHORIZATION = NO
+- ERROR HANDLING = Same email (409, Integrity Error), unauthorized (401)
 
-    #### Get user by alias
+#### 127.0.0.1:5000/auth/login-user
 
-    #### Update user details
+##### Login User
 
-    #### Delete user
+- METHODS = POST
+- INPUTS = email, password
+- OUTPUT = email, bearer token (200)
+- AUTHENTICATION = NO
+- AUTHORIZATION = NO
+- ERROR HANDLING = Invalid log in (404)
 
-    #### Get all user comments by alias
+#### 127.0.0.1:5000/auth/login-artist
+
+##### Login Artist
+- METHODS = POST
+- INPUTS = email, password
+- OUTPUT = email, bearer token (200)
+- AUTHENTICATION = NO
+- AUTHORIZATION = NO
+- ERROR HANDLING = Invalid log in (404)
+
+### Users (/users)
+    
+#### 127.0.0.1:5000/users
+
+##### Get all users
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All users seeded in the database and any created consequentially (200)
+- AUTHENTICATION = n/a
+- AUTHORIZATION = n/a
+- ERROR HANDLING = n/a
+#### 127.0.0.1:5000/users/<int:id>
+
+##### Get single user
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Single user seeded in the database or any created consequentially (200)
+- AUTHENTICATION = n/a
+- AUTHORIZATION = n/a
+- ERROR HANDLING = user id not in database (404, not found)
+
+#### 127.0.0.1:5000/users/<string:user_alias>
+
+##### Get user by alias
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Single user seeded in the database or any created consequentially (200)
+- AUTHENTICATION = n/a 
+- AUTHORIZATION = n/a
+- ERROR HANDLING = user_alias not in database (404, not found)
+
+##### Update user details
+
+- METHODS = PUT/PATCH
+- INPUTS = user_alias, first_name, last_name, email, has_subscription, password
+- OUTPUT = New user details repeated (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same user
+- ERROR HANDLING = user alias not found in database (404, not found), inauthenticated (401)
+
+##### Delete user
+
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Successful deletion message to repeat that the resource was deleted (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same user
+- ERROR HANDLING = user alias not found in database (404, not found), inauthenticated (401)
+
+#### 127.0.0.1:5000/users/<string:user_alias>/comments
+
+##### Get all user comments by alias
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All comments made by a specific user (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = inauthenticated (401)
 
 ### Artist(s) (/artists)
+    
+#### 127.0.0.1:5000/
 
-    #### Get all artists
+##### Get all artists
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All artists on database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = Inauthenticated (401)
 
-    #### Get single artist
+#### 127.0.0.1:5000/artists/<int:id>
 
-    #### Get admin artist (main creator)
+##### Get single artist
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Single artist on the database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = artist id not found in database (404, not found), inauthenticated (401)
 
-    #### Update artist details
+#### 127.0.0.1:5000/artists/<string:artreon_alias>
 
-    #### Delete artist 
+##### Get admin artist (artreon_alias = GraphicGod) or single artist
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Single artist on database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = artist alias not found in database (404), inauthenticated (401)
 
-    #### Get artworks made by artist
+##### Update artist details
 
-    #### Get Q&As made by artist
+- METHODS = PUT/PATCH
+- INPUTS = artreon_alias(string), password, email, artist_bio
+- OUTPUT = Returns the new output (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = artist not same artist (401), artist not found (404), inauthenticated (401)
 
-    #### Get walkthroughs made by artist
+##### Delete artist 
 
-    #### Get emails sent by artist
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Returns deletion message (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = artist not same artist (401), artist not found (404)
+
+#### 127.0.0.1:5000/artists/<string:artreon_alias>/artworks
+
+##### Get artworks made by artist
+
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All artworks made by the artist selected (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = NO
+- ERROR HANDLING = artist not found (404), inauthenticated (401)
+
+#### 127.0.0.1:5000/artists/<string:artreon_alias>/qandas
+
+##### Get Q&As made by artist
+
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All Q&As made by the artist (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = inauthenticated or free user (401), artist not found (404)
+
+#### 127.0.0.1:5000/artists/<string:artreon_alias>/walkthroughs
+
+##### Get walkthroughs made by artist
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All walkthroughs made by the artist (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = inauthenticated or free user (401), artist not found (404)
+
+#### 127.0.0.1:5000/artists/<string:artreon_alias>/emails
+
+##### Get emails sent by artist
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All emails sent by the artist (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = inauthenticated (401), artist not found (404)
 
 ### Artworks (/artworks)
 
-    #### Get all artworks
+#### 127.0.0.1:5000/artworks
 
-    #### Post an artwork
+##### Get all artworks
 
-    #### Get one artwork
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All artworks on the database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = inauthenticated (401)
 
-    #### Update an artwork
+##### Create an artwork
 
-    #### Delete an artwork
+- METHODS = POST
+- INPUTS = artwork_name(string), description(string)
+- OUTPUT = Artwork created successfully message (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES must be an artist
+- ERROR HANDLING = Unauthorized (401)
 
-    #### Post a comment on an artwork
+#### 127.0.0.1:5000/artworks/<int:id>
 
-    #### Update own comment on an artwork
+##### Get one artwork
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Retrieves a specific artwork in the database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = Unauthorized (401), Not found (404)
 
-    #### Delete own comment
+##### Update an artwork
+
+- METHODS = PUT/PATCH
+- INPUTS = artwork_name(string), description(string)
+- OUTPUT = New artwork output (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = Unauthorized (401), Not found (404)
+
+##### Delete an artwork
+
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Successful deletion message (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = Unauthorized (401), Not found (404)
+
+#### 127.0.0.1:5000/artworks/<int:id>/comments
+
+##### Create a comment on an artwork
+
+- METHODS = POST
+- INPUTS = description(string)
+- OUTPUT = Repeat of the comment (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be a paid user
+- ERROR HANDLING = Unauthorized (401), artwork/comment not found (404)
+
+#### 127.0.0.1:5000/artworks/<int:id>/comments/<int:artwork_comment_id>
+
+##### Update own comment on an artwork
+
+- METHODS = PUT/PATCH
+- INPUTS = description(string)
+- OUTPUT = Repeat of comment (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized (401), artwork/comment not found (404)
+
+##### Delete own comment
+
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Successful deletion message(200) 
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same user
+- ERROR HANDLING = Unauthorized (401), artwork/comment not found (404)
 
 ### Q&As (/qandas)
 
-    #### Get all Q&As
+#### 127.0.0.1:5000/qandas
 
-    #### Post Q&A
+##### Get all Q&As
 
-    #### Get single Q&A
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = All Q&As returned (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized(401)
 
-    #### Delete Q&A
+##### Post Q&A
 
-    #### Update Q&A
+- METHODS = POST
+- INPUTS = q_and_a_content(string)
+- OUTPUT = Returned Q&A (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be artist
+- ERROR HANDLING = Unauthorized(401)
 
-    #### Post comment on Q&A
+#### 127.0.0.1:5000/qandas/<int:id>
 
-    #### Update comment on Q&A
+##### Get single Q&A
+- METHODS = GET 
+- INPUTS = n/a
+- OUTPUT = Retrieved Q&A (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized(401), Q&A not found(404)
 
-    #### Delete comment on Q&A
+##### Delete Q&A
+
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Successful delete message (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = Unauthorized(401), Q&A not found(404)
+
+##### Update Q&A
+
+- METHODS = PUT/PATCH
+- INPUTS = q_and_a_content (string)
+- OUTPUT = Returned Q&A (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = Unauthorized(401), Q&A not found(404)
+
+#### 127.0.0.1:5000/qandas/<int:id>/comments
+
+##### Create comment on Q&A
+- METHODS = POST
+- INPUTS = description (string)
+- OUTPUT = Returned new Q&A comment (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized(401), Q&A not found(404)
+
+#### 127.0.0.1:5000/qandas/<int:id>/comments/<int:q_and_a_comment_id>
+
+##### Update comment on Q&A
+
+- METHODS = PUT/PATCH
+- INPUTS = description (string)
+- OUTPUT = Returned updated Q&A comment (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same user
+- ERROR HANDLING = Unauthorized (401), Q&A/comment not found (404)
+
+##### Delete comment on Q&A
+
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Returned successful delete message (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same user
+- ERROR HANDLING = Unauthorized (401), Q&A/comment not found (404)
 
 ### Walkthroughs (/walkthroughs)
 
-    #### Get all walkthroughs
+#### 127.0.0.1:5000/walkthroughs
 
-    #### Add walkthrough
+##### Get all walkthroughs
 
-    #### Get single walkthrough
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Retrieves all walkthroughs on the database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES
+- ERROR HANDLING = Unauthorized (401)
 
-    #### Delete walkthrough
+##### Create walkthrough
 
-    #### Update walkthrough
+- METHODS = POST
+- INPUTS = description(string), artwork_id(foreign key)
+- OUTPUT = Returns created walkthrough (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be artist and related to an artwork
+- ERROR HANDLING = Unauthorized (401), artwork not found (404)
 
-    #### Get all walkthrough comments on a walkthrough
+#### 127.0.0.1:5000/walkthroughs/<int:id>
 
-    #### Add a walkthrough comment
+##### Get single walkthrough
 
-    #### Update a walkthrough comment
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Retrieve all walkthroughs on database (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
 
-    #### Delete a walkthrough comment
+##### Delete walkthrough
 
-    #### Check artwork has a walkthrough linked to it.
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Successful delete message (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist
+- ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
+
+##### Update walkthrough
+
+- METHODS = PUT/PATCH
+- INPUTS = description(string)
+- OUTPUT = Updated walkthrough (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same artist 
+- ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
+
+#### 127.0.0.1:5000/walkthroughs/<int:id>/comments
+
+##### Get all walkthrough comments on a walkthrough
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Retrieves all comments on a walkthrough (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
+
+##### Create a walkthrough comment
+
+- METHODS = POST
+- INPUTS = description(string)
+- OUTPUT = Returned walkthrough comment on walkthrough (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized (401), walkthrough not found (404)
+
+#### 127.0.0.1:5000/walkthroughs/<int:id>/comments/<int:walkthrough_comment_id>
+
+##### Update a walkthrough comment
+
+- METHODS = PUT/PATCH
+- INPUTS = description(string)
+- OUTPUT = Returned updated walkthrough comment (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized (401), walkthrough/comment not found (404)
+
+##### Delete a walkthrough comment
+
+- METHODS = DELETE
+- INPUTS = n/a
+- OUTPUT = Returned successful delete message (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be same user
+- ERROR HANDLING = Unauthorized (401), walkthrough/comment not found (404)
+
+#### 127.0.0.1:5000/walkthroughs/check/<int:artwork_id>
+
+##### Check artwork has a walkthrough linked to it
+
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Returned walkthrough if it exists, searching by artwork (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user 
+- ERROR HANDLING = No walkthrough found (404), unauthorized (401)
 
 ### Emails (/emails)
 
-    #### Get all emails
+#### 127.0.0.1:5000/emails
 
-    #### Create an email
+##### Get all emails
 
-    #### Get single email
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Returns all emails (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = inauthenticated (401)
+
+##### Create an email
+
+- METHODS = POST
+- INPUTS = Email title (string), email content (string)
+- OUTPUT = Success message for email created (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be artist
+- ERROR HANDLING = unauthorized (401)
+
+#### 127.0.0.1:5000/emails/<int:id>
+
+##### Get single email
+
+- METHODS = GET
+- INPUTS = n/a
+- OUTPUT = Returns single email content to view (200)
+- AUTHENTICATION = YES
+- AUTHORIZATION = n/a
+- ERROR HANDLING = unauthorized (401), email not found (404)
 
 ## Entity Relation Diagram
+
+
 
 ## Services
 
@@ -174,5 +558,7 @@ Communities
 ## Implementation of Relations
 
 ## Software Management Process
+
+## Minimum Viable Product Omissions
 
 ## Review

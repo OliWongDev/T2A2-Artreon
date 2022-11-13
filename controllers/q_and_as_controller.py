@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 import datetime
 from models.q_and_a_comments import QAndAComment, QAndACommentSchema
 
-q_and_as = Blueprint("q_and_as", __name__, url_prefix="/q_and_as")
+q_and_as = Blueprint("q_and_as", __name__, url_prefix="/qandas")
 
 # 127.0.0.1:5000/q_and_as
 # This returns the Q&As

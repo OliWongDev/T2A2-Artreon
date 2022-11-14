@@ -40,7 +40,7 @@ ARTIST:
 
 ### 127.0.0.1:5000/auth/register-user
 
-<span style="color:blue">Register User</span>
+<span style="color:blue">*Register User*</span>
 
 - METHODS = POST
 - INPUTS = user_alias, first_name, last_name, email, has_subscription, password

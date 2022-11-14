@@ -1,5 +1,7 @@
 # Software Development Plan -- Artreon
 
+LINK TO TRELLO BOARD!
+
 ## Process:
 
 ### Trello Board Process
@@ -72,144 +74,38 @@ The developer added activity statements to subtasks to mark what progress they h
 
 The developer utilised these to signify what progress had been done on the task, whether it had been completed or not, contingency plans and notes that they thought up during the task. These are dated to mark when this statement was made.
 
-### Daily Standups
+## Trello Progress
 
-The developer posted daily standups approximately at 7pm each night and used screenshotted these to keep themselves accountable for their own daily progress.
+To begin my Trello board process, I started very diligently but noticed that as the authorization issues hit me my progress and interest in the board waned thus causing a lack of consistentcy from 08/11 to 15/11. This is a point of emphasis for me to work on given that I am handing in an assignment late. Here are the screenshots from occassions where I was present and updating the board.
 
-## 1st November 2022
-### Trello 
-<!-- - Trello Screenshot -->
+**01/11/22**
 
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
+![1](/docs/01.11%20Trello%20Screenshot.png)
 
-### Summary
+**02/11/22**
 
-November 1 marked the first day I worked on the assignment properly after having my idea accepted and some initial setup completed. I begun on setting up the git repo, making my ERD, completing my Trello board and finalizing my software development plan.
+![2](/docs/02.11%20Trello%20Screenshot.png)
 
-I had made a messy ERD to begin with and largely felt like my understanding was lacking so I aimed to share what I had done so far with the support hub the next day.
+**04/11/22**
 
-I was able to finish 3/6 subtasks in Checkpoint 1 leaving the ERD, 3rd Party services research and documenting endpoints tasks to be completed by tomorrow night.
+![4](/docs/04.11%20Trello%20Screenshot.png)
 
-## 2nd November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-*
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
+**05/11/22**
 
-### Summary
+![5](/docs/05.11%20Trello%20Screenshot.png)
 
-Today I went into the Melbourne campus to get some help with my ERD and was able to condense it down into a much more paletable diagram. After going back to fix it, and then subsequently finally checking with Iryna I was able to begin documenting my endpoints. I have put in some suggestions for 3rd party services to try to implement (Mailtrap.io for the email function, OAUTH for authentication, <!-- and -->). 
+**06/11/22**
 
-Further, I was able to begin thinking about my endpoints and got some good information from Iryna. 
+![6](/docs/06.11%20Trello%20Screenshot.png)
 
-Code starts tomorrow!
+**07/11/22**
 
-## 3rd November 2022
-### Trello 
-<!-- - Trello Screenshot -->
+![7](/docs/07.11%20Trello%20Screenshot.png)
 
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
+**08/11/22**
 
-### Summary
+![8](/docs/08.11%20Trello%20Screenshot.png)
 
-## 4th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
+**Final Board 15/11/22**
 
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 5th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 6th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 7th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 8th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 9th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 10th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 11th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 12th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 13th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary
-
-## 14th November 2022
-### Trello 
-<!-- - Trello Screenshot -->
-
-### Daily Standup
-<!-- - Daily Standup Screenshot -->
-
-### Summary+++++++++++++++++++++++++++++++++++
+![15](/docs/ERD%20Artreon%20FINAL.drawio.png)

@@ -260,7 +260,7 @@ ASSOCIATION: One User to Many "comments"
 
 ## Entity Relation Diagram
 
-![Entity Relation Diagram](/docs/ERD%20Artreon%20FINAL.jpg)
+![Entity Relation Diagram](/docs/ERD%20Artreon%20FINAL.drawio.png)
 
 ## Implementation of Relations
 
@@ -268,11 +268,15 @@ The relations are implemented directly mapping from both the models and the ERD.
 
 ![Database Tables](/docs/tables.png)
 
-Inside the tables, we now have the seeded data. I've used the example of the users table which shows the primary key to differentiate the specific users as well as their details. This matches the fields designated in the ERD that have been run through our models to check that they are valid.
+Inside the tables, we now have the seeded data. I've used the example of the users table which shows the primary key to differentiate the specific users as well as their details. This matches the fields designated in the ERD that have been run through our models constraints to check that they are valid.
 
 ![User Table](/docs/user_table.png)
 
-To directly show how the ERD matches the implementation relations we can use the example of a Q&A comment posted to a Q&A by a user. We know that a Q&A to a Q&A comment has a One to Many relationship as per the ERD, and the User to a Q&A comment relation is also One to Many. This means that an appropriate foreign key should be generated on Q&A Comments for both the user who made the comment, and the Q&A that now holds the comment. We will be taking user 4's (paid) bearer token by logging in, and then POSTing a comment on Q&A 1.
+### Implementation Example
+
+Foreign keys are what makes our database relational. Without them, how will we be able to link our data to what it is writing to?
+
+To directly show how the ERD matches the implementation relations we can use the example of a Q&A comment posted to a Q&A by a user. We know that a Q&A to a Q&A comment has a One to Many relationship as per the ERD, and the User to a Q&A comment relation is also One to Many. This means that an appropriate foreign key should be generated on Q&A Comments for both the user who made the comment, and the Q&A that now holds the comment. We will be taking user 4's (paid) bearer token by logging in, and then POSTing a comment on Q&A 1. As you will see, the POSTMAN return verifies that the user is mapped to the comment, and the comment is mapped to the Q&A.
 
 BEFORE:
 

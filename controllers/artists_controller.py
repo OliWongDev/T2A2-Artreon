@@ -1,9 +1,8 @@
-from flask import Blueprint, jsonify, request, abort
-from main import db, bcrypt
+from flask import Blueprint, request
+from main import db
 from models.artists import Artist, ArtistSchema
-from models.artworks import Artwork, ArtworkSchema
-from controllers.auth_controller import authorize_artist, authorize_user, authorize_paid_user, authorize_precise_artist
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from controllers.auth_controller import authorize_user, authorize_precise_artist
+from flask_jwt_extended import jwt_required
 
 
 
@@ -26,9 +25,9 @@ def get_all_artists():
 
 # 127.0.0.1:5000/artists/<int:id>
 # This returns a single artist's information and their content.
-
-@artists.route("/<int:id>", methods=["GET"])
 # WORKING 14/11/22
+@artists.route("/<int:id>", methods=["GET"])
+
 @jwt_required()
 def get_one_artist(id):
     artist = db.select(Artist).filter_by(id=id)

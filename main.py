@@ -4,21 +4,19 @@ from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from marshmallow.exceptions import ValidationError
-from flask_login import LoginManager
-from flask_authorize import Authorize
 
 db = SQLAlchemy()
 ma = Marshmallow()
 bcrypt = Bcrypt()
 jwt = JWTManager()
-login_manager = LoginManager()
-authorize = Authorize()
 
 
 def create_app():
     
     # Creating Flask object
     app = Flask(__name__)
+
+    # Error decorators
 
     @app.errorhandler(ValidationError)
     def validation_error(err):
@@ -55,9 +53,6 @@ def create_app():
     # Creating JWT authentication/authorization in app
     jwt.init_app(app)
 
-    authorize.init_app(app)
-
-    login_manager.init_app(app)
 
     from commands import db_commands
     app.register_blueprint(db_commands)

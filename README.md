@@ -4,6 +4,8 @@ Welcome to Artreon! A model clone of the popular service Patreon where artists c
 
 ## User Guide
 
+
+
 ## Installation and Setup
 
 ## Key Components
@@ -40,19 +42,146 @@ As mentioned in the artist's user story, the range of access available in search
 
 With Artreon, the artist can post their artwork behind an authentication system so that it cannot be accessed by a public user. Further, with added tools the platform could allow the artist to properly monetise original custom pieces to people they actually want to sell to rather than attend to this service on a different platform.
 
-### Community Building
+### Online Community Building
 
-Communities 
+Internet communities that are deeply intimate can transform a simple service into a platform of user satisfaction. We have seen many examples of social media sites that develop user access to people/ideas/content that is simply not available geographically. 
+
+Artreon aims to develop a community of art-lovers of an individual artist into a thriving system that allows an artist to monetise their work and personally reach the people who made the decision to sign up and/or subscribe. The community is theirs, and it is not abased by what alternatives (in this case artworks) are seen on platforms such as Instagram.
 
 ### Interactive Learning
 
+For a user who wants to not just be a consumer, but to learn skills from someone who's art you admire, Artreon is an attractive proposition. Paid users get to learn the exact methods/tools used to create awesome artwork with walkthrough videos and Q&A sessions. 
+
+In future, added features could increase interactivity between the artist and protege such as reviews and booking 1 on 1 tutorial sessions. 
+
 ### Patreon as an alternative
+
+The Artreon API is largely developed and inspired from Patreon (A large platform where creators and users come together to share exclusive content in exchange for a subscription). The use case for Patreon is broad, and potentially too broad for the user story. If we narrowed it down, Patreon is largely a one-way service where any type of creator releases what they would like and the subscribers remain simply consumers.
+
+Artreon like mentioned above, identifies the need firstly to make an artist-centric platform and secondly to make sure that the space is kept intimate for buoyant communities to develop.
 
 ## PostgreSQL - The Database Management System of Choice
 
-- Don't say this is the DBMS that I'm proficient in.
+For this API, I have chosen PostgreSQL as my database management system (DBMS) for handling the queries of data that may be performed on the platform.
+
+### Components of PostgreSQL
+
+PostgresQL is a object-relational database that utilises structured query language (SQL) to make queries on the data that we have set up in our API. It is largely open-source would be able to scale my data to large lengths if the platform were to increase its artists and user information. It has a long history dating back since 1996, and has been proven to be an industry standard for large relational databases.
+
+### Why for this project?
+
+The reasons for why PostgreSQL was learned for my project are: relational database, JSON data acceptance, open-source, no license required, an industry standard and a personal desire to enhance my learning of it.
+
+#### Relational Database
+
+The API that I have built intends to take certain data and relate this to other data in the database. For that, our solution is a relational database that sets up rules to help preserve the integrity of our data. In a relational database, tables can be linked by foreign keys that help to set up the rules for new and seeded data being entered into our database. For example, in Artreon we cannot have an artwork being posted without an artist attached to it. Postgres makes these simple rules easy to actually implement and this is most useful for tracking bugs in our source code. 
+
+Further, the ability to categorise our relations into simple tables initially means that we can handle complex interrelated queries depending on what the end users desire.
+
+#### JSON Data
+
+My API project will utilise JSON data as a return result in its skeleton format as of 14/11/22 and likely moving forward. As such, PostgreSQL handles this nicely when returning queries inside the code and from POSTMAN when requests are made. Because of this flexible data handling, PostgreSQL serves as a great tool for holding the API's data as well as its future potential to be adapted with different structured data objects.
+
+#### Open Source
+
+PostgreSQL is open-source meaning that it is licensed to users to use freely and change what they need to in order for their potential app to work the way they would like. Again, this proves that PostgreSQL is adaptable to future problems or solutions that arise for my API. Further, this means it is more likely to have a community behind that can help collaborate on this project or offer insight that might not be publicly available otherwise.
+
+#### No License Required
+
+Under PostgreSQL currently, there is no license required to use the service meaning that it is free for a beginner user such as myself to attempt to implement a RESTful API. This is unlike certain other DBMSs such as Oracle which require fees for a license. This is not a large issue for me as good software is always worth paying for, but to be able to use an industry standard DBMS with a low barrier to entry is a preferable choice before moving into different DBMSs for a more specific solution.
+
+#### Industry Standard/Personal Interest
+
+For my personal growth as a junior software developer, I am thrilled to have learnt how PostgreSQL handles relations and data to underpin a RESTful API. Through much diligence and occassionally frustration, I am proud to say that I feel comfortable working with PostgreSQL and working through all its idiosynchrasies.
+
+Further, PostgreSQL is an industry standard tool for database management on relational databases. It has brought me a lot of confidence knowing that I can work with a relational database and bring that skillset to my future career.
+
+### Drawbacks
+
+
+
+
+
+
+
 ## SQLAlchemy - Object Relational Mapper
-- SQLAlchemy
+
+For this API, I have opted to use SQLAlchemy as the object relational mapper for my Python-coded query elements in order to work with my PostgreSQL database management system. 
+
+### What is an Object Relational Mapper (ORM)
+
+Firstly, we need to understand what an ORM is!
+
+An ORM (Object Relational Mapper) is a database abstraction layer that permits source code objects (in this case Python) to be translated into SQL queries. If we are able to access the Flask application's database queries from Python, this is likely to be simpler and safer than utilising SQL queries directly. 
+
+On top of this, we are able to define our models and schemas inside Python that will map to our database but also can be accessed when needed. This ultimately makes our code DRYer because we are able to make fundamental changes to our database structures when needed within the source code exclusively.
+
+### How does SQLAlchemy work?
+
+In the SQLAlchemy documentation, the developers describe two distinct components underneath the hood. 
+
+The first is the Core which allows the expression of SQL in an object-oriented fashion meaning that we are able to use our Python code in Artreon in order to express the queries we want. The core also grants us the use of schemas which can be taken as the blueprints of how the data will appear. This part within our Flask application is taken care of within the core engine. This component is largely responsible for the DML (Data Manipulation Language) such as INSERT/UPDATE/DELETE that would equate to posting an artist, deleting a comment or updating a user's details.
+
+Finally, SQLAlchemy has an in-built but optional object relational mapper library that is used primarily to work with any object models that are mapped to the schema. We have primarily used this package for our smaller scale application. 
+References:
+
+- https://www.sqlalchemy.org/features.html
+
+- https://docs.sqlalchemy.org/en/14/intro.html
+
+### Functionality of SQLAlchemy in Artreon
+
+SQLAlchemy is used consistently within Artreon to define the models (db.model), map the relations to other tables (db.relationships), controllers (db.select), command line functionality to populate the database (db_commands.cli.command) and instantiate sessions to commit data to the database (db.commit, db.delete, db.add).
+
+#### Models
+
+SQLAlchemy models allow us to use Python classes to set what our tables of data should contain in our database. For example, the User class is a SQLAlchemy model that has columns detailing the user information in various datatypes that are applicable to both Python and SQL. The interoperability makes it simple for us to query a future table. This includes a low-level way to mark what foreign tables we will map our data to with the db.ForeignKeys utility. The models are also useful in allowing simple convertable constraints to our data such as not accepting a nullable entry for a row or imposing that a unit of data must be unique.
+
+#### Relationships
+
+Using the db.relationships function, we are able to define on the models what relations our table will map to and how it will handle the removal of data upon this relationship. For example, an artist if deleted should have their artworks removed. We are able to simply define what a parent/child relationship is with a cascade delete inside the parent model. We are also able to describe through our code what association each relation has to each other (One to Many for example) so that the database accepts that an artist can make many artworks, but one artwork cannot be made by many artists. 
+
+#### Controller Selection Queries (DQL)
+
+The controllers we use are essentially calling the route/request/query that we would like to perform and executing it. Inside this controller, we need to find what the query is so that we output the desired information. Using SQLAlchemy, we can call queries that return the JSON data we want, we can see if a database item exists and we can spring off of this to deny queries that do not meet the expectations. For example, authorization in Artreon relies heavily on the SQLAlchemy query to make sure that an artist is making a DML query on their manipulatable data e.g an artist cannot update another artist's details as SQLAlchemy is checking the artist id match to confirm that it is acceptable to do.
+
+#### Command Line Seeding
+
+In order for someone to check the functionality of the API, we have the option to manually POST data to the database. However, it is of valuable reward for us to have the ability to seed a database with fake data. This can be done through the command line interface as part of SQLAlchemy's package. If we manually make some data that can be seeded with "flask db seed" we can begin working on testing other queries that require data to be populated, particularly DML. For example, we will know if a model's fields aren't correct with this handy feature!
+
+#### Sessions
+
+Finally, we can use the db sessions to ensure our data is committed to the database in the event we use Pythonic Data Manipulation Language (DML). The session represents a "holding zone" for us to manipulate the data and the new data is flushed into the database when committed. In Artreon, we use db.commit to upload new data to the database when a user updates their comment on an artwork and it takes either the changed description or holds the old description under the session.
+
+REFERENCES:
+- https://docs.sqlalchemy.org/en/14/orm/session_basics.html#what-does-the-session-do
+
+### What are the advantages of SQLAlchemy? Why is it implemented in Artreon?
+
+The advantages in particular that are relevant to Artreon are sanitisation, DRY code and compatibility:
+
+#### Sanitisation/SQL Injections:
+
+SQLAlchemy offers Artreon a simple-to-implement way of protecting against an SQL injection. An SQL injection is a common hacker technique of importing SQL language into an unintended field that can override the database's structure maliciously to where there is a risk of all data being deleted. This could have grave consequences for Artreon, particularly where an artist's entire collection of content is deleted.
+
+By using Python objects to pass these queries, the window for this sort of attack to occur is contained within the Python code provided the API is set up correctly. 
+
+REFERENCES:
+- https://www.w3schools.com/sql/sql_injection.asp
+- https://www.oreilly.com/library/view/essential-sqlalchemy-2nd/9781491916544/preface02.html
+
+#### DRY Code:
+
+As we have used an MVC (Model, View, Controller) model in a modularised format, the fundamental structure of our data is largely located in one place. This promotes a simple system where repetition is minimized if we have to add new fields to our models that will roll out across the program. This is assisted by SQLAlchemy's use of python objects to define the models that integrate the backbone of our program.
+
+#### Compatibility:
+
+SQLAlchemy provides adaptable compatability with PostgreSQL, Python language and Marshmallow to create an API that is RESTful in Artreon. In future commits, it would be very possible to migrate this logic to other backend frameworks (e.g Django), DBMSs, deserializer integrators or other languages. Further, within the ORM itself SQLAlchemy can unintentionally assist to set up other n functions such as the authentication of users/artists and the authorization of paid users/free users
+
+REFERENCES:
+https://towardsdatascience.com/building-and-deploying-a-login-system-backend-using-flask-sqlalchemy-and-heroku-8b2aa6cc9ec3
+
+### What are the key drawbacks?
 
 ## Endpoints
 

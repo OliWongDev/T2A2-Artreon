@@ -1,9 +1,8 @@
 from main import db, ma
 from marshmallow import fields
 from marshmallow.validate import Length, And, Regexp
-from flask_login import UserMixin
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     user_alias = db.Column(db.String(), nullable=False, unique=True)

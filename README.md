@@ -4,11 +4,7 @@ Welcome to Artreon! A model clone of the popular service Patreon where artists c
 
 ## User Guide
 
-
-
 ## Installation and Setup
-
-## Key Components
 
 ## The Problem
 
@@ -62,6 +58,20 @@ Artreon like mentioned above, identifies the need firstly to make an artist-cent
 
 ## Models
 
+The models of the Atreon API are what SQLAlchemy uses to formulate the columns of the data table. In this section, I describe the 7 models that are present in the API and concisely what function they should serve. 
+
+NOTE: If the relation to another table is (parent), this means that the model is a parent to the mentioned relation which would be a child. Put simply, this means that if a parent is deleted from the database, consequentially the child is also deleted. The models have been put in order of cascading like the seeded data where the first model is a parent and parent only. 
+
+Syntactically, I found that using a back_populates reference would work for all relations in the database quite well and by using a cascade delete on the parent model to the child relation this process was relatively simple. I primarily used sets for one to many relations, the only exception being artworks to walkthroughs where uselist was False (one to one relation). 
+
+Further, I condensed my models down from having a comments relation to artwork comments, walkthrough comments and Q&A comments. This enhanced my understanding of join tables as I had too many degrees of separation from an artwork comment mapping back to the user.
+
+I also utilised Marshmallow schemas (ma) to assist with nested data from interrelated tables to my liking. For example, I wanted to show a GET route for the primary artist and with nesting the artworks/walkthroughs/q&as that they had done I was able to create a format that previewed what the artist had done without giving too much away. Marshmallow also proved valuable when validating fields such as password minimums (6) and certain characters being denied.
+
+Here is an example of the walkthrough model which shows how the parent and child relationships are commonly defined throughout the app.
+
+![walkthrough](/docs/walkthrough)model.png)
+
 ### Artist
 
 The artist model and role is the lynchpin of the API. The artist is the role that has administrative control overall as it is their platform to provide their own content. 
@@ -109,6 +119,8 @@ KEY NOTES/PRIVILEGES:
 - Free users can only view artworks and comments.
 
 ### Artwork
+
+The artwork is the creator generated content that is the diamonds of the API. It is what the users want to be able to view and interact with. 
 
 FIELDS:
 
@@ -252,7 +264,29 @@ ASSOCIATION: One User to Many "comments"
 
 ## Implementation of Relations
 
-"DATABASE CENTRIC"
+The relations are implemented directly mapping from both the models and the ERD. This means that there are 8 tables each holding data that makes up our database. 
+
+![Database Tables](/docs/tables.png)
+
+Inside the tables, we now have the seeded data. I've used the example of the users table which shows the primary key to differentiate the specific users as well as their details. This matches the fields designated in the ERD that have been run through our models to check that they are valid.
+
+![User Table](/docs/user_table.png)
+
+To directly show how the ERD matches the implementation relations we can use the example of a Q&A comment posted to a Q&A by a user. We know that a Q&A to a Q&A comment has a One to Many relationship as per the ERD, and the User to a Q&A comment relation is also One to Many. This means that an appropriate foreign key should be generated on Q&A Comments for both the user who made the comment, and the Q&A that now holds the comment. We will be taking user 4's (paid) bearer token by logging in, and then POSTing a comment on Q&A 1.
+
+BEFORE:
+
+![q_and_a psql before](/docs/qandacommentsbefore.png)
+
+![postman_before](/docs/q_and_a_comment_new.png)
+
+
+
+AFTER:
+
+![q_and_a psql after](/docs/qandapsqlafter.png)
+
+![q_and_a postman after](/docs/qandacommentpostmanafter.png)
 
 ## PostgreSQL - The Database Management System of Choice
 

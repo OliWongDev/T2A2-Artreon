@@ -179,9 +179,18 @@ As we have used an MVC (Model, View, Controller) model in a modularised format, 
 SQLAlchemy provides adaptable compatability with PostgreSQL, Python language and Marshmallow to create an API that is RESTful in Artreon. In future commits, it would be very possible to migrate this logic to other backend frameworks (e.g Django), DBMSs, deserializer integrators or other languages. Further, within the ORM itself SQLAlchemy can unintentionally assist to set up other n functions such as the authentication of users/artists and the authorization of paid users/free users
 
 REFERENCES:
-https://towardsdatascience.com/building-and-deploying-a-login-system-backend-using-flask-sqlalchemy-and-heroku-8b2aa6cc9ec3
+- https://towardsdatascience.com/building-and-deploying-a-login-system-backend-using-flask-sqlalchemy-and-heroku-8b2aa6cc9ec3
 
-### What are the key drawbacks?
+### What are the key drawbacks to SQLAlchemy's ORM?
+
+The key drawbacks to SQLAlchemy are that there is not much scope for complex data queries involving numerous tables however for the purposes of this relatively small Flask application these are not necessary.
+
+There are also some concerns about efficiency in the official documentation for querying large data sets as the unit of work (synchronizing pattern in an SQLAlchemy session that stores the list of changes made to a series of objects before flushing to db) is inclusive of attributes on objects (e.g artwork.artwork_title) and for each row they must acquire a "last inserted id". This is described as a "large degree of automation" and that using the SQLAlchemy ORM is "not intended for high-bulk inserts".
+
+REFERENCES:
+- https://www.educative.io/courses/quick-start-full-stack-web-development/xoqE7wqKk93
+- https://docs.sqlalchemy.org/en/14/glossary.html#term-unit-of-work
+- https://docs.sqlalchemy.org/en/14/faq/performance.html#i-m-inserting-400-000-rows-with-the-orm-and-it-s-really-slow
 
 ## Endpoints
 
@@ -190,7 +199,7 @@ Unfortunately, the authorization protocol I have tried to set up was unable to b
 
 Upon trying to implement these authorization functions, taking a JWT identity (my only knowledge of authorization tools thus far in my career) would prove problematic. For example, if a user has the same id value as an artist, they would be able to access artist privileges such as posting an artwork; not the goal. I also struggled to access the inner values of the data which lead to me not being able to authorize a paid user over a free user despite emulating Coder Academy API examples that worked with the same logic.
 
-My temporary but committed solution to this problem has been to set up 4 authorization functions: authorize_user, authorize_artist, authorize_precise_user, authorize_precise_artist. The first two allow any user/artist to make the request necessary and the last two allow the precise/user artist (somewhat reliably, id user and artist matching errors) to make the correct adjustment on their account/comments/artwork/walkthroughs/q&as.
+My temporary but committed solution to this problem has been to set up 4 authorization functions: authorize_user, authorize_artist, authorize_precise_user, authorize_precise_artist. The first two allow any user/artist to make the request necessary and the last two allow the precise/user artist (somewhat reliably, id user and artist matching errors can occur) to make the correct adjustment on their account/comments/artwork/walkthroughs/q&as.
 
 As such, I have left this section with a few directions so that the user of this API can view what they need to without ill-advised error codes coming up. I have sorted the routes into 4 categories Inauthenticated, Basic Authentication , User and Artist so that the person who would like to view this project can do so in a less-frustrating manner. The descriptions of the authentication/authorization are likely to be assumed for if the project was running as intended, and are going to be left as such for now.
 
@@ -400,17 +409,6 @@ ARTIST:
 - AUTHORIZATION = n/a
 - ERROR HANDLING = Unauthorized (401), Not found (404)
 
-#### 127.0.0.1:5000/qandas/<int:id>/comments
-
-**Create comment on Q&A**
-
-- METHODS = POST
-- INPUTS = description (string)
-- OUTPUT = Returned new Q&A comment (201)
-- AUTHENTICATION = YES
-- AUTHORIZATION = YES, must be paid user
-- ERROR HANDLING = Unauthorized(401), Q&A not found(404)
-
 #### 127.0.0.1:5000/walkthroughs
 
 **Get all walkthroughs**
@@ -464,7 +462,11 @@ ARTIST:
 - AUTHENTICATION = YES
 - AUTHORIZATION = n/a
 - ERROR HANDLING = unauthorized (401), email not found (404)
-________________________________________________________________________________________________________
+
+
+
+
+
 
 ### USERS
 
@@ -487,7 +489,6 @@ ________________________________________________________________________________
 - AUTHENTICATION = YES
 - AUTHORIZATION = YES, must be same user
 - ERROR HANDLING = user alias not found in database (404, not found), inauthenticated (401)
-
 
 #### 127.0.0.1:5000/artworks/<int:id>/comments
 
@@ -528,8 +529,19 @@ ________________________________________________________________________________
 - INPUTS = n/a
 - OUTPUT = All Q&As returned (200)
 - AUTHENTICATION = YES
-- AUTHORIZATION = YES, must be paid user
+- AUTHORIZATION = Yes, must be paid user
 - ERROR HANDLING = Unauthorized(401)
+
+#### 127.0.0.1:5000/qandas/<int:id>/comments
+
+**Create comment on Q&A**
+
+- METHODS = POST
+- INPUTS = description (string)
+- OUTPUT = Returned new Q&A comment (201)
+- AUTHENTICATION = YES
+- AUTHORIZATION = YES, must be paid user
+- ERROR HANDLING = Unauthorized(401), Q&A not found(404)
 
 #### 127.0.0.1:5000/qandas/<int:id>/comments/<int:q_and_a_comment_id>
 
@@ -602,7 +614,10 @@ ________________________________________________________________________________
 - AUTHORIZATION = YES, must be same user
 - ERROR HANDLING = Unauthorized (401), walkthrough/comment not found (404)
 
-______________________________________________________________________________________________________________________
+
+
+
+
 ### ARTISTS
 
 #### 127.0.0.1:5000/auth/register-artist
@@ -720,7 +735,7 @@ ________________________________________________________________________________
 - AUTHORIZATION = YES, must be artist
 - ERROR HANDLING = unauthorized (401)
 
-__________________________________________________________________________________
+
 
 
 

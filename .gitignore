@@ -1,4 +1,4 @@
 .env
 .venv/
 __pycache__/
-models/authorization/
+models/authorization.py

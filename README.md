@@ -60,6 +60,17 @@ The Artreon API is largely developed and inspired from Patreon (A large platform
 
 Artreon like mentioned above, identifies the need firstly to make an artist-centric platform and secondly to make sure that the space is kept intimate for buoyant communities to develop.
 
+## Entity Relation Diagram
+
+![Entity Relation Diagram](/docs/ERD%20Artreon%20FINAL.jpg)
+
+## Model Relations
+
+
+
+## Implementation of Relations
+
+
 ## PostgreSQL - The Database Management System of Choice
 
 For this API, I have chosen PostgreSQL as my database management system (DBMS) for handling the queries of data that may be performed on the platform.
@@ -509,7 +520,7 @@ ARTIST:
 - INPUTS = description(string)
 - OUTPUT = Repeat of comment (200)
 - AUTHENTICATION = YES
-- AUTHORIZATION = YES, must be paid user
+- AUTHORIZATION = YES, must be same/paid user
 - ERROR HANDLING = Unauthorized (401), artwork/comment not found (404)
 
 **Delete own comment**
@@ -741,15 +752,12 @@ ARTIST:
 
 
 
-## Entity Relation Diagram
+
 
 
 
 ## Services
 
-## Model Relations
-
-## Implementation of Relations
 
 ## Software Management Process
 

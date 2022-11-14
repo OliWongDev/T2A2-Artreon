@@ -3,30 +3,61 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
+from marshmallow.exceptions import ValidationError
+from flask_login import LoginManager
+from flask_authorize import Authorize
 
 db = SQLAlchemy()
 ma = Marshmallow()
 bcrypt = Bcrypt()
 jwt = JWTManager()
+login_manager = LoginManager()
+authorize = Authorize()
+
 
 def create_app():
-    # using a list comprehension and multiple assignment 
-    # to grab the environment variables we need
     
-    # Creating the flask app object - this is the core of our app!
+    # Creating Flask object
     app = Flask(__name__)
 
-    # configuring our app:
+    @app.errorhandler(ValidationError)
+    def validation_error(err):
+        return {'error': err.messages}, 400
+    
+    @app.errorhandler(400)
+    def bad_request(err):
+        return {'error': str(err)}, 400
+
+    @app.errorhandler(404)
+    def not_found(err):
+        return {'error': str(err)}, 404
+
+    @app.errorhandler(401)
+    def unauthorized(err):
+        return {'error': 'You are not authorized to perform this action'}, 401
+
+    @app.errorhandler(KeyError)
+    def key_error(err):
+        return {'error': f'The field {err} is required.'}, 400
+
+    # App Configuration
     app.config.from_object("config.app_config")
 
-    # creating our database object! This allows us to use our ORM
+    # Creating Database object
     db.init_app(app)
 
+    # Creating Marshmallow for converting datatypes between Python
     ma.init_app(app)
 
+    # Creating bcrypt object within app
     bcrypt.init_app(app)
 
+    # Creating JWT authentication/authorization in app
     jwt.init_app(app)
+
+    authorize.init_app(app)
+
+    login_manager.init_app(app)
 
     from commands import db_commands
     app.register_blueprint(db_commands)

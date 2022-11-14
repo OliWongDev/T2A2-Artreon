@@ -3,8 +3,13 @@ from marshmallow import fields
 
 class Artwork(db.Model):
     __tablename__ = "artworks"
+    __permissions__ = dict(
+        artist_role=['post', 'read', 'delete', 'update'],
+        paid_user_role=['read'],
+        free_user_role=['read']
+        )
     id = db.Column(db.Integer, primary_key=True)
-    artwork_name = db.Column(db.String(), unique=True, nullable=False)
+    artwork_name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.String())
     date = db.Column(db.Date(), nullable=False)
 

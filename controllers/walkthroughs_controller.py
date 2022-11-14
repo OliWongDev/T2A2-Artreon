@@ -1,18 +1,17 @@
 from flask import Blueprint, jsonify, request, abort
 from main import db
 from models.walkthroughs import Walkthrough, WalkthroughSchema
-from controllers.auth_controller import authorize_artist, authorize_paid_user
+from controllers.auth_controller import authorize_artist, authorize_paid_user, authorize_user
 from flask_jwt_extended import jwt_required
 
 walkthroughs = Blueprint("walkthroughs", __name__, url_prefix="/walkthroughs")
 
 # 127.0.0.1:5000/walkthroughs
 # This returns the walkthroughs
-
 @walkthroughs.route("/", methods=["GET"])
-#jwt_required()
+@jwt_required()
 def get_all_walkthroughs():
-    # authorize_general_artist() or authorize_paid_user()
+    authorize_user()
     walkthroughs_list = db.select(Walkthrough).order_by(Walkthrough.id.asc())
     result = db.session.scalars(walkthroughs_list)
     return WalkthroughSchema(many=True).dump(result)

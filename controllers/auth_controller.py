@@ -16,7 +16,7 @@ def get_users():
     users = db.session.scalars(user_select)
     return UserSchema(many=True, exclude=['password']).dump(users)
 
-@auth.route('/register_user', methods=['POST'])
+@auth.route('/register-user', methods=['POST'])
 def auth_register_user():
     try:
         user = User(
@@ -34,8 +34,9 @@ def auth_register_user():
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
 
-@auth.route('/register_artist', methods=['POST'])
+@auth.route('/register-artist', methods=['POST'])
 def auth_register_artist():
+    artist_schema = ArtistSchema().load(request.json)
     try:
         artist = Artist(
             artreon_alias = request.json["artreon_alias"],
@@ -45,13 +46,13 @@ def auth_register_artist():
         )
         db.session.add(artist)
         db.session.commit()
-        return ArtistSchema(exclude=["password"]).dump(artist), 201
+        return ArtistSchema().dump(artist), 201
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
 
 
 
-@auth.route('/user_login', methods=['POST'])
+@auth.route('/user-login', methods=['POST'])
 def auth_login():
     user_statement = db.select(User).filter_by(email=request.json['email'])
     user = db.session.scalar(user_statement)
@@ -63,7 +64,8 @@ def auth_login():
     else:
         return {'error': 'The email or password was invalid'}, 404
 
-# DO NOT TOUCH
+# Authorize paid user, can view walkthroughs, make comments, view q&as.
+# 13.11.22 GOOD
 def authorize_paid_user():
     user_id = get_jwt_identity()
     user_statement = db.select(User).filter_by(id=user_id)
@@ -72,7 +74,8 @@ def authorize_paid_user():
         return abort(401), False
     
 
-# DO NOT TOUCH
+# Free users can access viewing artworks, that's basically it.
+# 13.11.22 GOOD
 def authorize_user():
     user_id = get_jwt_identity()
     user_statement = db.select(User).filter_by(id=user_id)
@@ -80,16 +83,17 @@ def authorize_user():
     if not user:
         return abort(401)
 
+# Find the right user to update/delete their own comments. 
 # DO NOT TOUCH
 def authorize_precise_user(id):
     user_id = get_jwt_identity()
     user_statement = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(user_statement)
-    if user.id != id:
+    if user.id != int(id):
         abort(401)
 
 
-@auth.route('/artist_login', methods=['POST'])
+@auth.route('/artist-login', methods=['POST'])
 def auth_artist_login():
     artist_statement = db.select(Artist).filter_by(email=request.json['email'])
     artist = db.session.scalar(artist_statement)
@@ -101,7 +105,7 @@ def auth_artist_login():
     else:
         return {'error': 'The email or password was invalid'}, 404
 
-
+# Authorize any artist to do an action on walkthroughs/artworks/q&as.
 def authorize_artist():
     artist_id = get_jwt_identity()
     artist_statement = db.select(Artist).filter_by(id=artist_id)
@@ -112,7 +116,9 @@ def authorize_artist():
         return True
 
 
+
 # DO NOT TOUCH
+# Find the right artist to update/delete their artwork
 def authorize_precise_artist(id):
     artist_id = get_jwt_identity()
     artist_statement = db.select(Artist).filter_by(id=artist_id)

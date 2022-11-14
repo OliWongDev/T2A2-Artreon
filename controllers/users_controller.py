@@ -3,7 +3,6 @@ from main import db, bcrypt
 from models.users import User, UserSchema
 from flask_jwt_extended import jwt_required
 from controllers.auth_controller import authorize_user
-import datetime
 users = Blueprint("users", __name__, url_prefix="/users")
 
 
@@ -55,6 +54,7 @@ def update_user_details(user_alias):
         return abort(404, description="The user does not exist")
 
 # 127.0.0.1:5000/users/<string:user_alias>
+# Delete a user
 
 @users.route("/<string:user_alias>", methods=["DELETE"])
 def delete_user_account(user_alias):

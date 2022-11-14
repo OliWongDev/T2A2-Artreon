@@ -1,22 +1,23 @@
 from flask import Blueprint, request, abort
 from main import db
+from flask_login import login_manager, user_loaded_from_request
 from datetime import date
 from models.artworks import Artwork, ArtworkSchema
 from models.artists import Artist
 from models.artwork_comments import ArtworkComment, ArtworkCommentSchema
 from models.users import User, UserSchema
+from itertools import chain
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from controllers.auth_controller import authorize_precise_artist, authorize_paid_user, authorize_artist
+from controllers.auth_controller import authorize_precise_artist, authorize_paid_user, authorize_artist, authorize_precise_user
 
 artworks = Blueprint('artworks', __name__, url_prefix="/artworks")
+
 
 # 127.0.0.1:5000/artworks
 # This returns the artworks
 
 @artworks.route("/", methods = ["GET"])
-@jwt_required()
 def get_all_artworks():
-     authorize_artist()
      artworks_list = db.select(Artwork).order_by(Artwork.id.asc())
      result = db.session.scalars(artworks_list)
      return ArtworkSchema(many=True).dump(result), 200
@@ -124,18 +125,19 @@ def update_artwork_comment(id, artwork_comments_id):
      elif artwork_comment:
           return {'error': f"Artwork comment was not found on artwork '{id}'."}
 
-@artworks.route("/<int:id>/comments/<int:artwork_comments_id>", methods = ["DELETE"])
-# @jwt_required()
-def delete_artwork_comment(id, artwork_comments_id):
-     # Authorize precise paid user.
+
+
+@artworks.route("/<int:id>/comments/<int:artwork_comment_id>", methods = ["DELETE"])
+@jwt_required()
+def delete_artwork_comment(id, artwork_comment_id):
      artwork_statement = db.select(Artwork).filter_by(id=id)
      artwork = db.session.scalar(artwork_statement)
-     artwork_comment_statement = db.select(ArtworkComment).filter_by(id=artwork_comments_id)
+     artwork_comment_statement = db.select(ArtworkComment).filter_by(id=artwork_comment_id)
      artwork_comment = db.session.scalar(artwork_comment_statement)
 
      if artwork and artwork_comment:
-          db.session.delete(artwork_comment)
-          db.session.commit()
+          # db.session.delete(artwork_comment)
+          # db.session.commit()
           return {'message': f"Artwork comment deleted successfully"}
      elif artwork: 
           return {'error': f"Artwork Comment not found with id {id}"}, 404

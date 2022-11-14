@@ -3,9 +3,10 @@ from marshmallow import fields
 
 class ArtworkComment(db.Model):
     __tablename__ = "artwork_comments"
+    
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(), nullable=False)
-    date = db.Column(db.Date())
+    description = db.Column(db.String(200), nullable=False)
+    date = db.Column(db.Date(), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     artwork_id = db.Column(db.Integer, db.ForeignKey("artworks.id"), nullable=False)
@@ -19,3 +20,9 @@ class ArtworkCommentSchema(ma.Schema):
     class Meta:
         fields = ("id", "description", "date", "user", "artwork")
         ordered = True
+
+
+# __permissions__ = dict(
+#         artist_role=['post', 'read', 'delete'],
+#         paid_user_role=['post', 'read', 'delete'],
+#         )

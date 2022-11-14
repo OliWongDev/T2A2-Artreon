@@ -4,7 +4,7 @@ from marshmallow import fields
 class QAndAComment(db.Model):
     __tablename__ = "q_and_a_comments"
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
     date = db.Column(db.Date())
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

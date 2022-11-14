@@ -1,7 +1,9 @@
 from main import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length, And, Regexp
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     user_alias = db.Column(db.String(), nullable=False, unique=True)
@@ -21,6 +23,17 @@ class UserSchema(ma.Schema):
     artwork_comments = fields.List(fields.Nested("ArtworkCommentSchema", only=["id", "description", "artwork.id", "artwork.artwork_name"]))
     q_and_a_comments = fields.List(fields.Nested("QAndACommentSchema", only=["id", "description", "q_and_a.id"]))
     walkthrough_comments = fields.List(fields.Nested("WalkthroughCommentSchema", only=["id", "description"]))
+
+    password = fields.String(required=True, validate=And(
+        Length(min=6, error="Your password is not long enough. Please use at least 6 characters."),
+        Regexp('^[a-zA-Z0-9 ]+$', error='Your characters were weird. Please use letters, numbers and spaces.')
+    ))
+
     class Meta:
         fields = ("id", "user_alias","first_name", "last_name", "join_date", "email", "has_subscription", "password", "artwork_comments", "q_and_a_comments", "walkthrough_comments")
         ordered = True
+
+
+
+# groups = db.relationship('UserGroup', secondary=UserGroup)
+#     roles = db.relationship('UserRole', secondary=UserRole)

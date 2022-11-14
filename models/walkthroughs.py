@@ -3,6 +3,7 @@ from marshmallow import fields
 
 class Walkthrough(db.Model):
     __tablename__ = "walkthroughs"
+
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String())
     date = db.Column(db.Date(), nullable=False)
@@ -21,3 +22,8 @@ class WalkthroughSchema(ma.Schema):
     class Meta:
         fields = ("id", "description", "date", "artist", "artwork", "walkthrough_comments")
         ordered = True
+
+# __permissions__ = dict(
+#         artist_role=["read", "update", "post", "delete"],
+#         paid_user_role=["read"]
+#     )

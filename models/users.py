@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(), nullable=False)
     join_date = db.Column(db.Date())
     email = db.Column(db.String(), nullable=False, unique=True)
-    has_subscription = db.Column(db.Boolean(), nullable=False, default=False)
+    has_subscription = db.Column(db.Boolean(), nullable=False, default=True)
     password = db.Column(db.String(), nullable=False)
 
     artwork_comments = db.relationship("ArtworkComment", back_populates="user", cascade="all, delete")

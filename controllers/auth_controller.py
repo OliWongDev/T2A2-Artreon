@@ -10,13 +10,11 @@ from datetime import date
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-@auth.route('/users')
-def get_users():
-    user_select = db.select(User)
-    users = db.session.scalars(user_select)
-    return UserSchema(many=True, exclude=['password']).dump(users)
-
-@auth.route('/register-user', methods=['POST'])
+# 127.0.0.1:5000/auth/user-register
+# Register a user to the DB, no auth required.
+# WORKING 14/11/22
+@auth.route('/user-register', methods=['POST'])
+# @jwt_identity_required()
 def auth_register_user():
     try:
         user = User(
@@ -30,13 +28,18 @@ def auth_register_user():
         )
         db.session.add(user)
         db.session.commit()
-        return UserSchema(exclude=['password']).dump(user), 201
+        return UserSchema(exclude='password').dump(user), 201
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
 
-@auth.route('/register-artist', methods=['POST'])
+
+# 127.0.0.1:5000/auth/user-register
+# Register an artist to the DB, must be admin artist.
+# WORKING 14/11/22
+@auth.route('/artist-register', methods=['POST'])
+# @jwt_identity_required()
+# Authorize artist
 def auth_register_artist():
-    artist_schema = ArtistSchema().load(request.json)
     try:
         artist = Artist(
             artreon_alias = request.json["artreon_alias"],
@@ -46,14 +49,17 @@ def auth_register_artist():
         )
         db.session.add(artist)
         db.session.commit()
-        return ArtistSchema().dump(artist), 201
+        return ArtistSchema(exclude=['password']).dump(artist), 201
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
 
 
-
+# 127.0.0.1:5000/auth/user-login
+# Log in a user
+# WORKING 14/11/22
 @auth.route('/user-login', methods=['POST'])
-def auth_login():
+# @jwt_identity_required()
+def auth_user_login():
     user_statement = db.select(User).filter_by(email=request.json['email'])
     user = db.session.scalar(user_statement)
 
@@ -64,8 +70,9 @@ def auth_login():
     else:
         return {'error': 'The email or password was invalid'}, 404
 
+
 # Authorize paid user, can view walkthroughs, make comments, view q&as.
-# 13.11.22 GOOD
+# WORKING 14/11/22 
 def authorize_paid_user():
     user_id = get_jwt_identity()
     user_statement = db.select(User).filter_by(id=user_id)
@@ -74,8 +81,8 @@ def authorize_paid_user():
         return abort(401), False
     
 
-# Free users can access viewing artworks, that's basically it.
-# 13.11.22 GOOD
+# Authorize user, users can access viewing artworks, that's basically it.
+# WORKING 13/11/22
 def authorize_user():
     user_id = get_jwt_identity()
     user_statement = db.select(User).filter_by(id=user_id)
@@ -84,15 +91,22 @@ def authorize_user():
         return abort(401)
 
 # Find the right user to update/delete their own comments. 
-# DO NOT TOUCH
+# WORKING 14/11/22
 def authorize_precise_user(id):
     user_id = get_jwt_identity()
-    user_statement = db.select(User).filter_by(id=user_id)
+    user_statement = db.select(User).filter_by(id=id)
     user = db.session.scalar(user_statement)
-    if user.id != int(id):
-        abort(401)
+    if user.id != int(user_id):
+        return abort(401)
+    
+    # Boilerplate for particular function needing exact user
+    # Example is on a comment route
+    # user_id = comment_result.user_id
+    # authorize_precise_user(user_id)
 
-
+# 127.0.0.1:5000/auth/artist-login
+# Log in an artist
+# WORKING 14/11/22
 @auth.route('/artist-login', methods=['POST'])
 def auth_artist_login():
     artist_statement = db.select(Artist).filter_by(email=request.json['email'])
@@ -112,17 +126,18 @@ def authorize_artist():
     artist = db.session.scalar(artist_statement)
     if not artist:
         return abort(401)
-    else:
-        return True
-
-
 
 # DO NOT TOUCH
-# Find the right artist to update/delete their artwork
+# WORKING 14/11/22
 def authorize_precise_artist(id):
     artist_id = get_jwt_identity()
-    artist_statement = db.select(Artist).filter_by(id=artist_id)
+    artist_statement = db.select(Artist).filter_by(id=id)
     artist = db.session.scalar(artist_statement)
-    if artist.id != id:
-        abort(401)
- 
+    if artist.id != int(artist_id):
+        return abort(401)
+
+    # Boilerplate for particular function needing exact artist
+    # Example is on an artwork route
+    # artist_id = artwork_result.artist_id
+    # authorize_precise_artist(artist_id)
+

@@ -52,7 +52,7 @@ def seed_db():
         ),
 
         User(
-            user_alias = "Consumer Not Creator",
+            user_alias = "ConsumerNotCreator",
             first_name = "Jason",
             last_name = "Zhao",
             join_date = datetime.date.today(),
@@ -70,7 +70,7 @@ def seed_db():
 
     paid_users_seed = [
         User(
-            user_alias = "Art Begunner",
+            user_alias = "ArtBegunner",
             first_name = "Ellie",
             last_name = "Jackson",
             join_date = datetime.date.today(),

@@ -60,16 +60,199 @@ The Artreon API is largely developed and inspired from Patreon (A large platform
 
 Artreon like mentioned above, identifies the need firstly to make an artist-centric platform and secondly to make sure that the space is kept intimate for buoyant communities to develop.
 
+## Models
+
+### Artist
+
+The artist model and role is the lynchpin of the API. The artist is the role that has administrative control overall as it is their platform to provide their own content. 
+
+FIELDS:
+
+- artreon_alias (defines the username which can be referenced in a route)
+- password (used to log into the API and encrypted on get requests)
+- email (email address used to log into the API)
+- is_admin (A boolean to determine if the artist in question has administrative control or is simply there to post content)
+- artist_bio (No word limit on how an artist can introduce their Artreon)
+
+RELATIONS:
+
+- Artwork (parent), Walkthrough (parent), Email (parent), Q&A (parent)
+
+KEY NOTES/PRIVILEGES
+
+- The artist can post artworks/walkthroughs/q&as/emails to their users.
+- Only the same artist can update/delete their own content or details.
+- Only the admin artist should be able to register a new user to their database.
+
+### User
+
+The user model is the primary consumer of the API data. They are on the platform to see what their favourite artist will produce and if they are paid, they are learners who want to see walkthroughs and Q&As to become better artists themselves. Their primary submission to the database is the ability to post comments on artworks, walkthroughs and Q&As.
+
+FIELDS:
+
+- user_alias (defines the username which can be referenced in a route)
+- first_name
+- last_name
+- join_date (the datetime of today when the user is created)
+- email (used to log in)
+- has_subscription (Boolean to check if a user is free or paid)
+- password (used to log into the API and encrypted on get requests)
+
+RELATIONS:
+
+- Artwork Comment (parent), Walkthrough Comment (parent), Q&A Comment (parent)
+
+KEY NOTES/PRIVILEGES:
+
+- The user can update/delete their own comments or account details.
+- Paid users should have access to walkthroughs/Q&As.
+- Free users can only view artworks and comments.
+
+### Artwork
+
+FIELDS:
+
+- artwork_name
+- description (allowed to be null)
+- date (date posted)
+- artist_id (foreign key to the artist who posted the artwork)
+
+RELATIONS:
+
+- Artist (child), Artwork Comment (parent), Walkthrough (child)
+
+KEY NOTES:
+
+- An artwork must be made by an artist so it has a foreign key to link it back.
+- An artwork comment is to be deleted upon an artwork being deleted.
+- A walkthrough may have a linked artwork, where the artist is showing the paid users how they made a specific artwork in the database.
+
+### Walkthrough
+
+FIELDS:
+
+- description
+- date (date posted)
+- artist_id (foreign key linking back to the artist who posted the walkthrough)
+- artwork_id (foreign key linking back to the artwork it derives from)
+
+RELATIONS:
+
+- Artist (child), Artwork (child), Walkthrough Comment (parent)
+
+KEY NOTES:
+
+- A walkthrough should only be accessed by paid users
+- A walkthrough is derived from an artwork; it cannot exist without it.
+- If a walkthrough is deleted, the walkthrough comments associated must also be deleted.
+
+### Q&A
+
+FIELDS:
+
+- q_and_a_content
+- date (date posted)
+- artist_id (foreign key linking back to artist who posted q&a)
+
+RELATIONS:
+
+- Artist (child), Q&A Comment (parent)
+
+KEY NOTES: 
+- A Q&A should only be accessed by paid users.
+- If a Q&A is deleted, the Q&A comments associated must also be deleted.
+
+### Artwork Comment
+
+FIELDS:
+
+- description
+- date (date posted)
+- artwork_id (foreign key linking to specific artwork associated)
+- user_id (foreign key linking to user who made the comment on the artwork)
+
+RELATIONS:
+
+- Artwork (child), User (child)
+
+KEY NOTES:
+
+- Serves as a join table between artworks and users with comments included.
+- If either the artwork or the user are deleted, so is the comment associated.
+
+### Walkthrough Comment
+
+FIELDS:
+
+- description
+- date (date posted)
+- walkthrough_id (foreign key linking to specific walkthrough associated)
+- user_id (foreign key linking to user who made the comment on the walkthrough)
+
+RELATIONS:
+
+- Walkthrough (child), User (child)
+
+KEY NOTES:
+
+- Serves as a join table between walkthroughs and users with comments included.
+- If either the walkthrough or the user are deleted, so is the comment associated.
+
+### Q&A Comment
+
+FIELDS:
+
+- description
+- date (date posted)
+- q_and_a_id (foreign key linking to specific Q&A associated)
+- user_id (foreign key linking to user who made the comment on the Q&A)
+
+RELATIONS:
+
+- Q&A (child), User (child)
+
+KEY NOTES:
+
+- Serves as a join table between q&as and users with comments included.
+- If either the Q&A or the user are deleted, so is the comment associated.
+
+## Relations
+
+### Artist to Artwork/Walkthrough/Q&A/Emails
+
+ASSOCIATION: One Artist to Many Artworks/Q&As/Emails
+
+- One artist can make many artworks (e.g artwork1, artwork2, artwork3 are all attributed to user_id = 1)
+- One artwork cannot be made by many artists
+
+### Artwork to Artwork Comments, Walkthrough to Walkthrough Comments, Q&A to Q&A Comments
+
+ASSOCIATION: One Artwork/Walkthrough/Q&A to Many "comments"
+
+- One artwork/walkthrough/Q&A can hold many comments (e.g artwork_comment1, artwork_comment2, artwork_comment3 are all attributed to artwork1)
+- One comment cannot map to multiple artworks/walkthroughs/Q&As.
+
+### Artwork to Walkthrough:
+
+ASSOCIATION: One Artwork to One Walkthrough (optional relation)
+
+- One walkthrough must be attributed to one artwork
+- One artwork does not have to have an associated walkthrough.
+
+### User to Artwork Comments, Q&A Comments, Walkthrough Comments
+
+ASSOCIATION: One User to Many "comments"
+
+- One user can make many comments.
+- Comments can only be attributed to one user.
+
 ## Entity Relation Diagram
 
 ![Entity Relation Diagram](/docs/ERD%20Artreon%20FINAL.jpg)
 
-## Model Relations
-
-
-
 ## Implementation of Relations
 
+"DATABASE CENTRIC"
 
 ## PostgreSQL - The Database Management System of Choice
 

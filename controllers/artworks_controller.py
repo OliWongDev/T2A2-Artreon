@@ -1,12 +1,9 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request
 from main import db
-from flask_login import login_manager, user_loaded_from_request
 from datetime import date
 from models.artworks import Artwork, ArtworkSchema
 from models.artists import Artist
 from models.artwork_comments import ArtworkComment, ArtworkCommentSchema
-from models.users import User, UserSchema
-from itertools import chain
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from controllers.auth_controller import authorize_precise_artist, authorize_artist, authorize_user, authorize_precise_user
 

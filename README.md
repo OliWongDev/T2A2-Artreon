@@ -1,4 +1,6 @@
-# Artreon
+# Artreon (THIS REPO IS CURRUPTED)
+
+PLEASE USE THE REPO LINKED HERE: ![Artreon](https://github.com/OliWongDev/Artreon)
 
 Welcome to Artreon! A model clone of the popular service Patreon where artists can express greater control over what content is viewable to paid and free subscribers. 
 
